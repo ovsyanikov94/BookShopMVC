@@ -7,41 +7,18 @@
  */
 
 namespace Application\Controllers;
-
-use Pug\Pug;
+use Bramus\Router\Router;
 
 class ApplicationController extends BaseController {
 
     public function Start(  ){
 
-        $ctrl = $this->request->GetGetValue('ctrl');
-        $act = $this->request->GetGetValue('act');
+        $router = new Router();
 
-        $controllerString = "Application\\Controllers\\{$ctrl}Controller";
+        $router->setNamespace('Application\\Controllers');
+        $router->get('/movies/(\w+)/(\d+)' , "HomeController@indexAction" );
 
-        $controllerInstance = new $controllerString();
-
-        $actionString = "{$act}Action";
-
-        $viewPath = $controllerInstance->$actionString();
-
-        $this->storage = $controllerInstance->getStorage();
-
-        try{
-
-            $pug = new Pug();
-            $output = $pug->render($viewPath , $this->storage->getRawStorage() );
-
-            echo $output;
-
-        }//try
-        catch( \Exception $ex ){
-
-            include '../Views/Errors/InternalError.php';
-
-        }//catch
-
-
+        $router->run();
 
     }//Start
 
