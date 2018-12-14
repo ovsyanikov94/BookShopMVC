@@ -1,0 +1,10 @@
+{
+    "name": "alexey/book-shop-mvc",
+    "authors": [ ],
+    "autoload":{
+      "psr-4": {
+        "Classes\\": "Classes/",
+        "Interfaces\\": "Interfaces/"
+      }
+    }
+}

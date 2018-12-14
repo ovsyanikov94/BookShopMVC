@@ -1,22 +1,17 @@
 <?php
+// PSR-4 - PHP Standart Recomendation
 
-function CustomLoadClasses( $class ){
-
-    if( file_exists("{$class}.php") ){
-
-        $class = str_replace('\\','/' , $class);
-
-        include_once "{$class}.php";
-
-    }//if
-
-}//CustomLoadClasses
-
-spl_autoload_register('CustomLoadClasses');
+require_once 'vendor/autoload.php';
 
 use Classes\User;
+use Classes\Author;
 use Classes\Config\Router;
 
-$router = new Router();
+$user = new User();
+$user->ShowUser();
 
-$router->get('/');
+$author = new Author();
+
+
+$router = new Router();
+$router->get('/home');

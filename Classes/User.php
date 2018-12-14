@@ -8,7 +8,9 @@
 
 namespace Classes;
 
-class User
+use Interfaces\ISerializeble;
+
+class User implements ISerializeble
 {
 
     public function ShowUser(  ){
@@ -16,5 +18,9 @@ class User
         echo "<h1>User here!</h1>";
 
     }
+
+    public function serialize(){
+        echo "User was save!";
+    }//serialize
 
 }
