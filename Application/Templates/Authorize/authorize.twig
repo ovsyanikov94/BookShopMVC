@@ -23,12 +23,12 @@
             <div class="form-group">
 
                 <div class="row justify-content-center">
-                    <label for="exampleInputEmail1"><h4>Логин</h4></label>
+                    <label for="exampleInputEmail1"><h4>Логин или Email</h4></label>
                 </div>
-                <input type="login" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введите свой логин">
+                <input type="login" class="form-control" id="loginOrEmailInput" aria-describedby="emailHelp" placeholder="Введите свой логин или Email">
 
                 <div class="row justify-content-center">
-                    <small id="emailHelp" class="form-text text-muted">Не сообщайте никому свой логин.</small>
+                    <small id="login" class="form-text text-muted">Не сообщайте никому свой логин и/или email.</small>
                 </div>
 
 
@@ -39,10 +39,10 @@
                     <label for="exampleInputPassword1"><h4>Пароль</h4></label>
                 </div>
 
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Введите свой пароль">
+                <input type="password" class="form-control" id="passwordInput" placeholder="Введите свой пароль">
 
                 <div class="row justify-content-center">
-                    <small id="passwordHelp" class="form-text text-muted">Пароль тоже не сообщайте.</small>
+                    <small id="password" class="form-text text-muted">Пароль тоже не сообщайте.</small>
                 </div>
 
             </div>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="row justify-content-center">
-                <button type="submit" class="btn btn-primary">Войти</button>
+                <button id="Login" type="button" class="btn btn-primary">Войти</button>
             </div>
 
         </form>

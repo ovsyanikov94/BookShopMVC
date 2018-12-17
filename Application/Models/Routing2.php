@@ -12,6 +12,7 @@ return array(
     'post' => [
         '/book' => 'BookController@createBookAction',
         '/author' => 'AuthorController@addAuthorAction',
+        '/login' => 'AuthorizeController@LoginAction'
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',

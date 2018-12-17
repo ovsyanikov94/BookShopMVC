@@ -3,6 +3,8 @@
 
 namespace Application\Controllers;
 
+use Application\Services\AuthorizeService;
+
 
 class AuthorizeController extends BaseController {
 
@@ -25,5 +27,22 @@ class AuthorizeController extends BaseController {
         }//catch
 
     }//authorizeAction
+
+    public function LoginAction(){
+
+        $authorizeService = new AuthorizeService();
+
+        $login = $_POST['login'];
+        $password = $_POST['password'];
+
+        echo $login, $password;
+
+        $result = $authorizeService->LogIn($login, $password);
+
+        $this->json( array(
+            'authorID' => $result
+        ) );
+
+    }//LoginAction
 
 }//AuthorizeController
