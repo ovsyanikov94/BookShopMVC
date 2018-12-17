@@ -21,7 +21,7 @@ class UserServise
         $isUser->execute();
 
         $result = $isUser->fetchAll(\PDO::FETCH_OBJ);
-        if($result == null){
+        if($result == 0){
             $bcrypt = new Bcrypt();
             $bcrypt_version = '2y';
             $heshPassword = $bcrypt->encrypt($password,$bcrypt_version);
@@ -61,8 +61,10 @@ class UserServise
 
         $type = gettype($identifier);
         if($type == "string"){
+            echo $type;
+            $val = -1;
             $stm->bindParam(':userLogin', $identifier,\PDO::PARAM_STR);
-            $stm->bindParam(':userID', -1,\PDO::PARAM_STR);
+            $stm->bindParam(':userID',$val ,\PDO::PARAM_STR);
         }//if
         if($type == "integer"){
 

@@ -18,6 +18,13 @@ $( document ).ready( ()=>{
        });
        
     }  );
+
+    $('#moreUser').click(function () {
+
+
+
+    });
+
     $('#checkIn').click(function () {
         console.log('start button');
         let login = $('#login').val();

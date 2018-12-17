@@ -7,7 +7,7 @@ return array(
         '/' => 'HomeController@indexAction',
         '/authors' => 'AuthorController@authorListAction',
         '/author/(\d+)' => 'AuthorController@getAuthorAction',
-        '/users/(\d+){1,}/(\d+)'=>'UserController@getUsers',
+        '/users'=>'UserController@getUsers',
         '/user/([a-zА-Я0-9]{1,})'=>'UserController@getSingleUser',
         '/registration'=>'UserController@registration'
     ],

@@ -45,7 +45,7 @@ class UserController extends BaseController{
         ));
      }//addUser
 
-    public function getUsers ($limit, $offset){
+    public function getUsers ($limit=10, $offset=0){
         $userService = new UserServise();
 
         $users = $userService->getUsers($limit, $offset);
