@@ -48,3 +48,9 @@ Routing::$BooksListUrl = new Path(
     'BookController',
     'indexAction'
 );
+
+Routing::$BooksListUrl = new Path(
+    '/orders' ,
+    'OrderController',
+    'indexAction'
+);
