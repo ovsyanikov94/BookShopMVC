@@ -1,0 +1,25 @@
+{% extends 'base.twig' %}
+
+{% block content%}
+
+    <form method="POST" action="">
+        <div class="form-group">
+            <label for="formGroupExampleInput">ID Заказа</label>
+            <input name="orderID" type="number" class="form-control" id="formGroupExampleInput" placeholder="ID Заказа">
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput2">Книга</label>
+            <select name="bookID" class="form-control">
+                {% for b in books %}
+                    <option value="{{ b.bookID }}">{{ b.bookTitle }}</option>
+                {%endfor  %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary" >Добавить</button>
+        </div>
+
+    </form>
+
+{% endblock %}

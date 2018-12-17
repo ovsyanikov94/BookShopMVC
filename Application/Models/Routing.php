@@ -49,8 +49,8 @@ Routing::$BooksListUrl = new Path(
     'indexAction'
 );
 
-Routing::$BooksListUrl = new Path(
-    '/orders' ,
-    'OrderController',
+Routing::$OrderDetailsListUrl = new Path(
+    '/ordersdetails' ,
+    'OrderDetailsController',
     'indexAction'
 );

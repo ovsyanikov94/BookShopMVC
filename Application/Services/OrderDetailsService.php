@@ -23,27 +23,23 @@ class OrderDetailsService{
 
     }//GetOrdersDetails
 
-    public function AddOrdersDetails( $orderID , $bookID, $bookPrice, $bookAmount){
+    public function AddOrdersDetails( $orderID , $bookID){
 
-        $stm = MySQL::$db->prepare("INSERT INTO orderdetails VALUES( DEFAULT  , :orderID , :bookID, :bookPrice, :bookAmount)");
+        $stm = MySQL::$db->prepare("INSERT INTO orderdetails VALUES( DEFAULT  , :orderID , :bookID)");
         $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_STR);
         $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_STR);
-        $stm->bindParam(':bookPrice' , $bookPrice , \PDO::PARAM_STR);
-        $stm->bindParam(':bookAmount' , $bookAmount , \PDO::PARAM_STR);
         $stm->execute();
 
         return  MySQL::$db->lastInsertId();
 
     }//AddOrdersDetails
 
-    public function UpdateOrdersDetails( $id, $orderID , $bookID, $bookPrice, $bookAmount ){
+    public function UpdateOrdersDetails( $id, $orderID , $bookID ){
 
-        $stm = MySQL::$db->prepare("UPDATE orderdetails SET orderID = :orderID, bookID = :bookID, bookPrice = :bookPrice, bookAmount = :bookAmount WHERE id = :id");
+        $stm = MySQL::$db->prepare("UPDATE orderdetails SET orderID = :orderID, bookID = :bookID WHERE id = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_STR);
         $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_STR);
         $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_STR);
-        $stm->bindParam(':bookPrice' , $bookPrice , \PDO::PARAM_STR);
-        $stm->bindParam(':bookAmount' , $bookAmount , \PDO::PARAM_STR);
         $result = $stm->execute();
 
         return  $result;
