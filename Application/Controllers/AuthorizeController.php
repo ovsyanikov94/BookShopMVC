@@ -35,13 +35,14 @@ class AuthorizeController extends BaseController {
         $login = $_POST['login'];
         $password = $_POST['password'];
 
-        echo $login, $password;
-
         $result = $authorizeService->LogIn($login, $password);
 
-        $this->json( array(
-            'authorID' => $result
-        ) );
+        if($result){
+
+            $template = $this->twig->load('/');
+            echo $template->render();
+
+        }//if
 
     }//LoginAction
 
