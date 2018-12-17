@@ -1,0 +1,46 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+    <div class="form-group">
+        <a href="/BookShopMVC/public/new-book/" class="btn btn-primary" >Добавить книгу</a>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Назввание</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Кол-во страниц</th>
+            <th scope="col">Цена</th>
+            <th scope="col">Кол-во</th>
+            <th scope="col">Удалить</th>
+            <th scope="col">Обновить</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for book in books %}
+            <tr>
+                <td>{{ book.bookID }}</td>
+                <td>{{ book.bookTitle }}</td>
+                <td>{{ book.bookISBN }}</td>
+                <td>{{ book.bookPages }}</td>
+                <td>{{ book.bookPrice }}</td>
+                <td>{{ book.bookAmount }}</td>
+                <td>
+                    <button class="btn btn-danger" >Удалить</button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" >Обновить</button>
+                </td>
+            </tr>
+        {%endfor  %}
+
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

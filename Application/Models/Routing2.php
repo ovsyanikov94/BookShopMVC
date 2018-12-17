@@ -7,9 +7,11 @@ return array(
         '/' => 'HomeController@indexAction',
         '/authors' => 'AuthorController@authorListAction',
         '/author/(\d+)' => 'AuthorController@getAuthorAction',
+        '/books' => 'BookController@bookListAction',
+        '/new-book' => 'BookController@newBookAction'
     ],
     'post' => [
-        '/book' => 'BookController@createBookAction',
+        '/add-book' => 'BookController@addBookAction',
         '/author' => 'AuthorController@addAuthorAction',
     ],
     'delete' => [
