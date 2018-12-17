@@ -21,6 +21,37 @@ $( document ).ready( ()=>{
 
 } );
 
+function removeAuthors(){
+    let removeButtons = document.querySelectorAll('.btn-danger');
+
+    [].forEach.call( removeButtons , ( button )=>{
+
+        button.addEventListener('click' , async function (){
+
+            let authorId = +button.dataset.authorId;
+            console.log("authorId", authorId);
+            let request = new XMLHttpRequest();
+            request.open('DELETE', `/BookShopMVC/public/author/${authorId}`);
+            request.send();
+
+            request.onreadystatechange = function () {
+
+                console.log("request", request);
+
+                if (request.status === 200 && request.readyState === XMLHttpRequest.DONE) {
+
+                    let authorTable = document.querySelector('#authorTable');
+                    let row = document.querySelector(`#authorTable tr[data-author-id='${authorId}']`);
+
+                    authorTable.removeChild( row );
+
+                }//if
+            };//onreadystatechange
+
+        });
+
+    } );
+}
 
 (function () {
 
@@ -51,13 +82,10 @@ $( document ).ready( ()=>{
 
                 if (request.status === 200 && request.readyState === XMLHttpRequest.DONE) {
 
-                    console.log('request', request.response);
-
                     let id = JSON.parse(request.response);
-                    console.log('id', id);
 
                     authorTable.innerHTML += `
-                <tr >
+                <tr data-author-id="${+id.authorID}">
                     <td>${id.authorID}</td>
                     <td>${nameAuthor}</td>
                     <td>${lastNameAuthor}</td>
@@ -69,6 +97,8 @@ $( document ).ready( ()=>{
                 </td>
                 </tr>
                 `;
+
+                    removeAuthors();
 
                 }//if
             };//onreadystatechange
@@ -89,7 +119,6 @@ $( document ).ready( ()=>{
             let request = new XMLHttpRequest();
             request.open('DELETE', `/BookShopMVC/public/author/${authorId}`);
             request.send();
-
 
             request.onreadystatechange = function () {
 
