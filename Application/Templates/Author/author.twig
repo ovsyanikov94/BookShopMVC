@@ -4,20 +4,20 @@
 
     <form>
         <div class="form-group">
-            <label for="formGroupExampleInput">Имя</label>
-            <input value="{{ author.authorFirstName }}" type="text" class="form-control" id="formGroupExampleInput" placeholder="Имя">
+            <label for="nameAuthor">Имя</label>
+            <input value="{{ author.authorFirstName }}" type="text" class="form-control" id="nameAuthor" placeholder="Имя">
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput2">Фамилия</label>
-            <input  value="{{ author.authorLastName }}" type="text" class="form-control" id="formGroupExampleInput2" placeholder="Фамилия">
-        </div>
-
-        <div class="form-group">
-            <div class="btn btn-primary">Обновить</div>
+            <label for="lastNameAuthor">Фамилия</label>
+            <input  value="{{ author.authorLastName }}" type="text" class="form-control" id="lastNameAuthor" placeholder="Фамилия">
         </div>
 
         <div class="form-group">
-            <div id="removeAuthor" data-author-id="{{  author.authorID }}" class="btn btn-danger">Удалить</div>
+            <div class="btn btn-primary" id="updateAuthor" data-author-id="{{ author.authorID }}">Обновить</div>
+        </div>
+
+        <div class="form-group">
+            <div id="removeAuthor" data-author-id="{{ author.authorID }}" class="btn btn-danger">Удалить</div>
         </div>
 
     </form>

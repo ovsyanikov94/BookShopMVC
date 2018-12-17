@@ -50,14 +50,14 @@ class AuthorController extends BaseController{
         $result = $authorService->AddAuthor($authorFirstname , $authorLastname);
 
         $this->json( array(
-            'authorID' => $result,
-            '{$_SERVER[\'HTTP_USER_AGENT\']}' => $_SERVER['HTTP_USER_AGENT'],
-            '{$_SERVER[\'REMOTE_HOST\']}' => $_SERVER['REMOTE_HOST'],
+            'authorID' => $result
         ) );
 
     }//authorListAction
 
     public function deleteAuthorAction( $id ){
+
+        echo "<h1>  $id</h1>";
 
         $authorService = new AuthorService();
 
@@ -67,6 +67,21 @@ class AuthorController extends BaseController{
             'authorID' => $result
         ) );
 
-    }//deleteA
+    }//deleteAuthorAction
 
+
+    public function updateAuthorAction( $id  ){
+
+        $authorFirstname = $this->request->GetPostValue('authorFirstname');
+        $authorLastname = $this->request->GetPostValue('authorLastname');
+
+        $authorService = new AuthorService();
+
+        $result = $authorService->UpdateAuthorByID($id, $authorFirstname , $authorLastname);
+
+        $this->json( array(
+            'result' => $result
+        ) );
+
+    }//authorListAction
 }//AuthorController

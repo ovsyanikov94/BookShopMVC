@@ -1,6 +1,19 @@
 {% extends 'base.twig' %}
 
 {% block content %}
+    <div class="row">
+        <div class="form-group col-4">
+            <label for="nameAuthor">Имя</label>
+            <input  type="text" class="form-control" id="nameAuthor" placeholder="Имя">
+        </div>
+        <div class="form-group col-4">
+            <label for="formGroupExampleInput2">Фамилия</label>
+            <input  type="text" class="form-control" id="lastNameAuthor" placeholder="Фамилия">
+        </div>
+        <div class="form-group col-4">
+            <div id="addAuthor" class="btn btn-primary" style="margin-top: 30px">Добавить автора</div>
+        </div>
+    </div>
     <table class="table">
         <thead>
         <tr>
@@ -11,15 +24,15 @@
             <th scope="col">Обновить</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="authorTable">
 
         {% for author in authors %}
-            <tr>
+            <tr data-author-id = "{{  author.authorID }}">
                 <td>{{ author.authorID }}</td>
                 <td>{{ author.authorFirstName }}</td>
                 <td>{{ author.authorLastName }}</td>
                 <td>
-                    <button class="btn btn-danger" >Удалить</button>
+                    <button id="removeAuthor1" data-author-id="{{  author.authorID }}" class="btn btn-danger" >Удалить</button>
                 </td>
                 <td>
                     <a href="/BookShopMVC/public/author/{{ author.authorID }}" class="btn btn-primary" >Обновить</a>
