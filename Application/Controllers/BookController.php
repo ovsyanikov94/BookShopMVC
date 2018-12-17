@@ -66,4 +66,28 @@ class BookController extends BaseController{
 
     }//addBookAction
 
+    public function infoBookAction($id){
+
+        $bookService = new BookService();
+        $bookForInfo = $bookService->GetBookById($id);
+
+        $template = $this->twig->load( 'Book/info-book.twig');
+
+        echo $template->render(array(
+            'book' => $bookForInfo
+        ));
+
+    } // infoBookAction
+
+    public function deleteBookAction($id){
+
+        $bookService = new BookService();
+        $result = $bookService->DeleteBookById($id);
+
+        $this->json(array(
+            'book' => $result
+        ));
+
+    } // deleteBookAction
+
 }//AuthorController

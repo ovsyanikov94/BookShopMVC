@@ -8,7 +8,8 @@ return array(
         '/authors' => 'AuthorController@authorListAction',
         '/author/(\d+)' => 'AuthorController@getAuthorAction',
         '/books' => 'BookController@bookListAction',
-        '/new-book' => 'BookController@newBookAction'
+        '/new-book' => 'BookController@newBookAction',
+        '/info-book/(\d+)' => 'BookController@infoBookAction'
     ],
     'post' => [
         '/add-book' => 'BookController@addBookAction',
@@ -16,6 +17,7 @@ return array(
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
+        '/delete-book/(\d+)' => "BookController@deleteBookAction"
     ]
 );
 

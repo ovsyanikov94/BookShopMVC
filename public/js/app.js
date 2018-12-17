@@ -15,6 +15,20 @@ $( document ).ready( ()=>{
            }
        });
        
-    }  );
+    }); // RemoveAuthor
+
+    $('.removeBook').click(function () {
+
+        let bookID = $(this).data('book-id');
+
+        $.ajax({
+            'url': `/BookShopMVC/public/delete-book/${bookID}`,
+            'type': 'DELETE',
+            'success': ( a , b) => {
+                location.reload();
+            }
+        }); // Ajax
+
+    });
 
 } );

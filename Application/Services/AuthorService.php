@@ -54,7 +54,6 @@ class AuthorService{
 
         return $result;
 
-
     }//DeleteAuthorByID
 
 }//AuthorService
