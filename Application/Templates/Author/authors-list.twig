@@ -1,0 +1,35 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Удалить</th>
+            <th scope="col">Обновить</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for author in authors %}
+            <tr>
+                <td>{{ author.authorID }}</td>
+                <td>{{ author.authorFirstName }}</td>
+                <td>{{ author.authorLastName }}</td>
+                <td>
+                    <button class="btn btn-danger" >Удалить</button>
+                </td>
+                <td>
+                    <a href="/BookShopMVC/public/author/{{ author.authorID }}" class="btn btn-primary" >Обновить</a>
+                </td>
+            </tr>
+        {%endfor  %}
+
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

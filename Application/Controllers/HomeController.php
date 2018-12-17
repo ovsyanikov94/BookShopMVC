@@ -7,35 +7,36 @@
  */
 
 namespace Application\Controllers;
-use Pug\Pug;
+//use Pug\Pug;
 
 class HomeController extends BaseController{
 
-    public function indexAction ( $word , $dec){
-
-        echo "word : $word<br>";
-        echo "dec  : $dec<br>";
-
-        $this->storage->langs = array(
-            'RU',
-            'EN',
-            'DE'
-        );
+    public function indexAction ( ){
 
         try {
 
-            $pug = new Pug();
-            $output = $pug->render(
-                '../Application/Views/Home/index.pug',
-                $this->storage->getRawStorage()
-            );
+            $template = $this->twig->load('Home/index.twig');
+            echo $template->render( );
 
-            echo $output;
+//
+//            $pug = new Pug();
+//            $output = $pug->renderFile('../Application/Views/Home/index.pug');
+
+//            $output = $pug->render(
+//                '../Application/Views/Home/index.pug',
+//                $this->storage->getRawStorage()
+//            );
+//
+//           echo $output;
 
         }//try
         catch (\Exception $ex) {
 
-            include '../Views/Errors/InternalError.php';
+            echo "<pre>";
+                print_r($ex);
+            echo "<pre>";
+
+            include '../Application/Views/Errors/InternalError.php';
 
         }//catch
 

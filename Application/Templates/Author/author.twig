@@ -1,0 +1,25 @@
+{% extends 'base.twig' %}
+
+{% block content%}
+
+    <form>
+        <div class="form-group">
+            <label for="formGroupExampleInput">Имя</label>
+            <input value="{{ author.authorFirstName }}" type="text" class="form-control" id="formGroupExampleInput" placeholder="Имя">
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput2">Фамилия</label>
+            <input  value="{{ author.authorLastName }}" type="text" class="form-control" id="formGroupExampleInput2" placeholder="Фамилия">
+        </div>
+
+        <div class="form-group">
+            <div class="btn btn-primary">Обновить</div>
+        </div>
+
+        <div class="form-group">
+            <div id="removeAuthor" data-author-id="{{  author.authorID }}" class="btn btn-danger">Удалить</div>
+        </div>
+
+    </form>
+
+{% endblock %}
