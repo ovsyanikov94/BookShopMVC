@@ -11,9 +11,13 @@ return array(
     'post' => [
         '/book' => 'BookController@createBookAction',
         '/author' => 'AuthorController@addAuthorAction',
+
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
+    ],
+    'put' => [
+        '/author/(\d+)' => 'AuthorController@updateAuthorAction',
     ]
 );
 
