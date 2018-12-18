@@ -24,13 +24,15 @@ class GenresService
     }//GetGenres
 
     public function GetGenreBooksAmount($id){
-        $count = MySQL::$db->query("SELECT COUNT(bookID) FROM booksgenres WHERE genreID = $id ")->fetchColumn();
-settype($count, 'integer');
-        //$stm = MySQL::$db->prepare("SELECT COUNT (*) FROM booksgenres WHERE genreID=:id");
-        //$stm->bindParam(':id' , $id , \PDO::PARAM_INT);
-        //$stm->execute();
 
-        return $count;
+        $stm = MySQL::$db->prepare("SELECT COUNT(*) as amount FROM booksgenres WHERE genreID=:id");
+        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
+        $stm->execute();
+
+        $resultObject = $stm->fetch(\PDO::FETCH_OBJ);
+
+        return  $resultObject->amount;
+
     }//GetGenreBooksAmount
 
     public function GetGenreByID( $id ){

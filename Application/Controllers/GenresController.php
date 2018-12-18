@@ -25,11 +25,11 @@ class GenresController extends BaseController
 
         $genreWithAmount = [];
 
-        for($i=0;$i<count($genres);$i++){
+        for($i=0;$i < count($genres); $i++ ){
 
             $genreWithAmount[$i] = [
-                'genres' =>$genres[$i],
-                'amount' =>$this->getGenreBooksAmountAction($genres[$i]->genreID)
+                'genres' => $genres[$i],
+                'amount' => $genresService->GetGenreBooksAmount($genres[$i]->genreID)
             ];
 
         }//for
@@ -38,15 +38,6 @@ class GenresController extends BaseController
             'genres' =>  $genreWithAmount
         ) );
     }//getGenresAction
-
-    private function getGenreBooksAmountAction($id){
-
-        $genresService = new GenresService();
-
-        $amount = $genresService->GetGenreBooksAmount($id);
-
-        return $amount;
-    }//getGenreBooksAmountAction
 
     public function getGenreAction( $id ){
 
@@ -102,10 +93,9 @@ echo "RESULT $result";
 
         $result = $genresService->AddGenre( $name);
 
-        $this->json( array(
-            'authorID' => $result,
-            '{$_SERVER[\'HTTP_USER_AGENT\']}' => $_SERVER['HTTP_USER_AGENT'],
-            '{$_SERVER[\'REMOTE_HOST\']}' => $_SERVER['REMOTE_HOST'],
+        $this->json( 200, array(
+            'code' => 200,
+            'genreID' => $result
         ) );
 
     }//addGenreAction
