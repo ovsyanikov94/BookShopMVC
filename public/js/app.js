@@ -87,7 +87,7 @@ $( document ).ready( ()=>{
         });
     });
 
-    $(".btn-danger").click( function (){
+    $(".remove-genre").click( function (){
 
         let genreID = $( this ).data('genre-id');
 
