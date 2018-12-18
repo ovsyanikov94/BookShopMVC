@@ -1,6 +1,7 @@
 {% extends 'base.twig' %}
 
 {% block content %}
+    <script defer src="js/authors.js" ></script>
     <div class="row">
         <div class="form-group col-4">
             <label for="nameAuthor">Имя</label>
@@ -32,7 +33,7 @@
                 <td>{{ author.authorFirstName }}</td>
                 <td>{{ author.authorLastName }}</td>
                 <td>
-                    <button id="removeAuthor1" data-author-id="{{  author.authorID }}" class="btn btn-danger" >Удалить</button>
+                    <button data-author-id="{{  author.authorID }}" class="btn btn-danger" >Удалить</button>
                 </td>
                 <td>
                     <a href="/BookShopMVC/public/author/{{ author.authorID }}" class="btn btn-primary" >Обновить</a>
@@ -42,7 +43,5 @@
 
         </tbody>
     </table>
-
-
 
 {% endblock %}
