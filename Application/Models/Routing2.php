@@ -22,6 +22,9 @@ return array(
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
         '/genre/(\d+)' => 'GenresController@deleteGenreAction',
     ],
+    'put' => [
+        '/author/(\d+)' => 'AuthorController@updateAuthorAction',
+    ]
 
 );
 
