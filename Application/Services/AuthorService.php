@@ -48,7 +48,6 @@ class AuthorService{
 
     public function DeleteAuthorByID( $id ){
 
-        echo "<h1>  $id</h1>";
         $stm = MySQL::$db->prepare("DELETE FROM authors WHERE authorID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $result = $stm->execute();

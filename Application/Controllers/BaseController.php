@@ -54,9 +54,10 @@ abstract class BaseController{
 
     }
 
-    protected function json( $data ){
+    protected function json( $code , $data ){
 
-        header('Content-type' , 'application/json');
+        http_response_code($code);
+        header('Content-type: application/json');
         echo json_encode($data); //  res.send();
         exit();
 

@@ -10,12 +10,14 @@ return array(
     ],
     'post' => [
         '/book' => 'BookController@createBookAction',
-        '/author/(\d+)' => 'AuthorController@updateAuthorAction',
         '/author' => 'AuthorController@addAuthorAction',
 
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
+    ],
+    'put' => [
+        '/author/(\d+)' => 'AuthorController@updateAuthorAction',
     ]
 );
 
