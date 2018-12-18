@@ -29,15 +29,38 @@ $(document).ready( function (  ){
 
     $('#AddGenreButton').click( function (  ){
 
-        $.ajax({
-            'url': `/BookShopMVC/public/add_genre`,
-            'type': 'POST',
-            'data': {
+        // $.ajax({
+        //     'url': `/BookShopMVC/public/add_genre`,
+        //     'type': 'POST',
+        //     'data': {
+        //         'name': $('#AddGenreInput').val(),
+        //     },
+        //     'success': ( response )=>{
+        //
+        //         debugger;
+        //
+        //         if( +response.code === 200 ){
+        //
+        //             $('#errorMessage').fadeOut(1000);
+        //             $('#successMessage').fadeIn(1000);
+        //
+        //         }//if
+        //         else{
+        //             $('#successMessage').fadeOut(1000);
+        //             $('#errorMessage').fadeIn(1000);
+        //         }//else
+        //
+        //     }
+        // });
+
+        $.post(
+            `/BookShopMVC/public/add_genre`,
+            {
                 'name': $('#AddGenreInput').val(),
             },
-            'success': ( response )=>{
+            function ( response ){
 
-                debugger;
+                console.log('response:' , response);
 
                 if( +response.code === 200 ){
 
@@ -50,8 +73,8 @@ $(document).ready( function (  ){
                     $('#errorMessage').fadeIn(1000);
                 }//else
 
-            }
-        });
+            }//fn
+        );//postco
 
     }  );
 
