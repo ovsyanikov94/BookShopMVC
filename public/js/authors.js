@@ -7,17 +7,25 @@
         let nameAuthor = $('#nameAuthor').val();
         let lastNameAuthor = $('#lastNameAuthor').val();
 
+        if(!nameAuthor.match( /^[а-яa-z]{2,50}$/i) || !lastNameAuthor.match( /^[а-яa-z]{2,50}$/i ) ){
+            return;
+        }
+
         $.post(
             `${window.paths.AjaxServerUrl}${window.paths.AddAuthor}`,
             {
                 'authorLastname': lastNameAuthor,
                 'authorFirstname': nameAuthor
             },
-            function ( response ){
-            
-                console.log('response:' , response);
 
-                $('#authorTable').append(`
+        )
+            .fail(function (data) {
+
+                if( +data.status === 200 ){
+
+                    let response = JSON.parse(data.responseText.replace('Index', ''));
+
+                    $('#authorTable').append(`
                     <tr data-author-id = "${response.authorID}">
                         <td>${response.authorID}</td>
                         <td>${nameAuthor}</td>
@@ -29,11 +37,10 @@
                             <a href="${window.paths.AjaxServerUrl}author/${response.authorID}" class="btn btn-primary" >Обновить</a>
                         </td>
                     </tr>`
-                );
+                    );
+                }//if
 
-            }//fn
-        );
-
+            });//fail
 
     }  );
 
@@ -46,25 +53,26 @@
 
         let self = $(this);
 
-        $.ajax({
+        let deleteA = $.ajax({
             'url': deleteURL,
             'type': 'DELETE',
-            'success': ( data )=>{
 
-                if( +data.code === 200 ){
+        })
+            .fail(function (data) {
+                console.log("data", data);
 
-                    if( self.attr('id') === 'removeAuthor' ){
-                        location.href = `${window.paths.AjaxServerUrl}authors`;
-                    }//if
-                    else{
-                        $(`tr[data-author-id=${authorID}]`).remove();
-                    }//else
+                if( +data.status === 200 ){
 
-                }//if
+                            if( self.attr('id') === 'removeAuthor' ){
+                                location.href = `${window.paths.AjaxServerUrl}authors`;
+                            }//if
+                            else{
+                                $(`tr[data-author-id=${authorID}]`).remove();
+                            }//else
 
-            }//success
-        });
+                        }//if
 
+            });//fail
     }  );
 
     //UPDATE_AUTHOR
@@ -85,7 +93,7 @@
                 'authorFirstname': nameAuthor,
                 'authorLastname': lastNameAuthor,
             },
-            success: ( response )=>{
+            done: ( response )=>{
                 console.log( response );
             }
         });
