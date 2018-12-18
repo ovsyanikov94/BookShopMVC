@@ -71,7 +71,7 @@ class AuthorController extends BaseController{
 
     public function updateAuthorAction( $id  ){
 
-        $this->json( 200 , $params);
+        //$this->json( 200 , $params);
 
         $authorFirstname = $this->request->GetPostValue('authorFirstname');
         $authorLastname = $this->request->GetPostValue('authorLastname');
@@ -85,4 +85,5 @@ class AuthorController extends BaseController{
         ) );
 
     }//authorListAction
+
 }//AuthorController
