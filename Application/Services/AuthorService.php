@@ -57,4 +57,21 @@ class AuthorService{
 
     }//DeleteAuthorByID
 
+
+    public function UpdateAuthorByID( $id, $firstName , $lastName ){
+
+        echo "<h1>  $id</h1>";
+        $stm = MySQL::$db->prepare("UPDATE authors 
+                                    SET authorFirstName= :authorFirstName, authorLastName=:authorLastName 
+                                    WHERE authorID=:id");
+        $stm->bindParam(':authorFirstName' , $firstName , \PDO::PARAM_STR);
+        $stm->bindParam(':authorLastName' , $lastName , \PDO::PARAM_STR);
+        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
+        $result = $stm->execute();
+
+        return $result;
+
+
+    }//UpdateAuthorByID
+
 }//AuthorService
