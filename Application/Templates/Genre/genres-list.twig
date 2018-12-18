@@ -4,11 +4,50 @@
 
     <script defer src="js/genres.js" ></script>
 
-    <div>
-        <a href="/BookShopMVC/public/add_genre" class="btn btn-primary" >Добавить</a>
+    <form>
+        <div class="form-group">
+            <label for="formGroupExampleInput">Название жанра</label>
+            <input type="text" class="form-control" id="AddGenreInput" placeholder="Наименование жанра">
+        </div>
+
+
+        <div class="form-group">
+            <div id="AddGenreButton" data-genre-id="{{  genre.genreID }}" class="btn btn-primary">Добавить</div>
+        </div>
+
+        <div class="form-group">
+            <div id="errorMessage" style=" display: none;" class="message alert alert-danger">Ошибка при добавлении !</div>
+        </div>
+
+        <div class="form-group">
+            <div id="successMessage"  style=" display: none;" class="message alert alert-success">Жанр успешно добавлен!</div>
+        </div>
+
+    </form>
+    <!-- Модальное окно -->
+    <!-- Modal -->
+    <button id="btnTest" class="btn btn-default">Show Modal</button>
+
+    <div id="myModal" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times;</button>
+                    <h4 class="modal-title">Error</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Quick Brown Fox Jumps Over The Lazy Dog</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <label id="ResultDeleteGenreLabel"></label>
-    <table class="table">
+    <table class="table" id="GenresTable">
         <thead>
         <tr>
             <th scope="col">#</th>
@@ -21,22 +60,25 @@
         <tbody>
 
         {% for genre in genres %}
-            <tr>
+            <tr data-genre-id = "{{  genre.genres.genreID }}">
                 <td>{{ genre.genres.genreID }}</td>
                 <td>{{ genre.genres.genreTitle }}</td>
 
                 <td> {{ genre.amount }}</td>
                 <td>
-                    <button  data-genre-id="{{  genre.genres.genreID }}" class="btn btn-danger remove-genre" >Удалить</button>
+                    <button  data-genre-id="{{  genre.genres.genreID }}" class="btn btn-danger" >Удалить</button>
                 </td>
                 <td>
                     <a href="/BookShopMVC/public/genre/{{ genre.genres.genreID  }}" class="btn btn-primary" >Обновить</a>
                 </td>
             </tr>
+
+
         {%endfor  %}
 
         </tbody>
     </table>
+
 
 
 
