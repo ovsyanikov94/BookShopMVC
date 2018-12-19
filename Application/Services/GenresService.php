@@ -60,12 +60,11 @@ class GenresService
     }
 
     public function DeleteGenreByID( $id ){
-echo $id;
         $stm = MySQL::$db->prepare("DELETE FROM genres WHERE genreID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $result = $stm->execute();
 
-        return $result->rowCount();;
+        return $result;
 
 
     }//DeleteAuthorByID
