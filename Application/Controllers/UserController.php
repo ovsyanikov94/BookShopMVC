@@ -8,9 +8,12 @@
 
 namespace Application\Controllers;
 
-use Application\Services\UserServise;
+use Application\Services\UserService;
+use Application\Controllers\patternConst;
 
 class UserController extends BaseController{
+
+
 
     public function registration(){
         try{
@@ -31,22 +34,42 @@ class UserController extends BaseController{
 
     public function addUser( ){
 
-        $userLogin = $this->request->GetPostValue('userLogin');
-        echo $userLogin;
-        $userEmail= $this->request->GetPostValue('userEmail');
-        $usrPassword = $this->request->GetPostValue('userPassword');
+        $pattern = new patternConst();
 
-        $userService = new UserServise();
+        $userLogin = $this->request->GetPostValue('userLogin');
+
+        if(!preg_match($pattern->LoginPattern,$userLogin)){
+            $this->json(400,array(
+                'res'=> 'неверный логин'
+            ));
+            return;
+        }//if
+        $userEmail= $this->request->GetPostValue('userEmail');
+        if(!preg_match($pattern->EmailPattern,$userEmail)){
+            $this->json(400,array(
+                'res'=> 'неверный Email'
+            ));
+            return;
+        }//if
+        $usrPassword = $this->request->GetPostValue('userPassword');
+        if(!preg_match($pattern->PasswordPattern,$usrPassword)){
+            $this->json(400,array(
+                'res'=> 'неверный пароль'
+            ));
+            return;
+        }//if
+
+        $userService = new UserService();
 
         $result = $userService->addUser($userLogin,$usrPassword,$userEmail);
 
-        $this->json(array(
+        $this->json(200,array(
             'addUser'=> $result
         ));
      }//addUser
 
     public function getUsers ($limit=10, $offset=0){
-        $userService = new UserServise();
+        $userService = new UserService();
 
         $users = $userService->getUsers($limit, $offset);
 
@@ -58,7 +81,7 @@ class UserController extends BaseController{
     }//getUsers
 
     public function getSingleUser($identifier){
-        $userService = new UserServise();
+        $userService = new UserService();
         $user = $userService->getSingleUser($identifier);
 
         $template = $this->twig->load('User/singleUser.twig');
@@ -68,4 +91,4 @@ class UserController extends BaseController{
         ) );
 
     }
-}//UserServise
+}//UserController

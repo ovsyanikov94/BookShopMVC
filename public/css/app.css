@@ -2,6 +2,9 @@ body {
     font-size: .875rem;
 }
 
+.block{
+    display:block;
+}
 .none{                    /* this will hide all divs on the page */
     display:none;
 }

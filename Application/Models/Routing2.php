@@ -20,6 +20,7 @@ return array(
         '/author' => 'AuthorController@addAuthorAction',
         '/genre' => 'GenresController@updateGenreAction',
         '/add_genre' => 'GenresController@addPostGenreAction',
+        '/addUser'=>'UserController@addUser'
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
