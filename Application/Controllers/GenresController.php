@@ -70,21 +70,15 @@ class GenresController extends BaseController
 
         $genreService = new GenresService();
 
-        $result = $genreService->DeleteGenreByID( $id );
-echo "RESULT $result";
-        if($result >0){
-            $this->getGenresAction();
-        }//if
+        $genreService->DeleteGenreByID( $id );
 
-
+        $this->json( 200 , array(
+            'code' => 200,
+            'authorID' => $id
+        ) );
     }//deleteA
-    public function addGetGenreAction(){
 
-        $template = $this->twig->load('Genre/genre-add.twig');
-        echo $template->render();
-    }//addGenreAction
-
-    public function addPostGenreAction(){
+    public function addGenreAction(){
 
         $name = $this->request->GetPostValue('name');
 
@@ -93,10 +87,20 @@ echo "RESULT $result";
 
         $result = $genresService->AddGenre( $name);
 
+        //$myVar =array(
+            //'status' => 200,
+            //'genreID' => $result,
+           // 'amount' => $genresService->GetGenreBooksAmount($result)
+        //);
         $this->json( 200, array(
-            'code' => 200,
-            'genreID' => $result
+            'status' => '200',
+            'genreID' => $result,
+            'amount' => $genresService->GetGenreBooksAmount($result)
         ) );
+
+       // echo json_encode( $myVar );
+
+
 
     }//addGenreAction
 }//GenresController
