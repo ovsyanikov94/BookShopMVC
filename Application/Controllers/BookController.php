@@ -51,16 +51,80 @@ class BookController extends BaseController{
     public function addBookAction( ){
 
         $bookTitle = $this->request->GetPostValue('bookTitle');
+
+        if(! filter_var($bookTitle , FILTER_VALIDATE_REGEXP , array(
+                "options" => array("regexp"=>"/^[а-яА-Я\w]{3,50}$/."))
+        )){
+
+            $this->json( 400 , array(
+                'err' => $bookTitle
+            ) );
+
+            return;
+
+        }//if
+
         $bookISBN = $this->request->GetPostValue('bookISBN');
+
+        if(! filter_var($bookISBN , FILTER_VALIDATE_REGEXP , array(
+                "options" => array("regexp"=>"/^\d{9}[\d|X]$/"))
+        )){
+
+            $this->json( 400 , array(
+                'err' => $bookISBN
+            ) );
+
+            return;
+
+        }//if
+
         $bookPages = $this->request->GetPostValue('bookPages');
+
+        if(! filter_var($bookPages , FILTER_VALIDATE_REGEXP , array(
+            "options" => array("regexp"=>"/\d{1,10}$/"))
+        )){
+
+            $this->json( 400 , array(
+                'err' => $bookPages
+            ) );
+
+            return;
+
+        }//if
+
         $bookPrice = $this->request->GetPostValue('bookPrice');
+
+        if(! filter_var($bookPrice , FILTER_VALIDATE_REGEXP , array(
+                "options" => array("regexp"=>"/^\d{1,7}/"))
+        )){
+
+            $this->json( 400 , array(
+                'err' => $bookPrice
+            ) );
+
+            return;
+
+        }//if
+
         $bookAmount = $this->request->GetPostValue('bookAmount');
+
+        if(! filter_var($bookAmount , FILTER_VALIDATE_REGEXP , array(
+                "options" => array("regexp"=>"/^\d{1,5}/"))
+        )){
+
+            $this->json( 400 , array(
+                'err' => $bookAmount
+            ) );
+
+            return;
+
+        }//if
 
         $bookService = new BookService();
 
         $result = $bookService->AddBook($bookTitle , $bookISBN , $bookPages , $bookPrice , $bookAmount);
 
-        $this->json( array(
+        $this->json( 200 , array(
             'book' => $result
         ) );
 
@@ -84,7 +148,7 @@ class BookController extends BaseController{
         $bookService = new BookService();
         $result = $bookService->DeleteBookById($id);
 
-        $this->json(array(
+        $this->json( 200 ,  array(
             'book' => $result
         ));
 

@@ -15,7 +15,7 @@ return array(
         '/info-book/(\d+)' => 'BookController@infoBookAction'
     ],
     'post' => [
-        '/add-book' => 'BookController@addBookAction',
+        '/new-book' => 'BookController@addBookAction',
         '/author' => 'AuthorController@addAuthorAction',
         '/add_genre' => 'GenresController@addGenreAction',
     ],

@@ -2,6 +2,8 @@
 
 {% block content%}
 
+    <script defer src="/BookShopMVC/public/js/book.js" ></script>
+
     <form method="POST">
         <div class="form-group">
             <label for="formGroupExampleInput">Название книги </label>
@@ -9,7 +11,7 @@
         </div>
         <div class="form-group">
             <label for="formGroupExampleInput2">ISBN</label>
-            <input name="bookISDN" type="text" class="form-control" id="formGroupExampleInput2" placeholder="ISBN">
+            <input name="bookISBN" type="text" class="form-control" id="formGroupExampleInput2" placeholder="ISBN">
         </div>
         <div class="form-group">
             <label for="formGroupExampleInput2">Кол-во страницы</label>
@@ -25,7 +27,19 @@
         </div>
 
         <div class="form-group">
+            <div id="errorInput" style=" display: none;" class="message alert alert-danger">Ошибка в данных!</div>
+        </div>
+
+        <div class="form-group">
             <button onclick="" class="btn btn-primary" >Добавить</button>
+        </div>
+
+        <div class="form-group">
+            <div id="errorMessage" style=" display: none;" class="message alert alert-danger">Ошибка при добавлении !</div>
+        </div>
+
+        <div class="form-group">
+            <div id="successMessage"  style=" display: none;" class="message alert alert-success">Книга успешно добавлена!</div>
         </div>
 
     </form>
