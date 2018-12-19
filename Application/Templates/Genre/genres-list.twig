@@ -4,15 +4,67 @@
 
     <script defer src="js/genres.js" ></script>
 
-    <form>
+    <style>
+        #wind {
+            width: 400px;
+            height: 300px;
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #999999;
+            color: #333333;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            background: #ffffff;
+        }
+
+        .close {
+            width: 70%;
+            display: inline-block;
+            border: 1px solid #0000cc;
+            color: #0000cc;
+            padding: 0 12px;
+            margin-right: 15%;
+            margin-left: 15%;
+            margin-top: 5%;
+            text-decoration: none;
+            background: #f2f2f2;
+            font-size: 14pt;
+            cursor:pointer;
+            padding:15px;
+        }
+        .close:hover {background: #e6e6ff;}
+
+        #fon {
+            background: rgba(102, 102, 102, 0.5);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+
+    </style>
+
+
+
+    <form >
         <div class="form-group">
             <label for="formGroupExampleInput">Название жанра</label>
             <input type="text" class="form-control" id="AddGenreInput" placeholder="Наименование жанра">
+            <div class="form-group">
+                <div id="errorInput" style=" display: none;" class="message alert alert-danger">Название жанра некорректно!</div>
+            </div>
         </div>
 
 
         <div class="form-group">
-            <div id="AddGenreButton" data-genre-id="{{  genre.genreID }}" class="btn btn-primary">Добавить</div>
+            <div id="AddGenreButton"  data-genre-id="{{  genre.genreID }}" class="btn btn-primary">Добавить</div>
         </div>
 
         <div class="form-group">
@@ -26,28 +78,26 @@
     </form>
     <!-- Модальное окно -->
     <!-- Modal -->
-    <button id="btnTest" class="btn btn-default">Show Modal</button>
+    <div id="fon">
+    <div id="wind">
 
-    <div id="myModal" role="dialog" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" data-dismiss="modal" class="close">&times;</button>
-                    <h4 class="modal-title">Error</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Quick Brown Fox Jumps Over The Lazy Dog</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-                </div>
+        <div class="form">
+            <h6>Вы действительно хотите удалить жанр</h6>
+            <h4 id="genreIDLabel"></h4>
+            <h4 id="genreName"></h4>
+            <div class="form-group">
+                <a href="#" id="okDeleteGenre" class="close">OK</a>
+                <a href="#"  id="noDeleteGenre" class="close">Отмена</a>
             </div>
         </div>
+
     </div>
+    </div>
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <label id="ResultDeleteGenreLabel"></label>
-    <table class="table" id="GenresTable">
+    <table class="table" id="GenresTable" >
         <thead>
         <tr>
             <th scope="col">#</th>
@@ -66,7 +116,7 @@
 
                 <td> {{ genre.amount }}</td>
                 <td>
-                    <button  data-genre-id="{{  genre.genres.genreID }}" class="btn btn-danger" >Удалить</button>
+                    <button   data-genre-id="{{  genre.genres.genreID }}" data-genre-name="{{  genre.genres.genreTitle }}" class="btn btn-danger" >Удалить</button>
                 </td>
                 <td>
                     <a href="/BookShopMVC/public/genre/{{ genre.genres.genreID  }}" class="btn btn-primary" >Обновить</a>

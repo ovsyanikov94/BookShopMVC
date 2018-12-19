@@ -57,13 +57,22 @@ class GenresController extends BaseController
         $id = $this->request->GetPostValue('id');
         $name = $this->request->GetPostValue('name');
 
-
         $genresService = new GenresService();
 
-        $countRow = $genresService->UpdateGenreByID($id, $name);
+        $result = $genresService->UpdateGenreByID($id, $name);
 
-
-
+        if($result===true){
+            $this->json( 200, array(
+                'status' => '200',
+                'genreID' => $id,
+            ) );
+        }//if
+       else{
+            $this->json( 400, array(
+                'status' => '400',
+                'genreID' => 0,
+            ) );
+        }//if
     }//updateGenreAction
 
     public function deleteGenreAction( $id ){
@@ -87,11 +96,6 @@ class GenresController extends BaseController
 
         $result = $genresService->AddGenre( $name);
 
-        //$myVar =array(
-            //'status' => 200,
-            //'genreID' => $result,
-           // 'amount' => $genresService->GetGenreBooksAmount($result)
-        //);
         $this->json( 200, array(
             'status' => '200',
             'genreID' => $result,
