@@ -99,7 +99,7 @@ class GenresController extends BaseController
 
         $name = $this->request->GetPostValue('name');
 
-        if (preg_match('/^[a-zA-Zа-яА-Я]/i', $name)) {
+        if (preg_match('/^[a-zA-Zа-яА-Я]+/i', $name)) {
             $genresService = new GenresService();
 
             $result = $genresService->AddGenre( $name);
