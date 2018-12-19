@@ -63,7 +63,7 @@ $(document).ready( function (  ){
                     'name': name,
                 },
                 'success': (data) =>{
-
+console.log(+data.genreID)
                     let genreId = +data.genreID;
                     let status = +data .status;
                     let amount = +data .amount;
