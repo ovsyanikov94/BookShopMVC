@@ -5,7 +5,7 @@
     <script defer src="js/genres.js" ></script>
 
     <div>
-        <a href="/BookShopMVC/public/add_genre" class="btn btn-primary" >Добавить</a>
+        <a href="/work/BookShopMVC/public/add_genre" class="btn btn-primary" >Добавить</a>
     </div>
     <label id="ResultDeleteGenreLabel"></label>
     <table class="table">
@@ -30,7 +30,7 @@
                     <button  data-genre-id="{{  genre.genres.genreID }}" class="btn btn-danger remove-genre" >Удалить</button>
                 </td>
                 <td>
-                    <a href="/BookShopMVC/public/genre/{{ genre.genres.genreID  }}" class="btn btn-primary" >Обновить</a>
+                    <a href="/work/BookShopMVC/public/genre/{{ genre.genres.genreID  }}" class="btn btn-primary" >Обновить</a>
                 </td>
             </tr>
         {%endfor  %}

@@ -78,6 +78,8 @@ echo "RESULT $result";
 
 
     }//deleteA
+
+
     public function addGetGenreAction(){
 
         $template = $this->twig->load('Genre/genre-add.twig');
@@ -93,8 +95,9 @@ echo "RESULT $result";
 
         $result = $genresService->AddGenre( $name);
 
-        $this->json( 200, array(
-            'code' => 200,
+        $code = 200;
+        $this->json( $code, array(
+            'code' => $code,
             'genreID' => $result
         ) );
 

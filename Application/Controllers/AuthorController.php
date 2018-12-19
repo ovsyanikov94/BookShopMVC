@@ -49,9 +49,9 @@ class AuthorController extends BaseController{
 
         $result = $authorService->AddAuthor($authorFirstname , $authorLastname);
 
-        $this->json( 200 , array(
-            'authorID' => $result
-        ) );
+        $data = array('code' => '200',
+                      'authorID' => $result);
+        $this->json( 200 , $data );
 
     }//authorListAction
 
@@ -62,25 +62,26 @@ class AuthorController extends BaseController{
         $authorService->DeleteAuthorByID( $id );
 
         $this->json( 200 , array(
-            'code' => 200,
+            'code' => '200',
             'authorID' => $id
         ) );
 
     }//deleteAuthorAction
 
 
-    public function updateAuthorAction( $id  ){
+    public function updateAuthorAction($id){
 
         //$this->json( 200 , $params);
 
-        $authorFirstname = $this->request->GetPostValue('authorFirstname');
-        $authorLastname = $this->request->GetPostValue('authorLastname');
+        $authorFirstname = $this->request->GetPutValue('authorFirstname');
+        $authorLastname = $this->request->GetPutValue('authorLastname');
 
         $authorService = new AuthorService();
 
         $result = $authorService->UpdateAuthorByID($id, $authorFirstname , $authorLastname);
 
         $this->json( 200 ,array(
+            'code'=> 200,
             'result' => $result
         ) );
 
