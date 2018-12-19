@@ -157,6 +157,7 @@
                     $('#successMessage').fadeIn(1000);
                     $('#errorMessage').fadeOut(500);
                     $('#errorInput').fadeOut(500);
+
                 }
             });
         }//else
