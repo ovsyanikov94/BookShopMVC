@@ -15,6 +15,7 @@ return array(
         '/book' => 'BookController@createBookAction',
         '/author' => 'AuthorController@addAuthorAction',
         '/add_genre' => 'GenresController@addGenreAction',
+        '/genre' => 'GenresController@updateGenreAction',
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
@@ -22,7 +23,6 @@ return array(
     ],
     'put' => [
         '/author/(\d+)' => 'AuthorController@updateAuthorAction',
-        '/genre' => 'GenresController@updateGenreAction',
     ]
 
 );
