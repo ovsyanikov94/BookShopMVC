@@ -50,5 +50,15 @@ class BookService{
 
     }//AddBook
 
+    public function DeleteBookById($id){
+
+        $stm = MySQL::$db->prepare("DELETE FROM books WHERE bookID = :id");
+        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
+        $result = $stm->execute();
+
+        return $result;
+
+    } // DeleteBookById
+
 
 }//BookService

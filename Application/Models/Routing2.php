@@ -12,6 +12,7 @@ return array(
         '/genres' => 'GenresController@getGenresAction',
         '/genre_books/(\d+)' => 'GenresController@getGenreBooksAmountAction',
         '/genre/(\d+)' => 'GenresController@getGenreAction',
+        '/info-book/(\d+)' => 'BookController@infoBookAction'
     ],
     'post' => [
         '/add-book' => 'BookController@addBookAction',
@@ -20,6 +21,7 @@ return array(
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
+        '/delete-book/(\d+)' => "BookController@deleteBookAction",
         '/genre/(\d+)' => 'GenresController@deleteGenreAction',
     ],
     'put' => [
