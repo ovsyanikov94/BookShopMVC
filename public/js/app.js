@@ -1,3 +1,4 @@
+"use strict";
 'use strict';
 
 
@@ -5,7 +6,7 @@ $( document ).ready( ()=>{
 
     $('#removeAuthor').click( function (  ){
 
-       let authorID = $( this ).data('author-id'); 
+       let authorID = $( this ).data('author-id');
 
        console.log('authorID: ' , authorID);
 
@@ -84,3 +85,10 @@ $( document ).ready( ()=>{
 
 } );
 
+
+window.paths = {
+    AjaxServerUrl: '/BookShopMVC/public/',
+    RemoveAuthor: 'author/:authorID',
+    UpdateAuthor: 'author/:authorID',
+    AddAuthor: 'author',
+};

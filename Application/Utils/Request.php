@@ -33,4 +33,24 @@ class Request{
 
     }//GetPostValue
 
+    public function GetPutValue( $key ){
+
+        $params = [];
+
+        //authorID=12&authorName=Vasya
+
+        parse_str(
+            file_get_contents("php://input") ,
+            $params
+        );
+
+        if( isset($params[$key]) ){
+            return $params[$key];
+        }//if
+        else {
+            return null;
+        }//else
+
+    }//GetPutValue
+
 }//Request
