@@ -44,10 +44,39 @@
                     </tr>`
                     );
 
+
+
                 }//fn
             );
 
         }//else
+
+
+
+    }  );
+
+    $('#removeAuthor').click( function (  ){
+
+        let authorID = +$( this ).data('author-id');
+
+
+        let deleteURL = `${window.paths.AjaxServerUrl}${window.paths.RemoveAuthor}`;
+        deleteURL = deleteURL.replace(':authorID' , authorID);
+
+        $.ajax({
+            'url': deleteURL,
+            'type': 'DELETE',
+            'success': ( data )=>{
+
+                if( +data.code === 200 ){
+
+                        location.href = `${window.paths.AjaxServerUrl}authors`;
+
+                }//if
+                $.modal.close();
+            }//success
+        });
+
 
 
 
@@ -108,20 +137,30 @@
         let nameAuthor = $('#nameAuthor').val();
         let lastNameAuthor = $('#lastNameAuthor').val();
 
-        let url = window.paths.UpdateAuthor.replace(':authorID' , authorID);
-        url = `${window.paths.AjaxServerUrl}${url}`;
+        if(!/^[a-zа-я]{4,50}$/i.test(nameAuthor) || !/^[a-zа-я]{4,50}$/i.test(lastNameAuthor)){
+            $('#successMessage').fadeOut(1000);
+            $('#errorMessage').fadeOut(500);
+            $('#errorInput').fadeIn(500);
+        }//if
+        else{
+            let url = window.paths.UpdateAuthor.replace(':authorID' , authorID);
+            url = `${window.paths.AjaxServerUrl}${url}`;
 
-        $.ajax({
-            url: url,
-            type: 'PUT',
-            data: {
-                'authorFirstname': nameAuthor,
-                'authorLastname': lastNameAuthor,
-            },
-            success: ( response )=>{
-                console.log( response );
-            }
-        });
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {
+                    'authorFirstname': nameAuthor,
+                    'authorLastname': lastNameAuthor,
+                },
+                success: ( response )=>{
+                    $('#successMessage').fadeIn(1000);
+                    $('#errorMessage').fadeOut(500);
+                    $('#errorInput').fadeOut(500);
+                }
+            });
+        }//else
+
 
     } );
 
