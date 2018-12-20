@@ -17,4 +17,8 @@ window.paths = {
     RemoveComment: 'genre/:genreID',
     UpdateComment: 'genre',
     AddComment: 'add_genre',
+
+    //BOOK
+    AddBook: 'new-book'
+
 };
