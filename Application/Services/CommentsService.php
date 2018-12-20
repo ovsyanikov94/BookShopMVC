@@ -21,7 +21,16 @@ class CommentsService
         $stm->execute();
 
         return $stm->fetchAll(\PDO::FETCH_OBJ);
-    }//GetGenres
+    }//GetCommentsByBookId
+
+    public function GetCommentById($id){
+
+        $stm = MySQL::$db->prepare("SELECT * FROM comments WHERE commentID=:id");
+        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
+        $stm->execute();
+
+        return $stm->fetch(\PDO::FETCH_OBJ);
+    }//GetCommentsByBookId
 
     public function GetBookTitle($id){
 
@@ -29,8 +38,8 @@ class CommentsService
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
 
-        return $stm->fetchAll(\PDO::FETCH_OBJ);
-    }//GetGenres
+        return $stm->fetch(\PDO::FETCH_OBJ);
+    }//GetBookTitle
 
     public function GetUser($id){
 
@@ -39,6 +48,25 @@ class CommentsService
         $stm->execute();
 
         return $stm->fetchAll(\PDO::FETCH_OBJ);
-    }//GetGenres
+    }//GetUser
+
+    public function AddComment( $text, $bookId, $userId, $time  ){
+
+        $status = 1;
+        $updete = 0;
+
+        $stm = MySQL::$db->prepare("INSERT INTO comments VALUES( DEFAULT  , :userId, :bookId, :text, :status, :create, :updete)");
+        $stm->bindParam(':userId' , $userId , \PDO::PARAM_INT);
+        $stm->bindParam(':bookId' , $bookId , \PDO::PARAM_INT);
+        $stm->bindParam(':text' , $text , \PDO::PARAM_STR);
+        $stm->bindParam(':status' , $status , \PDO::PARAM_INT);
+        $stm->bindParam(':create' , $time , \PDO::PARAM_INT);
+        $stm->bindParam(':updete' , $updete , \PDO::PARAM_INT);
+        $stm->execute();
+
+        return  MySQL::$db->lastInsertId();
+
+
+    }//AddComment
 
 }

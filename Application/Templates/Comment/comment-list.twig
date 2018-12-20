@@ -2,10 +2,11 @@
 
 {% block content %}
 
+
     <script defer src="/BookShopMVC/public/js/comments.js" ></script>
 
     <h2>Название книги</h2>
-    <h2>{{ book[0].bookTitle }}</h2>
+    <h2>{{ book.bookTitle }}</h2>
 
     <style>
         #wind {
@@ -67,7 +68,7 @@
 
 
         <div class="form-group">
-            <div id="AddCommentButton" data-book-id="{{  comments[0].bookID }}"  class="btn btn-primary">Добавить</div>
+            <div id="AddCommentButton" data-book-id="{{  book.bookID }}" data-current-user-id="{{  currentUser }}" class="btn btn-primary">Добавить</div>
         </div>
 
         <div class="form-group">
@@ -97,20 +98,24 @@
         </div>
     </div>
 
-    {% for comment in comments %}
-        <div class="card w-100">
-            <div class="card-body">
-                <h5 class="card-title">{{ comment.user[0].userLogin }} Дата: {{ comment.comment.created }}</h5>
-                <p class="card-text">{{ comment.comment.commentText }}</p>
-                <a href="#" class="btn btn-danger">
-                    <img  src="/public/images/baseline-create-24px.svg" alt="Card image cap">
-                </a>
-                <a href="#" class="btn btn-primary">Button</a>
+    <div id="#CommentsList">
+        {% for comment in comments %}
+            <div class="card w-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ comment.user[0].userLogin }} Дата: {{ comment.comment.created }}</h5>
+                    <p class="card-text">{{ comment.comment.commentText }}</p>
+                    <a href="#" >
+                        <i id="EditButton" data-user-id="{{ comment.comment.userID }}" data-comment-id="{{ comment.comment.commentID }}" class="far fa-edit fa-2x"></i>
+                    </a>
+                    <a href="#" ><i id="DeleteButton" data-user-id="{{ comment.comment.userID }}" data-comment-id="{{ comment.comment.commentID }}" class="btn-danger far fa-trash-alt fa-2x"></i></a>
+
+                </div>
             </div>
-        </div>
 
 
-    {%endfor  %}
+        {%endfor  %}
+    </div>
+
 
 
 
