@@ -11,9 +11,11 @@
         console.log('lastNameAuthor:' , lastNameAuthor);
 
         if(!/^[a-zа-я]{4,50}$/i.test(nameAuthor) || !/^[a-zа-я]{4,50}$/i.test(lastNameAuthor)){
+
             $('#successMessage').fadeOut(1000);
             $('#errorMessage').fadeOut(500);
-            $('#errorInput').fadeIn(500);
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
         }//if
         else{
             $.post(
@@ -100,29 +102,31 @@
         `);
 
 
-        // $('#nameAuthorModal').text(authorName);
-        // $('#lastNameAuthorModal').text(authorLastName);
-        //
-        // $('#deleteAuthorModal').click(function () {
-        //     $.ajax({
-        //         'url': deleteURL,
-        //         'type': 'DELETE',
-        //         'success': ( data )=>{
-        //
-        //             if( +data.code === 200 ){
-        //
-        //                 if( self.attr('id') === 'removeAuthor' ){
-        //                     location.href = `${window.paths.AjaxServerUrl}authors`;
-        //                 }//if
-        //                 else{
-        //                     $(`tr[data-author-id=${authorID}]`).remove();
-        //                 }//else
-        //
-        //             }//if
-        //             $.modal.close();
-        //         }//success
-        //     });
-        // });
+        $('#nameAuthorModal').text(authorName);
+        $('#lastNameAuthorModal').text(authorLastName);
+
+        $('#ConfirmButton').click(function () {
+
+            $.ajax({
+                'url': deleteURL,
+                'type': 'DELETE',
+                'success': ( data )=>{
+
+                    if( +data.code === 200 ){
+
+                        if( self.attr('id') === 'removeAuthor' ){
+                            location.href = `${window.paths.AjaxServerUrl}authors`;
+                        }//if
+                        else{
+                            $(`tr[data-author-id=${authorID}]`).remove();
+                        }//else
+
+                    }//if
+
+                }//success
+            });
+
+        });
 
 
     }  );
