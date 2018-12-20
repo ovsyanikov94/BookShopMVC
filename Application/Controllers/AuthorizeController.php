@@ -8,6 +8,7 @@ use Application\Services\AuthorizeService;
 
 class AuthorizeController extends BaseController {
 
+    //Загрузка страницы авторизации
     public function authorizeAction(){
 
         try{
@@ -28,21 +29,20 @@ class AuthorizeController extends BaseController {
 
     }//authorizeAction
 
+    //запрос на проверку пользователя для авторизации
     public function LoginAction(){
 
         $authorizeService = new AuthorizeService();
 
-        $login = $_POST['login'];
-        $password = $_POST['password'];
+        $login = $_GET['login'];
+        $password = $_GET['password'];
 
         $result = $authorizeService->LogIn($login, $password);
 
-        if($result){
-
-            $template = $this->twig->load('/');
-            echo $template->render();
-
-        }//if
+        $this->json( 200 , array(
+            'code' => 200,
+            'authorize' => $result
+        ) );
 
     }//LoginAction
 

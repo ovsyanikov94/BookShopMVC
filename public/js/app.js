@@ -1,8 +1,9 @@
 "use strict";
 
 window.paths = {
+
     AjaxServerUrl: '/BookShopMVC/public/',
-    Login: '',
+    Login: 'login',
 
     //AUTHOR
     RemoveAuthor: 'author/:authorID',

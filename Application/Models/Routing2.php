@@ -4,6 +4,7 @@
 return array(
     'get' => [
         '/authorize' => 'AuthorizeController@authorizeAction',
+        '/login' => 'AuthorizeController@LoginAction',
         '/home' => 'HomeController@indexAction',
         '/' => 'HomeController@indexAction',
         '/authors' => 'AuthorController@authorListAction',
@@ -20,7 +21,7 @@ return array(
         '/author' => 'AuthorController@addAuthorAction',
         '/add_genre' => 'GenresController@addGenreAction',
         '/genre' => 'GenresController@updateGenreAction',
-        '/login' => 'AuthorizeController@LoginAction'
+
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
