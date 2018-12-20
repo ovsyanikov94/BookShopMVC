@@ -71,7 +71,16 @@
 
                     }//if
                     else{
+
+                        //проверяем чекбокс "Запомнить меня"
+                        if($('#rememberMeCheckBox').attr("checked") === "checked"){
+
+                            $.cookie( "authorizeSession", data , { expires: 7 });
+
+                        }//if
+
                         location.href = `${window.paths.AjaxServerUrl}authors`;
+
                     }//else
 
                 },//seccess
