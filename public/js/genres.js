@@ -6,12 +6,10 @@ $(document).ready( function (  ){
         let name = $('#UpdateGenreInput').val();
 
         if (/^[a-zа-я\s]{4,50}$/i.test(name) === false) {
-            $('#errorInput').css("display", "block");
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
         }//if
         else{
-
-            $('#errorInput').css("display", "none");
             let genreID = $( this ).data('genre-id');
 
 
@@ -31,12 +29,12 @@ $(document).ready( function (  ){
                     if (status === 200 && genreId !== 0) {
 
                         $('#errorMessage').fadeOut(1000);
-                        $('#successMessage').fadeIn(1000);
+                        $('#successMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );;
 
                     }//if
                     else {
                         $('#successMessage').fadeOut(1000);
-                        $('#errorMessage').fadeIn(1000);
+                        $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );;
                     }//else
                 }
 
@@ -50,11 +48,10 @@ $(document).ready( function (  ){
         let name = $('#AddGenreInput').val();
 
         if (/^[a-zа-я\s]{4,50}$/i.test(name) === false) {
-            $('#errorInput').css("display", "block");
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
         }//if
         else{
-            $('#errorInput').css("display", "none");
 
             $.ajax({
                 'url': `${window.paths.AjaxServerUrl}${window.paths.AddGenre}`,
@@ -71,7 +68,7 @@ console.log(+data.genreID)
                     if( status === 200 &&genreId!==0){
 
                         $('#errorMessage').fadeOut(1000);
-                        $('#successMessage').fadeIn(1000);
+                        $('#successMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );;
 
                         $('#GenresTable').append(`
                              <tr data-genre-id = "${genreId}">
@@ -89,7 +86,7 @@ console.log(+data.genreID)
                     }//if
                     else{
                         $('#successMessage').fadeOut(1000);
-                        $('#errorMessage').fadeIn(1000);
+                        $('#errorMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );;
                     }//else
 
 
@@ -102,44 +99,46 @@ console.log(+data.genreID)
     }  );
 
 
-    $('body').on('click', '#noDeleteGenre', function () {
-        $('#fon').css("display","none");
-    });
+    $('body').on('click','.btn-danger' , function (  ){
 
-    $('body').on('click', '#okDeleteGenre', function () {
-
-        let genreID = +$('#genreIDLabel').text();
-        $('#fon').css("display","none");
+        let name = $(this).data('genre-name');
+        let genreID = $(this).data('genre-id');
 
         let deleteURL = `${window.paths.AjaxServerUrl}${window.paths.RemoveGenre}`;
         deleteURL = deleteURL.replace(':genreID', genreID);
 
-        let self = $(this);
-        console.log('genreID: ', genreID);
+        $('#Modal').modal();
+        $('#ModalTitle').text("Удаление");
+        $('#ModalBody').html(`
+            <h3>Удаление!</h3>
+            <div>Вы действительно хотите удалить жанр  <span style="font-weight: bold" id="nameGenre"></span>?</div>
+        `);
 
-        $.ajax({
-            'url': deleteURL,
-            'type': 'DELETE',
-            'success': (data) => {
+        $('#nameGenre').text(name);
 
-                if (+data.code === 200) {
+        $('#ConfirmButton').click(function () {
+            $.ajax({
+                'url': deleteURL,
+                'type': 'DELETE',
+                'success': (data) => {
 
-                    $(`tr[data-genre-id=${genreID}]`).remove();
+                    if (+data.code === 200) {
 
-                }//if
+                        $(`tr[data-genre-id=${genreID}]`).remove();
 
-            }//success
+                    }//if
+
+                }//success
+            });
+
         });
 
-    });
 
-    $('body').on('click','.btn-danger' , function (  ){
-        let name = $(this).data('genre-name');
-        let genreID = $(this).data('genre-id');
+    }  );
 
-        $('#genreIDLabel').text(genreID);
-        $('#genreName').text(name);
-        $('#fon').show();
 
-    });
+
+
+
+
 });
