@@ -17,7 +17,7 @@ $( document ).ready( ()=>{
                console.log(a,b);
            }
        });
-       
+
     }  );
 
     $('#moreUser').click(function () {
@@ -63,19 +63,42 @@ $( document ).ready( ()=>{
         ){
             console.log('start ajax');
 
-            $.ajax({
+            // $.ajax({
+            //     'url': `/BookShopMVC/public/addUser`,
+            //     'type': 'POST',
+            //     'data': {
+            //         'userLogin':login,
+            //         'userEmail':email,
+            //         'userPassword':password
+            //     },
+            //     'success': (data) => {
+            //         console.log(data);
+            //         console.log('наверное тут редирект на авторизацию');
+            //     },//success
+            // })//ajax
+
+            let respone =   $.ajax({
                 'url': `/BookShopMVC/public/addUser`,
                 'type': 'POST',
                 'data': {
                     'userLogin':login,
                     'userEmail':email,
                     'userPassword':password
-                },
-                'success': (data) => {
-                    console.log(data);
-                    console.log('наверное тут редирект на авторизацию');
-                },//success
-            })//ajax
+                }
+            }).done((data)=>{
+
+               // let test = JSON.parse(dara);
+                console.log(data);
+
+                if(data['addUser']!==null){
+                    console.log('успешно');
+                }//if
+                else {
+                    console.log('такой пользователь уже есть ');
+                }//else
+
+            });//ajax
+
         }//if
 
     });
@@ -85,7 +108,18 @@ $( document ).ready( ()=>{
 
 window.paths = {
     AjaxServerUrl: '/BookShopMVC/public/',
+
+    //AUTHOR
     RemoveAuthor: 'author/:authorID',
     UpdateAuthor: 'author/:authorID',
     AddAuthor: 'author',
+
+    //GENRE
+    RemoveGenre: 'genre/:genreID',
+    UpdateGenre: 'genre',
+    AddGenre: 'add_genre',
+
+    //BOOK
+    AddBook: 'new-book'
+
 };

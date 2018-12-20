@@ -21,7 +21,7 @@ class UserService
         $isUser->execute();
 
         $result = $isUser->fetchAll(\PDO::FETCH_OBJ);
-        if($result){
+        if(!$result){
             $bcrypt = new Bcrypt();
             $bcrypt_version = '2y';
             $heshPassword = $bcrypt->encrypt($password,$bcrypt_version);
@@ -35,7 +35,7 @@ class UserService
             return  MySQL::$db->lastInsertId();
         }//if
 
-        return $result;
+        return null;
 //        // Проверка открытого текста и зашифрованного текста
 //        if ( $ bcrypt -> verify ( $ не зашифрованый пароль  , $ пароль из бд  )) {
 //            print_r ( " \ n Пароль подтвержден! " ); }
