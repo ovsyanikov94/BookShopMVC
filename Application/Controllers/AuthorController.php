@@ -72,8 +72,8 @@ class AuthorController extends BaseController{
     public function updateAuthorAction( $id  ){
 
 
-        $authorFirstname = $this->request->GetPostValue('authorFirstname');
-        $authorLastname = $this->request->GetPostValue('authorLastname');
+        $authorFirstname = $this->request->GetPutValue('authorFirstname');
+        $authorLastname = $this->request->GetPutValue('authorLastname');
 
         $authorService = new AuthorService();
 

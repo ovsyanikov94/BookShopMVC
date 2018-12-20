@@ -10,13 +10,12 @@ return array(
         '/genres' => 'GenresController@getGenresAction',
         '/genre_books/(\d+)' => 'GenresController@getGenreBooksAmountAction',
         '/genre/(\d+)' => 'GenresController@getGenreAction',
-        '/add_genre' => 'GenresController@addGetGenreAction',
     ],
     'post' => [
         '/book' => 'BookController@createBookAction',
         '/author' => 'AuthorController@addAuthorAction',
+        '/add_genre' => 'GenresController@addGenreAction',
         '/genre' => 'GenresController@updateGenreAction',
-        '/add_genre' => 'GenresController@addPostGenreAction',
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
