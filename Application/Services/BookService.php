@@ -76,6 +76,22 @@ class BookService{
 
     }//AddBook
 
+    public function EditBookByID($bookTitle , $bookISBN , $bookPages , $bookPrice , $bookAmount, $bookID){
+
+        $stm = MySQL::$db->prepare("UPDATE books SET bookTitle= :bookTitle, bookISBN= :bookISBN, bookPages= :bookPages, bookPrice= :bookPrice, bookAmount= :bookAmount WHERE bookID= :bookID");
+        $stm->bindParam(':bookTitle' , $bookTitle , \PDO::PARAM_STR);
+        $stm->bindParam(':bookISBN' , $bookISBN , \PDO::PARAM_INT);
+        $stm->bindParam(':bookPages' , $bookPages , \PDO::PARAM_INT);
+        $stm->bindParam(':bookPrice' , $bookPrice , \PDO::PARAM_INT);
+        $stm->bindParam(':bookAmount' , $bookAmount , \PDO::PARAM_INT);
+        $stm->bindParam(':bookID', $bookID, \PDO::PARAM_INT);
+
+        $result = $stm->execute();
+
+        return $result;
+
+    } // EditBook
+
     public function DeleteBookById($id){
 
         $stm = MySQL::$db->prepare("DELETE FROM books WHERE bookID = :id");
