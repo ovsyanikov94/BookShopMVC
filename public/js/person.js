@@ -1,22 +1,19 @@
 $.noConflict();
 jQuery( function (  ){
 
-    jQuery('#profile').on('click', function (e) {
+    jQuery('#history').on('click', function (e) {
         e.preventDefault()
         $(this).tab('show')
     });
-    jQuery('#home').on('click', function (e) {
+    jQuery('#person').on('click', function (e) {
         e.preventDefault()
         $(this).tab('show')
     });
-    jQuery('#messages').on('click', function (e) {
+    jQuery('#basket').on('click', function (e) {
         e.preventDefault()
         $(this).tab('show')
     });
-    jQuery('#settings').on('click', function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-    });
+
 
 
 
