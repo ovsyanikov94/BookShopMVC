@@ -93,38 +93,36 @@
 
         let self = $(this);
 
-        $('#login-form').modal({
-            showClose : false
-        });
+        $('#Modal').modal();
+        $('#ModalTitle').text("Удаление");
+        $('#ModalBody').html(`
+            <h1>Удаление!</h1>
+        `);
 
-        $('#nameAuthorModal').text(authorName);
-        $('#lastNameAuthorModal').text(authorLastName);
-        
-        
-        $('#closeModal').click(function () {
-            $.modal.close();
-        });
 
-        $('#deleteAuthorModal').click(function () {
-            $.ajax({
-                'url': deleteURL,
-                'type': 'DELETE',
-                'success': ( data )=>{
-
-                    if( +data.code === 200 ){
-
-                        if( self.attr('id') === 'removeAuthor' ){
-                            location.href = `${window.paths.AjaxServerUrl}authors`;
-                        }//if
-                        else{
-                            $(`tr[data-author-id=${authorID}]`).remove();
-                        }//else
-
-                    }//if
-                    $.modal.close();
-                }//success
-            });
-        });
+        // $('#nameAuthorModal').text(authorName);
+        // $('#lastNameAuthorModal').text(authorLastName);
+        //
+        // $('#deleteAuthorModal').click(function () {
+        //     $.ajax({
+        //         'url': deleteURL,
+        //         'type': 'DELETE',
+        //         'success': ( data )=>{
+        //
+        //             if( +data.code === 200 ){
+        //
+        //                 if( self.attr('id') === 'removeAuthor' ){
+        //                     location.href = `${window.paths.AjaxServerUrl}authors`;
+        //                 }//if
+        //                 else{
+        //                     $(`tr[data-author-id=${authorID}]`).remove();
+        //                 }//else
+        //
+        //             }//if
+        //             $.modal.close();
+        //         }//success
+        //     });
+        // });
 
 
     }  );
