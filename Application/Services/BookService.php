@@ -45,7 +45,33 @@ class BookService{
 
         $stm->execute();
 
-        return  MySQL::$db->lastInsertId();
+        $bookID =  MySQL::$db->lastInsertId();
+
+        if( isset( $_FILES['bookImage'] ) ){
+
+
+            $name =  $_FILES['bookImage']['name'];
+
+            $name = time() . "_$name";
+
+            if( !file_exists("images")){
+                mkdir("images");
+            }//if
+
+            mkdir("images/{$bookID}");
+
+            //$path = "/BookShopMVC/public/images/{$bookID}/{$name}";
+            $path = "images/{$bookID}/{$name}";
+
+            if( !move_uploaded_file($_FILES['bookImage']['tmp_name'] , $path) ){
+
+                throw new \Exception('File upload error!');
+
+            }//if
+
+        }//if
+
+        return $bookID;
 
 
     }//AddBook

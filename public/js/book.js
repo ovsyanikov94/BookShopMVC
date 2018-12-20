@@ -1,75 +1,95 @@
 $(document).ready( function (  ){
 
-    $('#addBook').click( function ( ){
+    $('#AddBookButton').click( async function ( ){
+
+        const extentions = [
+            '.jpg',
+            '.jpeg',
+            '.png',
+            '.bmp',
+        ];
 
         let bookTitle = $('#bookTitle').val();
         let bookISBN = $('#bookISBN').val();
         let bookPages = $('#bookPages').val();
         let bookPrice = $('#bookPrice').val();
         let bookAmount = $('#bookAmount').val();
+        //
+        // if(/^[а-яА-Я\w]{3,50}$/.test(bookTitle) === false ){
+        //
+        //     $('#errorInput').css("display", "block").text('Название некорректно!');
+        //     return;
+        //
+        // }//if
+        //
+        // if(/^\d{9}[\d|X]$/.test(bookISBN) === false ){
+        //
+        //     $('#errorInput').css("display", "block");
+        //     return;
+        // }//if
+        //
+        // if(/\d{1,10}$/.test(bookPages) === false ){
+        //
+        //     $('#errorInput').css("display", "block");
+        //     return;
+        // }//if
+        //
+        // if(/^\d{1,7}/.test(bookPrice) === false ){
+        //
+        //     $('#errorInput').css("display", "block");
+        //     return;
+        // }//if
+        //
+        // if(/^\d{1,5}/.test(bookAmount) === false ){
+        //
+        //     $('#errorInput').css("display", "block");
+        //     return;
+        // }//if
 
-        if(/^[а-яА-Я\w]{3,50}$/.test(bookTitle) === false ){
+        let bookData = new FormData();
+        bookData.append('bookTitle' , bookTitle);
+        bookData.append('bookISBN' , bookISBN);
+        bookData.append('bookPages' , bookPages);
+        bookData.append('bookPrice' , bookPrice);
+        bookData.append('bookAmount' , bookAmount);
 
-            $('#errorInput').css("display", "block");
+        let files =  $('#bookFile').prop('files');
+
+        if(files.length !== 0){
+
+            let file = files[0];
+
+            let ext = file.name.substring(file.name.lastIndexOf('.'));
+
+            if( extentions.indexOf( ext ) === -1 ){
+
+                $('#errorInput').text('Тип файла некорректен').css("display", "block");
+                return;
+
+            }//if
+
+            bookData.append('bookImage' , file);
 
         }//if
 
-        else if(/^\d{9}[\d|X]$/.test(bookISBN) === false ){
+        try{
 
-            $('#errorInput').css("display", "block");
-
-        }//if
-
-        else if(/\d{1,10}$/.test(bookPages) === false ){
-
-            $('#errorInput').css("display", "block");
-
-        }//if
-
-        else if(/^\d{1,7}/.test(bookPrice) === false ){
-
-            $('#errorInput').css("display", "block");
-
-        }//if
-
-        else if(/^\d{1,5}/.test(bookAmount) === false ){
-
-            $('#errorInput').css("display", "block");
-
-        }//if
-
-        else{
-
-            $.ajax({
-                'url': `${window.paths.AjaxServerUrl}${window.paths.AddBook}`,
-                'type': 'POST',
-                'data': {
-                    'bookTitle': bookTitle,
-                    'bookISBN': bookISBN,
-                    'bookPages': bookPages,
-                    'bookPrice': bookPrice,
-                    'bookAmount': bookAmount
-                },
-                'success': (data) => {
-
-                    let status = +data.status;
-
-                    if (status === 200) {
-
-                        $('#errorMessage').fadeOut(1000);
-                        $('#successMessage').fadeIn(1000);
-
-                    }//if
-                    else {
-                        $('#successMessage').fadeOut(1000);
-                        $('#errorMessage').fadeIn(1000);
-                    }//else
-
-                }//success
-
+            let response = await $.ajax({
+                url: `${window.paths.AjaxServerUrl}${window.paths.AddBook}`,
+                method: 'POST',
+                contentType: false,
+                processData: false,
+                data: bookData
             });
 
-        }//else
+            console.log('Response: ' , response );
+
+        }//try
+        catch( ex ){
+
+            console.log('Exception: ' , ex);
+
+        }//catch
 
     });
 

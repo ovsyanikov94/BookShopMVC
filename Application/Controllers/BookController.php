@@ -53,11 +53,12 @@ class BookController extends BaseController{
         $bookTitle = $this->request->GetPostValue('bookTitle');
 
         if(! filter_var($bookTitle , FILTER_VALIDATE_REGEXP , array(
-                "options" => array("regexp"=>"/^[а-яА-Я\w]{3,50}$/."))
+                "options" => array("regexp"=>"/^[а-яА-Я\w]{3,50}$/i"))
         )){
 
             $this->json( 400 , array(
-                'err' => $bookTitle
+                'title_err' => $bookTitle,
+                'POST' => $_POST
             ) );
 
             return;
@@ -71,7 +72,7 @@ class BookController extends BaseController{
         )){
 
             $this->json( 400 , array(
-                'err' => $bookISBN
+                'ISBN_err' => $bookISBN
             ) );
 
             return;
@@ -85,7 +86,7 @@ class BookController extends BaseController{
         )){
 
             $this->json( 400 , array(
-                'err' => $bookPages
+                'Pages_err' => $bookPages
             ) );
 
             return;
@@ -99,7 +100,7 @@ class BookController extends BaseController{
         )){
 
             $this->json( 400 , array(
-                'err' => $bookPrice
+                'Price_err' => $bookPrice
             ) );
 
             return;
@@ -113,7 +114,7 @@ class BookController extends BaseController{
         )){
 
             $this->json( 400 , array(
-                'err' => $bookAmount
+                'Amount_err' => $bookAmount
             ) );
 
             return;
