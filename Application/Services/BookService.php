@@ -34,14 +34,15 @@ class BookService{
 
     }//GetBookById
 
-    public function AddBook( $bookTitle , $bookISBN , $bookPages , $bookPrice , $bookAmount ){
+    public function AddBook( $bookTitle , $bookISBN , $bookPages , $bookPrice , $bookAmount , $bookDescription){
 
-        $stm = MySQL::$db->prepare("INSERT INTO books VALUES( DEFAULT  , :bookTitle , :bookISBN , :bookPages, :bookPrice, :bookAmount)");
+        $stm = MySQL::$db->prepare("INSERT INTO books VALUES( DEFAULT  , :bookTitle , :bookISBN , :bookPages, :bookPrice, :bookAmount , :bookDescription)");
         $stm->bindParam(':bookTitle' , $bookTitle , \PDO::PARAM_STR);
         $stm->bindParam(':bookISBN' , $bookISBN , \PDO::PARAM_INT);
         $stm->bindParam(':bookPages' , $bookPages , \PDO::PARAM_INT);
-        $stm->bindParam(':bookPrice' , $bookPrice , \PDO::PARAM_INT);
+        $stm->bindParam(':bookPrice' , $bookPrice , \PDO::PARAM_STR);
         $stm->bindParam(':bookAmount' , $bookAmount , \PDO::PARAM_INT);
+        $stm->bindParam(':bookDescription' ,$bookDescription , \PDO::PARAM_STR);
 
         $stm->execute();
 
