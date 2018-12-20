@@ -18,17 +18,6 @@ class HomeController extends BaseController{
             $template = $this->twig->load('Home/index.twig');
             echo $template->render( );
 
-//
-//            $pug = new Pug();
-//            $output = $pug->renderFile('../Application/Views/Home/index.pug');
-
-//            $output = $pug->render(
-//                '../Application/Views/Home/index.pug',
-//                $this->storage->getRawStorage()
-//            );
-//
-//           echo $output;
-
         }//try
         catch (\Exception $ex) {
 

@@ -85,15 +85,6 @@ class ApplicationController extends BaseController {
 
         }//foreach
 
-//        $router->get(
-//            Routing::$HomeUrl->path ,              //
-//            Routing::$HomeUrl->GetControllerPath() // HomeController@indexAction
-//        );
-//
-//        $router->get(
-//            Routing::$BooksListUrl->path ,
-//            Routing::$BooksListUrl->GetControllerPath()
-//        );
         $router->run();
 
     }//Start

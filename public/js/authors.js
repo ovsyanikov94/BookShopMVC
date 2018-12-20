@@ -2,7 +2,7 @@
 
     //ADD_AUTHOR
 
-    $('#addAuthor').click( function (  ){
+    $('#addAuthor').click( async function (  ){
 
         let nameAuthor = $('#nameAuthor').val();
         let lastNameAuthor = $('#lastNameAuthor').val();
@@ -37,7 +37,7 @@
 
     }  );
 
-    $('body').on('click','#removeAuthor,.btn-danger' , function (  ){
+    $('body').on('click','#removeAuthor,.btn-danger' , async function (  ){
 
         let authorID = +$( this ).data('author-id');
 
@@ -46,25 +46,38 @@
 
         let self = $(this);
 
-        $.ajax({
-            'url': deleteURL,
-            'type': 'DELETE',
-            'success': ( data )=>{
+        try{
 
-                if( +data.code === 200 ){
+            let response = await $.ajax({
+                'url': deleteURL,
+                'type': 'DELETE'
+            });
 
-                    if( self.attr('id') === 'removeAuthor' ){
-                        location.href = `${window.paths.AjaxServerUrl}authors`;
-                    }//if
-                    else{
-                        $(`tr[data-author-id=${authorID}]`).remove();
-                    }//else
+            if( +response.code === 200 ){
 
+                if( self.attr('id') === 'removeAuthor' ){
+                    location.href = `${window.paths.AjaxServerUrl}authors`;
                 }//if
+                else{
+                    $(`tr[data-author-id=${authorID}]`).remove();
+                }//else
 
-            }//success
-        });
+            }//if
 
+            // $.ajax({
+            //     'url': deleteURL,
+            //     'type': 'DELETE'
+            // }).done( _ => console.log(_));
+
+
+
+        }
+        catch( ex ){
+            console.log(ex);
+        }//catch
+
+        
+        
     }  );
 
     //UPDATE_AUTHOR
