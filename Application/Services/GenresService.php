@@ -51,21 +51,20 @@ class GenresService
         $stm = MySQL::$db->prepare("UPDATE genres SET genreTitle=:title  WHERE genreID=:id");
         $stm->bindParam(':title' , $title , \PDO::PARAM_STR);
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
-        $stm->execute();
+        $result= $stm->execute();
 
 
 
-        return $stm->rowCount();
+        return  $result;
 
     }
 
     public function DeleteGenreByID( $id ){
-echo $id;
         $stm = MySQL::$db->prepare("DELETE FROM genres WHERE genreID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $result = $stm->execute();
 
-        return $result->rowCount();;
+        return $result;
 
 
     }//DeleteAuthorByID
