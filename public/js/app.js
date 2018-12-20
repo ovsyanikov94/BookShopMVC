@@ -12,4 +12,8 @@ window.paths = {
     RemoveGenre: 'genre/:genreID',
     UpdateGenre: 'genre',
     AddGenre: 'add_genre',
+
+    //BOOK
+    AddBook: 'new-book'
+
 };
