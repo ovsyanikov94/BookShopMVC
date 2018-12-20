@@ -98,11 +98,13 @@
     </div>
 
     {% for comment in comments %}
-        <div class="card w-75">
+        <div class="card w-100">
             <div class="card-body">
-                <h5 class="card-title">{{ comment.user[0].userLogin }}</h5>
+                <h5 class="card-title">{{ comment.user[0].userLogin }} Дата: {{ comment.comment.created }}</h5>
                 <p class="card-text">{{ comment.comment.commentText }}</p>
-                <a href="#" class="btn btn-danger">Button</a>
+                <a href="#" class="btn btn-danger">
+                    <img  src="/public/images/baseline-create-24px.svg" alt="Card image cap">
+                </a>
                 <a href="#" class="btn btn-primary">Button</a>
             </div>
         </div>
