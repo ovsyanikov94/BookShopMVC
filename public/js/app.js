@@ -12,4 +12,9 @@ window.paths = {
     RemoveGenre: 'genre/:genreID',
     UpdateGenre: 'genre',
     AddGenre: 'add_genre',
+
+    //COMMENTS
+    RemoveComment: 'genre/:genreID',
+    UpdateComment: 'genre',
+    AddComment: 'add_genre',
 };

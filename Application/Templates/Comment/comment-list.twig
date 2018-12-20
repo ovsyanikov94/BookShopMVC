@@ -1,0 +1,151 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+    <script defer src="/BookShopMVC/public/js/comments.js" ></script>
+
+    <h2>Название книги</h2>
+    <h2>{{ book[0].bookTitle }}</h2>
+
+    <style>
+        #wind {
+            width: 400px;
+            height: 300px;
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #999999;
+            color: #333333;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            background: #ffffff;
+        }
+
+        .close {
+            width: 70%;
+            display: inline-block;
+            border: 1px solid #0000cc;
+            color: #0000cc;
+            padding: 0 12px;
+            margin-right: 15%;
+            margin-left: 15%;
+            margin-top: 5%;
+            text-decoration: none;
+            background: #f2f2f2;
+            font-size: 14pt;
+            cursor:pointer;
+            padding:15px;
+        }
+        .close:hover {background: #e6e6ff;}
+
+        #fon {
+            background: rgba(102, 102, 102, 0.5);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+
+    </style>
+
+
+
+    <form >
+        <div class="form-group">
+            <label for="formGroupExampleInput">Новый комментарий</label>
+            <textarea type="text" class="form-control" id="AddCommentInput" placeholder="Написать комментарий"></textarea>
+            <div class="form-group">
+                <div id="errorInput" style=" display: none;" class="message alert alert-danger">Текст комментария не может быть пустым!</div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div id="AddCommentButton" data-book-id="{{  comments[0].bookID }}"  class="btn btn-primary">Добавить</div>
+        </div>
+
+        <div class="form-group">
+            <div id="errorMessage" style=" display: none;" class="message alert alert-danger">Ошибка при добавлении !</div>
+        </div>
+
+        <div class="form-group">
+            <div id="successMessage"  style=" display: none;" class="message alert alert-success">Комментарий успешно добавлен!</div>
+        </div>
+
+    </form>
+    <!-- Модальное окно -->
+    <!-- Modal -->
+    <div id="fon">
+        <div id="wind">
+
+            <div class="form">
+                <h6>Вы действительно хотите удалить комментарий?</h6>
+                <h4 id="commentIDLabel"></h4>
+                <h4 id="commentText"></h4>
+                <div class="form-group">
+                    <a href="#" id="okDeleteGenre" class="close">OK</a>
+                    <a href="#"  id="noDeleteGenre" class="close">Отмена</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% for comment in comments %}
+        <div class="card w-75">
+            <div class="card-body">
+                <h5 class="card-title">{{ comment.user[0].userLogin }}</h5>
+                <p class="card-text">{{ comment.comment.commentText }}</p>
+                <a href="#" class="btn btn-danger">Button</a>
+                <a href="#" class="btn btn-primary">Button</a>
+            </div>
+        </div>
+
+
+    {%endfor  %}
+
+
+
+
+    {#<table class="table" id="CommentsTable" >#}
+        {#<thead>#}
+        {#<tr>#}
+            {#<th scope="col">#</th>#}
+            {#<th scope="col">Пользователь</th>#}
+            {#<th scope="col">Комментарий</th>#}
+            {#<th scope="col">Удалить</th>#}
+            {#<th scope="col">Редактировать</th>#}
+        {#</tr>#}
+        {#</thead>#}
+        {#<tbody>#}
+
+        {#{% for comment in comments %}#}
+            {#<tr data-genre-id = "{{  comment.commentID }}">#}
+                {#<td>{{ comment.commentID }}</td>#}
+                {#<td>{{ comment.userID }}</td>#}
+
+                {#<td> {{ comment.commentText }}</td>#}
+                {#<td>#}
+                    {#<button   data-genre-id="{{  comment.commentID }}" data-genre-name="{{  comment.commentText }}" class="btn btn-danger" >Удалить</button>#}
+                {#</td>#}
+                {#<td>#}
+                    {#<a href="/BookShopMVC/public/comment/{{ comment.commentID  }}" class="btn btn-primary" >Обновить</a>#}
+                {#</td>#}
+            {#</tr>#}
+
+
+        {#{%endfor  %}#}
+
+        {#</tbody>#}
+    {#</table>#}
+
+
+
+
+{% endblock %}
