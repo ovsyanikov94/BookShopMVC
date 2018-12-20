@@ -79,9 +79,6 @@
             }//success
         });
 
-
-
-
     }  );
 
     $('body').on('click','#removeAuthor,.btn-danger' , function (  ){
