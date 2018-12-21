@@ -37,17 +37,17 @@
             }//if
 
             //проверка поля логина на корректность ввода
-            // if( !/^[a-zA-ZА-Яа-я\d]{4,16}$/i.test(loginOrEmail) ){
-            //
-            //     $('#errorInput')
-            //         .text('Логин содержит не корректные символы.')
-            //         .fadeOut(750)
-            //         .delay(0)
-            //         .fadeIn(1500);
-            //
-            //     return;
-            //
-            // }//if
+            if( !/^[a-zA-ZА-Яа-я\d]{4,16}$/i.test(loginOrEmail) ){
+
+                $('#errorInput')
+                    .text('Логин содержит не корректные символы.')
+                    .fadeOut(500)
+                    .delay(3000)
+                    .fadeIn(2000);
+
+                return;
+
+            }//if
 
             let url = `${window.paths.AjaxServerUrl}${window.paths.Login}`;
 
@@ -71,13 +71,6 @@
 
                     }//if
                     else{
-
-                        //проверяем чекбокс "Запомнить меня"
-                        if($('#rememberMeCheckBox').attr("checked") === "checked"){
-
-                            $.cookie( "authorizeSession", data , { expires: 7 });
-
-                        }//if
 
                         location.href = `${window.paths.AjaxServerUrl}authors`;
 

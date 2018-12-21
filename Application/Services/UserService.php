@@ -46,7 +46,7 @@ class UserService
 
     public function getUsers($limit = 10, $offset = 0){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM users LIMIT :limit,:offset  ");
+        $stm = MySQL::$db->prepare("SELECT * FROM users LIMIT :limit, :offset");
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->execute();

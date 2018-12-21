@@ -36,13 +36,6 @@ class AuthorizeService{
            return true;
         }//if
 
-//        $stm = MySQL::$db->prepare("SELECT * FROM users WHERE (userLogin = :login OR userEmail = :login) AND userPassword = :password");
-//        $stm->bindParam(':login', $login, \PDO::PARAM_STR);
-//        $stm->bindParam(':password', $password, \PDO::PARAM_STR);
-//        $stm->execute();
-//
-//        return $stm->fetch(\PDO::FETCH_OBJ);
-
     }//LogIn
 
 }//AuthorizeService

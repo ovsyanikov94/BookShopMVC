@@ -13,8 +13,6 @@ use Application\Controllers\patternConst;
 
 class UserController extends BaseController{
 
-
-
     public function registration(){
         try{
             $template = $this->twig->load( 'User/registration.twig');
@@ -79,9 +77,11 @@ class UserController extends BaseController{
         echo $template->render( array(
             'users' => $users
         ) );
+
     }//getUsers
 
     public function getSingleUser($identifier){
+
         $userService = new UserService();
         $user = $userService->getSingleUser($identifier);
 
@@ -91,5 +91,6 @@ class UserController extends BaseController{
             'user' => $user
         ) );
 
-    }
+    }//getSingleUser
+
 }//UserController
