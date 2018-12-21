@@ -26,7 +26,7 @@ class UserService
             $bcrypt_version = '2y';
             $heshPassword = $bcrypt->encrypt($password,$bcrypt_version);
 
-            $stm = MySQL::$db->prepare("INSERT INTO users VALUES( DEFAULT, :login,:password,:email) ");
+            $stm = MySQL::$db->prepare("INSERT INTO users VALUES( DEFAULT, :login, :email ,:password) ");
             $stm->bindParam(':login' , $login , \PDO::PARAM_STR);
             $stm->bindParam(':email' , $email , \PDO::PARAM_STR);
             $stm->bindParam(':password' , $heshPassword , \PDO::PARAM_STR);
@@ -46,7 +46,7 @@ class UserService
 
     public function getUsers($limit = 10, $offset = 0){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM users LIMIT :offset, :limit ");
+        $stm = MySQL::$db->prepare("SELECT * FROM users LIMIT :limit,:offset  ");
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->execute();
@@ -59,22 +59,12 @@ class UserService
 
         $stm = MySQL::$db->prepare("SELECT * FROM users WHERE userLogin = :userLogin OR userID=:userID ");
 
-        $type = gettype($identifier);
-        if($type == "string"){
-            echo $type;
-            $val = -1;
-            $stm->bindParam(':userLogin', $identifier,\PDO::PARAM_STR);
-            $stm->bindParam(':userID',$val ,\PDO::PARAM_STR);
-        }//if
-        if($type == "integer"){
-
-            $stm->bindParam(':userLogin',(string)$identifier,\PDO::PARAM_STR);
-            $stm->bindParam(':userID', $identifier,\PDO::PARAM_STR);
-        }//id
+        $stm->bindParam(':userLogin', $identifier,\PDO::PARAM_STR);
+        $stm->bindParam(':userID',$identifier ,\PDO::PARAM_STR);
 
         $stm->execute();
 
-        return $stm->fetchAll(\PDO::FETCH_OBJ);
+        return $stm->fetch(\PDO::FETCH_OBJ);
 
     }//getSingleUser
 

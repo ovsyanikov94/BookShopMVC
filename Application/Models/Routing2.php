@@ -2,13 +2,14 @@
 
 
 return array(
+
     'get' => [
         '/home' => 'HomeController@indexAction',
         '/' => 'HomeController@indexAction',
         '/authors' => 'AuthorController@authorListAction',
         '/author/(\d+)' => 'AuthorController@getAuthorAction',
         '/users'=>'UserController@getUsers',
-        '/user/([a-zА-Я0-9]{1,})'=>'UserController@getSingleUser',
+        '/user/(\w+)'=>'UserController@getSingleUser',
         '/registration'=>'UserController@registration',
         '/genres' => 'GenresController@getGenresAction',
         '/genre_books/(\d+)' => 'GenresController@getGenreBooksAmountAction',

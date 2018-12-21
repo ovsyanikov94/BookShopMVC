@@ -68,10 +68,11 @@ class UserController extends BaseController{
         ));
      }//addUser
 
-    public function getUsers ($limit=10, $offset=0){
+    public function getUsers (){
+
         $userService = new UserService();
 
-        $users = $userService->getUsers($limit, $offset);
+        $users = $userService->getUsers();
 
         $template = $this->twig->load('User/users.twig');
 
