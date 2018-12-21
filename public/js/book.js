@@ -119,6 +119,116 @@ $(document).ready( function (  ){
 
     });
 
+    // EDIT BOOK
+    $('body').on('click','#editBook', function () {
 
+
+        let bookID = $('#bookID').data('bookId');
+        let bookTitle = $('#bookTitle').val();
+        let bookISBN = $('#bookISBN').val();
+        let bookPages = $('#bookPages').val();
+        let bookPrice = $('#bookPrice').val();
+        let bookAmount = $('#bookAmount').val();
+
+        console.log(bookID);
+
+        let updateURL = `${window.paths.AjaxServerUrl}${window.paths.EditBook}`;
+        updateURL = updateURL.replace(':bookID' , bookID);
+
+        let bookData = new FormData();
+        bookData.append('bookTitle' , bookTitle);
+        bookData.append('bookISBN' , bookISBN);
+        bookData.append('bookPages' , bookPages);
+        bookData.append('bookPrice' , bookPrice);
+        bookData.append('bookAmount' , bookAmount);
+
+        // let files =  $('#bookFile').prop('files');
+        //
+        // if(files.length !== 0){
+        //
+        //     let file = files[0];
+        //
+        //     let ext = file.name.substring(file.name.lastIndexOf('.'));
+        //
+        //     if( extentions.indexOf( ext ) === -1 ){
+        //
+        //         $('#errorInput').text('Тип файла некорректен').css("display", "block");
+        //         return;
+        //
+        //     } // If
+        //
+        //     bookData.append('bookImage' , file);
+        //
+        // } // If
+
+        try{
+
+            console.log(updateURL);
+            $.ajax({
+                url: updateURL,
+                method: 'POST',
+                contentType: false,
+                processData: false,
+                data: bookData,
+                success: (response)=>{
+
+                }
+            });
+
+
+            // location.href = `${window.paths.AjaxServerUrl}books`;
+
+        } // Try
+        catch( ex ){
+
+            console.log('Exception: ' , ex);
+
+        } // Catch
+
+    });
+
+    // DELETE BOOK
+    $('body').on('click','#removeBook,.btn-danger' , function (){
+
+        let bookID = +$( this ).data('book-id');
+        let bookTitle = $( this ).data('book-title');
+
+        let deleteURL = `${window.paths.AjaxServerUrl}${window.paths.DeleteBook}`;
+        deleteURL = deleteURL.replace(':bookID' , bookID);
+
+        let self = $(this);
+
+        $('#Modal').modal();
+        $('#ModalTitle').html('<h3>Удаление книги</h3>');
+        $('#ModalBody').html('<h5> Вы действительно хотите удалить книгу "' + bookTitle + '"?</h5>');
+
+
+        $('#ConfirmButton').click(function () {
+
+            $.ajax({
+
+                'url': deleteURL,
+                'type': 'DELETE',
+                'success': ( data )=>{
+
+                    console.log(data);
+                    if( +data.code === 200 ){
+
+                        if( self.attr('id') === 'removeBook' ){
+                            location.href = `${window.paths.AjaxServerUrl}books`;
+                        } // If
+                        else{
+                            $(`tr[data-book-id=${bookID}]`).remove();
+                        } // Else
+
+                    } // If
+
+                } // Success
+
+            }); // Ajax
+
+        }); // Click
+
+    });
 
 });
