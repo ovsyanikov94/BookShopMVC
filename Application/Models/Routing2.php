@@ -13,21 +13,27 @@ return array(
         '/genres' => 'GenresController@getGenresAction',
         '/genre_books/(\d+)' => 'GenresController@getGenreBooksAmountAction',
         '/genre/(\d+)' => 'GenresController@getGenreAction',
-        '/add_genre' => 'GenresController@addGetGenreAction',
+        '/books' => 'BookController@bookListAction',
+        '/new-book' => 'BookController@newBookAction',
+        '/info-book/(\d+)' => 'BookController@infoBookAction',
+        '/edit-books/(\d+)' => 'BookController@editBookAction'
     ],
     'post' => [
-        '/book' => 'BookController@createBookAction',
+        '/new-book' => 'BookController@addBookAction',
         '/author' => 'AuthorController@addAuthorAction',
         '/genre' => 'GenresController@updateGenreAction',
         '/add_genre' => 'GenresController@addPostGenreAction',
-        '/addUser'=>'UserController@addUser'
+        '/addUser'=>'UserController@addUser',
+        '/edit-book/(\d+)' => 'BookController@acceptEditBookAction'
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
+        '/delete-book/(\d+)' => "BookController@deleteBookAction",
         '/genre/(\d+)' => 'GenresController@deleteGenreAction',
     ],
     'put' => [
         '/author/(\d+)' => 'AuthorController@updateAuthorAction',
     ]
+
 );
 
