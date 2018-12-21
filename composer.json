@@ -2,9 +2,8 @@
     "name": "alexey/book-shop-mvc",
     "authors": [],
     "require": {
-        "pug-php/pug": "^3.2",
         "bramus/router": "~1.3",
-        "twig/twig": "^2.0",
+        "twig/twig": "^1.36",
         "polarising/bcrypt": "^1.0"
     },
     "autoload": {

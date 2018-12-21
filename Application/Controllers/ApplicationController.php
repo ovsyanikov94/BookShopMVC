@@ -77,6 +77,20 @@ class ApplicationController extends BaseController {
 
         $router->setNamespace('Application\\Controllers');
 
+        $router->set404(function (  ){
+
+            try {
+
+                $template = $this->twig->load('ErrorPages/404-not-found.twig');
+                echo $template->render( );
+
+            }//try
+            catch (\Exception $ex) {
+
+            }//catch
+
+        });
+
         foreach ($routes as $key => $path ){
 
             foreach ($path as $subKey => $value){

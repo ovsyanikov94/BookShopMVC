@@ -9,19 +9,25 @@ return array(
         '/' => 'HomeController@indexAction',
         '/authors' => 'AuthorController@authorListAction',
         '/author/(\d+)' => 'AuthorController@getAuthorAction',
-        '/books' => 'BookController@bookListAction',
-        '/new-book' => 'BookController@newBookAction',
+        '/users'=>'UserController@getUsers',
+        '/user/(\w+)'=>'UserController@getSingleUser',
+        '/registration'=>'UserController@registration',
         '/genres' => 'GenresController@getGenresAction',
         '/genre_books/(\d+)' => 'GenresController@getGenreBooksAmountAction',
         '/genre/(\d+)' => 'GenresController@getGenreAction',
-        '/info-book/(\d+)' => 'BookController@infoBookAction'
+        '/books' => 'BookController@bookListAction',
+        '/new-book' => 'BookController@newBookAction',
+        '/info-book/(\d+)' => 'BookController@infoBookAction',
+        '/edit-books/(\d+)' => 'BookController@editBookAction'
     ],
     'post' => [
         '/new-book' => 'BookController@addBookAction',
         '/author' => 'AuthorController@addAuthorAction',
         '/add_genre' => 'GenresController@addGenreAction',
         '/genre' => 'GenresController@updateGenreAction',
-
+        '/add_genre' => 'GenresController@addPostGenreAction',
+        '/addUser'=>'UserController@addUser',
+        '/edit-book/(\d+)' => 'BookController@acceptEditBookAction'
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
