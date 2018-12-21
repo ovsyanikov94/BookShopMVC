@@ -8,7 +8,9 @@
 
 namespace Application\Controllers;
 
+use Application\Services\AuthorService;
 use Application\Services\BookService;
+use Application\Services\GenresService;
 
 class BookController extends BaseController{
 
@@ -42,23 +44,32 @@ class BookController extends BaseController{
 
     public function newBookAction(  ){
 
+        $authorsService = new AuthorService();
+        $genresService = new GenresService();
+
+        $authors = $authorsService->GetAuthors(100);
+        $genres = $genresService->GetGenres(100);
+
         $template = $this->twig->load( 'Book/new-book.twig');
 
-        echo $template->render();
+        echo $template->render(array(
+            'authors' => $authors,
+            'genres'  => $genres
+        ));
 
     }//newBookAction
 
     public function addBookAction( ){
 
         $bookTitle = $this->request->GetPostValue('bookTitle');
+        $matches = array();
 
-        if(! filter_var($bookTitle , FILTER_VALIDATE_REGEXP , array(
-                "options" => array("regexp"=>"/^[а-яА-Я\w]{3,50}$/i"))
-        )){
+        $check = preg_match('/^[а-яa-z0-9\s]{3,50}$/iu',$bookTitle , $matches );
+
+        if( !$check ){
 
             $this->json( 400 , array(
-                'title_err' => $bookTitle,
-                'POST' => $_POST
+                'title_err' => $bookTitle
             ) );
 
             return;
@@ -123,11 +134,41 @@ class BookController extends BaseController{
 
         $bookService = new BookService();
 
-        $result = $bookService->AddBook($bookTitle , $bookISBN , $bookPages , $bookPrice , $bookAmount);
+        $authors = json_decode($this->request->GetPostValue('authors'));
+        $genres = json_decode($this->request->GetPostValue('genres'));
 
-        $this->json( 200 , array(
-            'book' => $result
-        ) );
+        try{
+
+
+            $result = $bookService->AddBook( [
+                'bookTitle' => $bookTitle,
+                'bookISBN' => $bookISBN,
+                'bookPages' => $bookPages ,
+                'bookPrice' => $bookPrice,
+                'bookAmount' => $bookAmount,
+                'authors' => $authors,
+                'genres' => $genres,
+            ]);
+
+            $this->json( 200 , array(
+                'code' => 200,
+                'book' => $result
+            ) );
+
+
+        }//try
+        catch( \Exception $ex ){
+
+            $this->json( 500 , array(
+                'code' => 500,
+                'book' => $ex
+            ) );
+
+        }//catch
+
+
+
+
 
     }//addBookAction
 

@@ -34,18 +34,28 @@ class BookService{
 
     }//GetBookById
 
-    public function AddBook( $bookTitle , $bookISBN , $bookPages , $bookPrice , $bookAmount ){
+    public function AddBook( $params = [] ){
 
         $stm = MySQL::$db->prepare("INSERT INTO books VALUES( DEFAULT  , :bookTitle , :bookISBN , :bookPages, :bookPrice, :bookAmount)");
-        $stm->bindParam(':bookTitle' , $bookTitle , \PDO::PARAM_STR);
-        $stm->bindParam(':bookISBN' , $bookISBN , \PDO::PARAM_INT);
-        $stm->bindParam(':bookPages' , $bookPages , \PDO::PARAM_INT);
-        $stm->bindParam(':bookPrice' , $bookPrice , \PDO::PARAM_INT);
-        $stm->bindParam(':bookAmount' , $bookAmount , \PDO::PARAM_INT);
+        $stm->bindParam(':bookTitle' , $params['bookTitle'] , \PDO::PARAM_STR);
+        $stm->bindParam(':bookISBN' ,  $params['bookISBN'] , \PDO::PARAM_STR);
+        $stm->bindParam(':bookPages' ,  $params['bookPages'] , \PDO::PARAM_INT);
+        $stm->bindParam(':bookPrice' ,  $params['bookPrice'] , \PDO::PARAM_STR);
+        $stm->bindParam(':bookAmount' ,  $params['bookAmount'] , \PDO::PARAM_INT);
 
         $stm->execute();
 
         $bookID =  MySQL::$db->lastInsertId();
+
+        if( $bookID == 0 ){
+
+            $exception = new \stdClass();
+            $exception->errorCode = MySQL::$db->errorCode ();
+            $exception->errorInfo = MySQL::$db->errorInfo ();
+
+            return $exception;
+
+        }//if
 
         if( isset( $_FILES['bookImage'] ) ){
 
@@ -71,6 +81,31 @@ class BookService{
 
         }//if
 
+        $authors = $params['authors'];
+        $genres = $params['genres'];
+
+        $stm = MySQL::$db->prepare("INSERT INTO bookauthors VALUES( DEFAULT  , :authorID , :bookID)");
+        $stm->bindParam( ':bookID' , $bookID ,  \PDO::PARAM_INT);
+
+        foreach ( $authors as $authorID ){
+
+            $stm->bindParam( ':authorID' , $authorID ,  \PDO::PARAM_INT);
+
+            $stm->execute();
+
+        }//foreach
+
+        $stm = MySQL::$db->prepare("INSERT INTO booksgenres VALUES( DEFAULT  , :authorID , :bookID)");
+        $stm->bindParam( ':bookID' , $bookID ,  \PDO::PARAM_INT);
+
+        foreach ( $genres as $genreID ){
+
+            $stm->bindParam( ':authorID' , $genreID ,  \PDO::PARAM_INT);
+
+            $stm->execute();
+
+        }//foreach
+
         return $bookID;
 
 
@@ -86,5 +121,10 @@ class BookService{
 
     } // DeleteBookById
 
+    public function AppendAuthorsToBook( $bookID , $authors ){
+
+
+
+    }
 
 }//BookService
