@@ -29,7 +29,7 @@ class AuthorizeService{
         }//if
 
         //проверяем пароль пользователя
-        $verifyPassword = $bcrypt->verify($password, $result.userPassword);
+        $verifyPassword = $bcrypt->verify($password, $result->userPassword);
 
         //даём разрешение на авторизацию
         if($verifyPassword){
