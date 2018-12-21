@@ -120,7 +120,7 @@ $(document).ready( function (  ){
     });
 
     // EDIT BOOK
-    $('body').on('click','#editBook,.btn btn-primary', function () {
+    $('body').on('click','#editBook', function () {
 
 
         let bookID = $('#bookID').data('bookId');

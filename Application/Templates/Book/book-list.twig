@@ -24,7 +24,7 @@
 
         {% for book in books %}
 
-            <tr>
+            <tr data-book-id="{{ book.bookID }}">
                 <td>{{ book.bookID }}</td>
                 <td>{{ book.bookTitle }}</td>
                 <td>{{ book.bookISBN }}</td>
@@ -32,10 +32,10 @@
                 <td>{{ book.bookPrice }}</td>
                 <td>{{ book.bookAmount }}</td>
                 <td>
-                    <button id="removeBook" class="btn btn-danger" data-book-id="{{ book.bookID }}" data-book-title="{{ book.bookTitle }}">Удалить</button>
+                    <button class="btn btn-danger" data-book-id="{{ book.bookID }}" data-book-title="{{ book.bookTitle }}">Удалить</button>
                 </td>
                 <td>
-                    <a id="editBook" class="btn btn-outline-primary" href="/BookShopMVC/public/edit-books/{{ book.bookID }}" data-book-id="{{ book.bookID }}">Редактировать</a>
+                    <a class="btn btn-outline-primary" href="/BookShopMVC/public/edit-books/{{ book.bookID }}" data-book-id="{{ book.bookID }}">Редактировать</a>
                 </td>
                 <td>
                     <a class="btn btn-primary" href="/BookShopMVC/public/info-book/{{ book.bookID }}">Посмотреть</a>
