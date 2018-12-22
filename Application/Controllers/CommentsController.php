@@ -69,11 +69,19 @@ class CommentsController extends BaseController{
             ) );
         }
 
-
-
-        // echo json_encode( $myVar );
-
-
-
     }//addGenreAction
+
+    public function deleteCommentAction($id){
+
+        $commentService = new CommentsService();
+
+        $commentService->DeleteAuthorByID( $id );
+
+        $this->json( 200 , array(
+            'code' => 200,
+            'authorID' => $id
+        ) );
+
+
+    }//deleteCommentAction
 }//CommentsController

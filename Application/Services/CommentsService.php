@@ -69,4 +69,15 @@ class CommentsService
 
     }//AddComment
 
+    public function DeleteCommentByID( $id ){
+
+        $stm = MySQL::$db->prepare("DELETE FROM comments WHERE commentID = :id");
+        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
+        $result = $stm->execute();
+
+        return $result;
+
+    }//DeleteAuthorByID
+
+
 }
