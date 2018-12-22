@@ -119,6 +119,11 @@ $(document).ready( function (  ){
                 $('#successMessage').fadeIn(200).delay(5000).fadeOut(1500);
 
             }//if
+            else{
+
+                $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 )
+
+            }//else
 
         }//try
         catch( ex ){

@@ -36,13 +36,13 @@ class BookService{
 
     public function AddBook( $params = [] ){
 
-        $stm = MySQL::$db->prepare("INSERT INTO books VALUES( DEFAULT  , :bookTitle , :bookISBN , :bookPages, :bookPrice, :bookAmount)");
+        $stm = MySQL::$db->prepare("INSERT INTO books VALUES( DEFAULT  , :bookTitle , :bookISBN , :bookPages, :bookPrice, :bookAmount, :bookDescription)");
         $stm->bindParam(':bookTitle' , $params['bookTitle'] , \PDO::PARAM_STR);
         $stm->bindParam(':bookISBN' ,  $params['bookISBN'] , \PDO::PARAM_STR);
         $stm->bindParam(':bookPages' ,  $params['bookPages'] , \PDO::PARAM_INT);
         $stm->bindParam(':bookPrice' ,  $params['bookPrice'] , \PDO::PARAM_STR);
         $stm->bindParam(':bookAmount' ,  $params['bookAmount'] , \PDO::PARAM_INT);
-        $stm->bindParam(':bookDescription' ,  $params['bookDescription'] , \PDO::PARAM_STR);
+        $stm->bindParam(':bookDescription' , $params['bookDescription'] , \PDO::PARAM_STR);
 
         $stm->execute();
 
