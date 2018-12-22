@@ -14,7 +14,7 @@ class CommentsService
 
     public function GetCommentsByBookId($id, $limit = 10 , $offset = 0){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM comments WHERE bookID=:id LIMIT :offset, :limit");
+        $stm = MySQL::$db->prepare("SELECT * FROM comments WHERE bookID=:id ORDER BY `comments`.`created` DESC LIMIT :offset, :limit");
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
@@ -78,6 +78,21 @@ class CommentsService
         return $result;
 
     }//DeleteAuthorByID
+
+    public function UpdateCommentByID($commentID, $commentText){
+
+
+        $stm = MySQL::$db->prepare("UPDATE comments 
+                                    SET commentText= :commentText
+                                    WHERE commentID=:id");
+        $stm->bindParam(':commentText' , $commentText , \PDO::PARAM_STR);
+        $stm->bindParam(':id' , $commentID , \PDO::PARAM_INT);
+        $result = $stm->execute();
+
+        return $result;
+
+
+    }//UpdateAuthorByID
 
 
 }

@@ -16,7 +16,7 @@ return array(
         '/books' => 'BookController@bookListAction',
         '/new-book' => 'BookController@newBookAction',
         '/info-book/(\d+)' => 'BookController@infoBookAction',
-        '/edit-books/(\d+)' => 'BookController@editBookAction'
+        '/edit-books/(\d+)' => 'BookController@editBookAction',
         '/comments/(\d+)' => 'CommentsController@commentListAction',
     ],
     'post' => [
@@ -25,7 +25,7 @@ return array(
         '/genre' => 'GenresController@updateGenreAction',
         '/add_genre' => 'GenresController@addPostGenreAction',
         '/addUser'=>'UserController@addUser',
-        '/edit-book/(\d+)' => 'BookController@acceptEditBookAction'
+        '/edit-book/(\d+)' => 'BookController@acceptEditBookAction',
         '/add_comment' => 'CommentsController@addCommentAction',
     ],
     'delete' => [
@@ -36,6 +36,7 @@ return array(
     ],
     'put' => [
         '/author/(\d+)' => 'AuthorController@updateAuthorAction',
+        '/comment' => 'CommentsController@updateCommentAction',
     ]
 
 );

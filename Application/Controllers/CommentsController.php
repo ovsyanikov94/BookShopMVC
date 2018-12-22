@@ -24,9 +24,11 @@ class CommentsController extends BaseController{
 
         for($i=0;$i < count($comments); $i++ ){
 
+            $dateStr = date("d-m-Y H:i:s", $comments[$i]->created);
             $commentWithUser[$i] = [
                 'comment' => $comments[$i],
-                'user' => $commentService->GetUser($comments[$i]->userID)
+                'user' => $commentService->GetUser($comments[$i]->userID),
+                'date' => $dateStr
             ];
 
         }//for
@@ -46,7 +48,7 @@ class CommentsController extends BaseController{
         $userId = $this->request->GetPostValue('userId');
         $bookService = new BookService();
         $commentsService = new CommentsService();
-        if (preg_match('/^[а-я\s\d\s\w]{4,1500}$/i', $text) &&
+        if (preg_match('/^[а-я\s\d\s\w]{4,1500}$/iu', $text) &&
             $bookService->GetBookById($bookId) &&
             isset($commentsService->GetUser($userId)[0])
         ) {
@@ -75,7 +77,7 @@ class CommentsController extends BaseController{
 
         $commentService = new CommentsService();
 
-        $commentService->DeleteAuthorByID( $id );
+        $commentService->DeleteCommentByID( $id );
 
         $this->json( 200 , array(
             'code' => 200,
@@ -84,4 +86,24 @@ class CommentsController extends BaseController{
 
 
     }//deleteCommentAction
+
+    public function updateCommentAction(   ){
+
+
+
+        $commentText = $this->request->GetPutValue('text');
+        $commentID = $this->request->GetPutValue('commentID');
+        $currentUser = $this->request->GetPutValue('userId');
+
+        $commentService = new CommentsService();
+
+        $result = $commentService->UpdateCommentByID($commentID, $commentText);
+
+        $this->json( 200 ,array(
+            'code' => 200,
+            'result' => $result,
+            'text' => $commentText
+        ) );
+
+    }//authorListAction
 }//CommentsController

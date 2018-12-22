@@ -5,7 +5,7 @@
 
     <script defer src="/BookShopMVC/public/js/comments.js" ></script>
 
-    <h2>Название книги</h2>
+    <h3>Название книги:</h3>
     <h2>{{ book.bookTitle }}</h2>
 
     <style>
@@ -62,7 +62,7 @@
             <label for="formGroupExampleInput">Новый комментарий</label>
             <textarea type="text" class="form-control" id="AddCommentInput" placeholder="Написать комментарий"></textarea>
             <div class="form-group">
-                <div id="errorInput" style=" display: none;" class="message alert alert-danger">Текст комментария не может быть пустым!</div>
+                <div id="errorInput" style=" display: none;" class="message alert alert-danger">Текст комментария не может быть меньше 4-х символов!</div>
             </div>
         </div>
 
@@ -80,40 +80,41 @@
         </div>
 
     </form>
-    <!-- Модальное окно -->
-    <!-- Modal -->
-    <div id="fon">
-        <div id="wind">
-
-            <div class="form">
-                <h6>Вы действительно хотите удалить комментарий?</h6>
-                <h4 id="commentIDLabel"></h4>
-                <h4 id="commentText"></h4>
-                <div class="form-group">
-                    <a href="#" id="okDeleteGenre" class="close">OK</a>
-                    <a href="#"  id="noDeleteGenre" class="close">Отмена</a>
-                </div>
-            </div>
-
-        </div>
-    </div>
 
     <div id="#CommentsList">
         {% for comment in comments %}
-            <div class="card w-100">
+            <div data-comment-id="{{ comment.comment.commentID }}" class="card w-100">
                 <div class="card-body">
-                    <h5 class="card-title">{{ comment.user[0].userLogin }} Дата: {{ comment.comment.created }}</h5>
-                    <p class="card-text">{{ comment.comment.commentText }}</p>
+                    <h5 class="card-title">{{ comment.user[0].userLogin }} Дата: {{ comment.date }}</h5>
+                    <div data-comment-for-update-id="{{ comment.comment.commentID }}" class="card-text">{{ comment.comment.commentText }}</div>
                     <a href="#" >
                         <i id="EditButton" data-user-id="{{ comment.comment.userID }}" data-comment-id="{{ comment.comment.commentID }}" class="far fa-edit fa-2x"></i>
                     </a>
-                    <a href="#" ><i id="DeleteButton" data-user-id="{{ comment.comment.userID }}" data-comment-id="{{ comment.comment.commentID }}" class="btn-danger far fa-trash-alt fa-2x"></i></a>
+                    <a href="#" ><i id="DeleteButton" data-book-id="{{ comment.comment.bookID }}" data-user-id="{{ comment.comment.userID }}" data-comment-id="{{ comment.comment.commentID }}" class="btn-danger far fa-trash-alt fa-2x"></i></a>
 
                 </div>
             </div>
 
 
         {%endfor  %}
+    </div>
+
+    <div id="ModalUpdate" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalTitle">Редактор отзыва</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="ModalUpdateBody" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button id="CancelButton"  type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button id="UpdeteButton" type="button" class="btn btn-primary" data-dismiss="modal">Ок</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 
