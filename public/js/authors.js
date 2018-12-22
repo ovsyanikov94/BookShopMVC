@@ -6,18 +6,33 @@
 
         let nameAuthor = $('#nameAuthor').val();
         let lastNameAuthor = $('#lastNameAuthor').val();
+        console.log('nameAuthor:' , nameAuthor);
+        console.log('lastNameAuthor:' , lastNameAuthor);
+        console.log('lastNameAuthor:' , lastNameAuthor);
 
-        $.post(
-            `${window.paths.AjaxServerUrl}${window.paths.AddAuthor}`,
-            {
-                'authorLastname': lastNameAuthor,
-                'authorFirstname': nameAuthor
-            },
-            function ( response ){
-            
-                console.log('response:' , response);
+        if(!/^[a-zа-я]{2,50}$/i.test(nameAuthor) || !/^[a-zа-я]{2,50}$/i.test(lastNameAuthor)){
 
-                $('#authorTable').append(`
+            $('#successMessage').fadeOut(1000);
+            $('#errorMessage').fadeOut(500);
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+        }//if
+        else{
+            $.post(
+                `${window.paths.AjaxServerUrl}${window.paths.AddAuthor}`,
+                {
+                    'authorLastname': lastNameAuthor,
+                    'authorFirstname': nameAuthor
+                },
+                function ( response ){
+
+                    $('#successMessage').fadeIn(1000);
+                    $('#errorMessage').fadeOut(500);
+                    $('#errorInput').fadeOut(500);
+
+                    console.log('response:' , response);
+
+                    $('#authorTable').append(`
                     <tr data-author-id = "${response.authorID}">
                         <td>${response.authorID}</td>
                         <td>${nameAuthor}</td>
@@ -29,22 +44,26 @@
                             <a href="${window.paths.AjaxServerUrl}author/${response.authorID}" class="btn btn-primary" >Обновить</a>
                         </td>
                     </tr>`
-                );
+                    );
 
-            }//fn
-        );
+
+
+                }//fn
+            );
+
+        }//else
+
 
 
     }  );
 
-    $('body').on('click','#removeAuthor,.btn-danger' , function (  ){
+    $('#removeAuthor').click( function (  ){
 
         let authorID = +$( this ).data('author-id');
 
+
         let deleteURL = `${window.paths.AjaxServerUrl}${window.paths.RemoveAuthor}`;
         deleteURL = deleteURL.replace(':authorID' , authorID);
-
-        let self = $(this);
 
         $.ajax({
             'url': deleteURL,
@@ -53,17 +72,62 @@
 
                 if( +data.code === 200 ){
 
-                    if( self.attr('id') === 'removeAuthor' ){
                         location.href = `${window.paths.AjaxServerUrl}authors`;
-                    }//if
-                    else{
-                        $(`tr[data-author-id=${authorID}]`).remove();
-                    }//else
 
                 }//if
-
+                $.modal.close();
             }//success
         });
+
+
+
+
+    }  );
+
+    $('body').on('click','#removeAuthor,.btn-danger' , function (  ){
+
+        let authorID = +$( this ).data('author-id');
+        let authorName = $( this ).data('author-name');
+        let authorLastName = $( this ).data('author-lastname');
+
+        let deleteURL = `${window.paths.AjaxServerUrl}${window.paths.RemoveAuthor}`;
+        deleteURL = deleteURL.replace(':authorID' , authorID);
+
+        let self = $(this);
+
+        $('#Modal').modal();
+        $('#ModalTitle').text("Удаление");
+        $('#ModalBody').html(`
+            <h1>Удаление!</h1>
+        `);
+
+
+        $('#nameAuthorModal').text(authorName);
+        $('#lastNameAuthorModal').text(authorLastName);
+
+        $('#ConfirmButton').click(function () {
+
+            $.ajax({
+                'url': deleteURL,
+                'type': 'DELETE',
+                'success': ( data )=>{
+
+                    if( +data.code === 200 ){
+
+                        if( self.attr('id') === 'removeAuthor' ){
+                            location.href = `${window.paths.AjaxServerUrl}authors`;
+                        }//if
+                        else{
+                            $(`tr[data-author-id=${authorID}]`).remove();
+                        }//else
+
+                    }//if
+
+                }//success
+            });
+
+        });
+
 
     }  );
 
@@ -75,20 +139,31 @@
         let nameAuthor = $('#nameAuthor').val();
         let lastNameAuthor = $('#lastNameAuthor').val();
 
-        let url = window.paths.UpdateAuthor.replace(':authorID' , authorID);
-        url = `${window.paths.AjaxServerUrl}${url}`;
+        if(!/^[a-zа-я]{4,50}$/i.test(nameAuthor) || !/^[a-zа-я]{4,50}$/i.test(lastNameAuthor)){
+            $('#successMessage').fadeOut(1000);
+            $('#errorMessage').fadeOut(500);
+            $('#errorInput').fadeIn(500);
+        }//if
+        else{
+            let url = window.paths.UpdateAuthor.replace(':authorID' , authorID);
+            url = `${window.paths.AjaxServerUrl}${url}`;
 
-        $.ajax({
-            url: url,
-            type: 'PUT',
-            data: {
-                'authorFirstname': nameAuthor,
-                'authorLastname': lastNameAuthor,
-            },
-            success: ( response )=>{
-                console.log( response );
-            }
-        });
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {
+                    'authorFirstname': nameAuthor,
+                    'authorLastname': lastNameAuthor,
+                },
+                success: ( response )=>{
+                    $('#successMessage').fadeIn(1000);
+                    $('#errorMessage').fadeOut(500);
+                    $('#errorInput').fadeOut(500);
+
+                }
+            });
+        }//else
+
 
     } );
 

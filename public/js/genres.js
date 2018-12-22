@@ -1,95 +1,128 @@
 $(document).ready( function (  ){
 
+
     $('#UpdateGenreButton').click( function (  ){
 
-        let genreID = $( this ).data('genre-id');
+        let name = $('#UpdateGenreInput').val();
 
-        console.log('genreID: ' , genreID);
+        if (/^[a-zа-я\s]{4,50}$/i.test(name) === false) {
+            $('#errorInput').css("display", "block");
 
-        $.ajax({
-            'url': `${window.paths.AjaxServerUrl}${window.paths.UpdateGenre}`,
-            'type': 'PUT',
-            'data': {
-                'id': genreID,
-                'name': $('#UpdateGenreInput').val(),
-            },
-            'success': ( )=>{
+        }//if
+        else{
 
-                $('#ResultUpdateGenreLabel').text("Запрос прошел успешно!");
-            },
-            'error':()=>{
-                $('#ResultUpdateGenreLabel').text("Запрос не прошел!");
-            },
-        });
+            $('#errorInput').css("display", "none");
+            let genreID = $( this ).data('genre-id');
+
+
+
+            $.ajax({
+                'url': `${window.paths.AjaxServerUrl}${window.paths.UpdateGenre}`,
+                'type': 'POST',
+                'data': {
+                    'id': genreID,
+                    'name': name,
+                },
+                'success': (data) => {
+
+                    let genreId = +data.genreID;
+                    let status = +data.status;
+
+                    if (status === 200 && genreId !== 0) {
+
+                        $('#errorMessage').fadeOut(1000);
+                        $('#successMessage').fadeIn(1000);
+
+                    }//if
+                    else {
+                        $('#successMessage').fadeOut(1000);
+                        $('#errorMessage').fadeIn(1000);
+                    }//else
+                }
+
+            });
+        }
+
+    }  );
+
+    $('body').on('click', '#AddGenreButton', function () {
+
+        let name = $('#AddGenreInput').val();
+
+        if (/^[a-zа-я\s]{4,50}$/i.test(name) === false) {
+            $('#errorInput').css("display", "block");
+
+        }//if
+        else{
+            $('#errorInput').css("display", "none");
+
+            $.ajax({
+                'url': `${window.paths.AjaxServerUrl}${window.paths.AddGenre}`,
+                'type': 'POST',
+                'data': {
+                    'name': name,
+                },
+                'success': (data) =>{
+console.log(+data.genreID)
+                    let genreId = +data.genreID;
+                    let status = +data .status;
+                    let amount = +data .amount;
+
+                    if( status === 200 &&genreId!==0){
+
+                        $('#errorMessage').fadeOut(1000);
+                        $('#successMessage').fadeIn(1000);
+
+                        $('#GenresTable').append(`
+                             <tr data-genre-id = "${genreId}">
+                                <td>${genreId}</td>
+                                <td>${name}</td>
+                                <td>${amount}</td>
+                                <td>
+                                    <button data-genre-id="${genreId}" data-genre-name="${name}" class="btn btn-danger" >Удалить</button>
+                                </td>
+                                <td>
+                                    <a href="${window.paths.AjaxServerUrl}genre/${genreId}" class="btn btn-primary" >Обновить</a>
+                                </td>
+                            </tr>`
+                        );
+                    }//if
+                    else{
+                        $('#successMessage').fadeOut(1000);
+                        $('#errorMessage').fadeIn(1000);
+                    }//else
+
+
+
+                }
+            });
+        }//else
+
 
     }  );
 
-    $('#AddGenreButton').click( function (  ){
-       let name = $('#AddGenreInput').val();
-        $.ajax({
-            'url': `${window.paths.AjaxServerUrl}${window.paths.AddGenre}`,
-            'type': 'POST',
-            'data': {
-                'name': name,
-            },
-            'success': (data) =>{
 
-                let genreId = +data.genreID;
-                let status = +data .status;
-                let amount = +data .amount;
-
-                if( status === 200 ){
-
-                    $('#errorMessage').fadeOut(1000);
-                    $('#successMessage').fadeIn(1000);
-
-                }//if
-                else{
-                    $('#successMessage').fadeOut(1000);
-                    $('#errorMessage').fadeIn(1000);
-                }//else
-
-                $('#GenresTable').append(`
-                    <tr data-genre-id = "${genreId}">
-                        <td>${genreId}</td>
-                        <td>${name}</td>
-                        <td>${amount}</td>
-                        <td>
-                            <button data-genre-id="${genreId}" class="btn btn-danger" >Удалить</button>
-                        </td>
-                        <td>
-                            <a href="${window.paths.AjaxServerUrl}genre" class="btn btn-primary" >Обновить</a>
-                        </td>
-                    </tr>`
-                );
-
-            }
-        });
-
-    }  );
-    $('#btnTest').click( function (  ) {
-        $('#myModal').modal("show");
+    $('body').on('click', '#noDeleteGenre', function () {
+        $('#fon').css("display","none");
     });
 
-    //$('#myModal').modal("show");
-    $('body').on('click','.btn-danger' , function (){
+    $('body').on('click', '#okDeleteGenre', function () {
 
-
-
-        let genreID = +$( this ).data('genre-id');
+        let genreID = +$('#genreIDLabel').text();
+        $('#fon').css("display","none");
 
         let deleteURL = `${window.paths.AjaxServerUrl}${window.paths.RemoveGenre}`;
-        deleteURL = deleteURL.replace(':genreID' , genreID);
+        deleteURL = deleteURL.replace(':genreID', genreID);
 
         let self = $(this);
-        console.log('genreID: ' , genreID);
+        console.log('genreID: ', genreID);
 
         $.ajax({
             'url': deleteURL,
             'type': 'DELETE',
-            'success': ( data )=>{
+            'success': (data) => {
 
-                if( +data.code === 200 ){
+                if (+data.code === 200) {
 
                     $(`tr[data-genre-id=${genreID}]`).remove();
 
@@ -98,6 +131,15 @@ $(document).ready( function (  ){
             }//success
         });
 
-    }  );
+    });
 
+    $('body').on('click','.btn-danger' , function (  ){
+        let name = $(this).data('genre-name');
+        let genreID = $(this).data('genre-id');
+
+        $('#genreIDLabel').text(genreID);
+        $('#genreName').text(name);
+        $('#fon').show();
+
+    });
 });
