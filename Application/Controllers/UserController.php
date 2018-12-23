@@ -61,6 +61,7 @@ class UserController extends BaseController{
             ));
             return;
         }//if
+
         $bcrypt = new Bcrypt();
         $bcrypt_version = '2y';
         $heshToken = $bcrypt->encrypt($userEmail,$bcrypt_version);
@@ -80,7 +81,8 @@ class UserController extends BaseController{
 
             $this->json(200,array(
                 'verification'=> false,
-                'addUser'=> $result
+                'addUser'=> $result,
+                'res'=>$mailres
             ));
 
             //https://www.w3schools.com/php/php_ref_mail.asp
