@@ -13,7 +13,7 @@ use Bcrypt\Bcrypt;
 
 class UserService
 {
-    public function addUser($login, $password, $email){
+    public function addUser($login, $password, $email, $hesh){
 
         $isUser = MySQL::$db->prepare("SELECT * FROM users WHERE userLogin = :userLogin OR userEmail=:userEmail");
         $isUser->bindParam(':userLogin', $login,\PDO::PARAM_STR);
@@ -26,7 +26,7 @@ class UserService
             $bcrypt_version = '2y';
             $heshPassword = $bcrypt->encrypt($password,$bcrypt_version);
 
-            $stm = MySQL::$db->prepare("INSERT INTO users VALUES( DEFAULT, :login, :email ,:password) ");
+            $stm = MySQL::$db->prepare("INSERT INTO users VALUES( DEFAULT, :login, :email ,:password,false,$hesh) ");
             $stm->bindParam(':login' , $login , \PDO::PARAM_STR);
             $stm->bindParam(':email' , $email , \PDO::PARAM_STR);
             $stm->bindParam(':password' , $heshPassword , \PDO::PARAM_STR);
@@ -68,4 +68,13 @@ class UserService
 
     }//getSingleUser
 
+    public function verificationUser($token){
+
+        $stm = MySQL::$db->prepare("UPDATE users SET verification = true, token = NULL WHERE token =:token");
+        $stm->bindParam('token', $token,\PDO::PARAM_STR);
+        $stm->execute();
+
+        return  $stm->fetch(\PDO::FETCH_OBJ);
+
+    }
 }//UserServise
