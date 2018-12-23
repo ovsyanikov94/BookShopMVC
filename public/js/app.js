@@ -105,7 +105,6 @@ $( document ).ready( ()=>{
 
 } );
 
-
 window.paths = {
 
     AjaxServerUrl: '/BookShopMVC/public/',

@@ -10,6 +10,9 @@
             let loginOrEmail = $('#loginOrEmailInput').val();
             let password = $('#passwordInput').val();
 
+           //проверяем установку "Запомнить меня"
+           let isRememberMeChecked = $('#rememberMeCheckBox').is(':checked');
+
             //проверка на пустое в поле логина
             if(!loginOrEmail){
 
@@ -56,7 +59,8 @@
                 'type': 'GET',
                 'data': {
                     login: loginOrEmail,
-                    password: password
+                    password: password,
+                    rememberMeCheckbox: isRememberMeChecked
                 },//data
                 'success': (data) => {
 
