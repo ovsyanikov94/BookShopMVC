@@ -36,7 +36,15 @@ class BookService{
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
 
-        $book->bookImagePath = $stm->fetch(\PDO::FETCH_OBJ)->bookImagePath;
+        $image = $stm->fetch(\PDO::FETCH_OBJ);
+
+        if( $image ){
+            $book->bookImagePath = $image->bookImagePath;
+        }
+
+        $book->authors = $this->GetBookAuthors( $book->bookID );
+        $book->genres = $this->GetBookGenres( $book->bookID );
+
 
         return $book;
 
@@ -161,6 +169,51 @@ class BookService{
         return $result;
 
     } // DeleteBookById
+
+    public function GetBookAuthors( $bookID ){
+
+        $stm = MySQL::$db->prepare("SELECT * FROM bookauthors WHERE bookID = :id");
+        $stm->bindParam(':id' , $bookID , \PDO::PARAM_INT);
+        $stm->execute();
+
+        $authorIds = $stm->fetchAll(\PDO::FETCH_OBJ);
+        $authorIds  = array_map( function ( $author ){
+
+            return $author->authorID;
+
+        } , $authorIds );
+
+         $authorIds = implode(',',$authorIds);
+
+         $stm = MySQL::$db->prepare("SELECT * FROM authors WHERE authorID IN ($authorIds)");
+         $stm->execute();
+
+         return $stm->fetchAll(\PDO::FETCH_OBJ);
+
+    }//GetBookAuthors
+
+    public function GetBookGenres( $bookID ){
+
+        $stm = MySQL::$db->prepare("SELECT * FROM booksgenres WHERE bookID = :id");
+        $stm->bindParam(':id' , $bookID , \PDO::PARAM_INT);
+        $stm->execute();
+
+        $genresIds = $stm->fetchAll(\PDO::FETCH_OBJ);
+        $genresIds  = array_map( function ( $genre ){
+
+            return $genre->genreID;
+
+        } , $genresIds );
+
+        $genresIds = implode(',',$genresIds);
+
+        $stm = MySQL::$db->prepare("SELECT * FROM genres WHERE genreID IN ($genresIds)");
+        $stm->execute();
+
+        return $stm->fetchAll(\PDO::FETCH_OBJ);
+
+
+    }//GetBookAuthors
 
     public function AppendAuthorsToBook( $bookID , $authors ){
 

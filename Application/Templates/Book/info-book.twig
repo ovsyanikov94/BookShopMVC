@@ -14,6 +14,25 @@
         <p class="lead"><b>Цена: </b>{{ book.bookPrice }} ₽</p>
         <p class="lead"><b>Кол-во страниц:</b> {{ book.bookPages }} стр.</p>
         <p class="lead"><b>ISBN: </b>{{ book.bookISBN }}</p>
+        <p class="lead">
+            <b>Авторы: </b><br>
+
+            <ul>
+                {% for author in book.authors %}
+                    <li>{{ author.authorFirstName }} {{ author.authorLastName }}</li>
+                {% endfor %}
+            </ul>
+        </p>
+
+        <p class="lead">
+            <b>Жанры: </b><br>
+
+            <ul>
+                {% for genre in book.genres %}
+                    <li>{{ genre.genreTitle }}</li>
+                {% endfor %}
+            </ul>
+        </p>
 
     </div>
 
