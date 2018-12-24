@@ -28,6 +28,23 @@ class BookController extends BaseController{
 
     }//bookListAction
 
+    public function getMoreBooks(){
+
+        $bookService = new BookService();
+
+        $limit = $this->request->GetPostValue('limit');
+
+        $offset = $this->request->GetPostValue('offset');
+
+        $books = $bookService->GetBooks( $limit, $offset );
+
+        $this->json( 200 , array(
+            'code' => 200,
+            'books' => $books
+        ) );
+
+    }//bookListAction
+
     public function getBookByIdAction( $id ){
 
         $bookService = new BookService();
@@ -180,10 +197,6 @@ class BookController extends BaseController{
             ) );
 
         }//catch
-
-
-
-
 
     }//addBookAction
 

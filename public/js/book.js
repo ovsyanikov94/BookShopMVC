@@ -2,8 +2,6 @@ $(document).ready( function (  ){
 
     $('#AddBookButton').click( async function ( ){
 
-        debugger;
-
         const extentions = [
             '.jpg',
             '.jpeg',
@@ -123,14 +121,14 @@ $(document).ready( function (  ){
             }//if
             else{
 
-                $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 )
+                $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
             }//else
 
         }//try
         catch( ex ){
 
-            $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 )
+            $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
             console.log(ex);
 
@@ -247,6 +245,61 @@ $(document).ready( function (  ){
             }); // Ajax
 
         }); // Click
+
+    });
+
+    //SHOW MORE
+    $('#show_more').click(async function () {
+
+        let $limit = 10;
+        let $offset = 5;
+
+        try{
+
+            let response = await $.ajax({
+                url: `${window.paths.AjaxServerUrl}${window.paths.GetBooks}`,
+                method: 'GET',
+                data:{
+                    offset:$offset,
+                    limit:$limit
+                }
+            });
+
+            $.each(response, function (i) {
+                for (let i in response) {
+
+                    $('#booksList').append(`
+                   <tr data-book-id="{{ book.bookID }}">
+                        <td>{{ book.bookID }}</td>
+                        <td>{{ book.bookTitle }}</td>
+                        <td>{{ book.bookISBN }}</td>
+                        <td>{{ book.bookPages }}</td>
+                        <td>{{ book.bookPrice }}</td>
+                        <td>{{ book.bookAmount }}</td>
+                        <td>
+                            <button class="btn btn-danger" data-book-id="{{ book.bookID }}" data-book-title="{{ book.bookTitle }}">Удалить</button>
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-primary" href="/BookShopMVC/public/edit-books/{{ book.bookID }}" data-book-id="{{ book.bookID }}">Редактировать</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="/BookShopMVC/public/info-book/{{ book.bookID }}">Посмотреть</a>
+                        </td>
+                    </tr>
+
+                }//for 
+            });
+
+            console.log(response);
+
+           $()
+
+        }//try
+        catch( ex ){
+
+            console.log(ex);
+
+        }//catch
 
     });
 
