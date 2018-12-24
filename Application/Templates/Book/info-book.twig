@@ -4,8 +4,10 @@
 
     <div class="jumbotron pt-3 pb-1">
 
-        {{% if ( book ) %}
-        <img src="http://www.cruzo.net/user/images/k/ecc3ecf42c75db1ffce5d06cbe95b1e6_644.jpg" style="float: left; width: 300px" class="rounded mr-5 mb-1" alt="Cinque Terre">
+        {% if ( book.bookImagePath )%}
+            <img src="../{{ book.bookImagePath }}" style="float: left; width: 300px" class="rounded mr-5 mb-1" alt="Cinque Terre">
+        {% endif %}
+
         <h1 class="display-4">{{ book.bookTitle }}</h1>
         <p class="lead">{{ book.bookDescription }}</p>
         <hr class="my-4">

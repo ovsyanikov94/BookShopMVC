@@ -30,7 +30,16 @@ class BookService{
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
 
-        return $stm->fetch(\PDO::FETCH_OBJ);
+        $book = $stm->fetch(\PDO::FETCH_OBJ);
+
+        $stm = MySQL::$db->prepare("SELECT bookImagePath FROM bookImages WHERE bookID = :id");
+        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
+        $stm->execute();
+
+        $book->bookImagePath = $stm->fetch(\PDO::FETCH_OBJ)->bookImagePath;
+
+        return $book;
+
 
     }//GetBookById
 
