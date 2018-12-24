@@ -2,6 +2,8 @@ $(document).ready( function (  ){
 
     $('#AddBookButton').click( async function ( ){
 
+        debugger;
+
         const extentions = [
             '.jpg',
             '.jpeg',
@@ -14,36 +16,47 @@ $(document).ready( function (  ){
         let bookPages = $('#bookPages').val();
         let bookPrice = $('#bookPrice').val();
         let bookAmount = $('#bookAmount').val();
-        //
+        let bookDescription = $('#bookDescription').val()
+
         if(/^[а-яa-z0-9\s]{3,50}$/i.test(bookTitle) === false ){
 
-            $('#errorInput').css("display", "block").text('Название некорректно!');
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 ).text('Название некорректно!');
             return;
 
         }//if
 
         if(/^\d{9}[\d|X]$/.test(bookISBN) === false ){
 
-            $('#errorInput').css("display", "block").text('ISBN некорректен!');
-            return;
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 ).text('ISBN некорректен!');
+                return;
+
         }//if
 
         if(/\d{1,10}$/.test(bookPages) === false ){
 
-            $('#errorInput').css("display", "block").text('Страницы некорректны');;
-            return;
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 ).text('Кол-во страниц некорректно!');
+                return;
+
         }//if
 
-        if(/^\d{1,7}/.test(bookPrice) === false ){
+        if(/^\d+(,\d{1,2})?$/.test(bookPrice) === false ){
 
-            $('#errorInput').css("display", "block").text('Цена некорректна');;
-            return;
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 ).text('Цена некорректна!');
+                return;
+
         }//if
 
         if(/^\d{1,5}/.test(bookAmount) === false ){
 
-            $('#errorInput').css("display", "block").text('Кол-во некорректно');
-            return;
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 ).text('Кол-во книг некорректно!');
+                return;
+
+        }//if
+        if(/^.{10,500}/.test(bookDescription) === false ){
+
+            $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 ).text('Описание некорректно!');
+                return null;
+
         }//if
 
         let bookData = new FormData();
@@ -52,6 +65,7 @@ $(document).ready( function (  ){
         bookData.append('bookPages' , bookPages);
         bookData.append('bookPrice' , bookPrice);
         bookData.append('bookAmount' , bookAmount);
+        bookData.append('bookDescription' , bookDescription);
 
         let files =  $('#bookFile').prop('files');
 
@@ -63,7 +77,7 @@ $(document).ready( function (  ){
 
             if( extentions.indexOf( ext ) === -1 ){
 
-                $('#errorInput').text('Тип файла некорректен').css("display", "block");
+                $('#errorInput').text('Тип файла некорректен').fadeIn(500).delay( 5000 ).fadeOut( 500 )
                 return;
 
             }//if
@@ -102,18 +116,23 @@ $(document).ready( function (  ){
                 data: bookData
             });
 
-            console.log('Response: ' , response );
-
             if( +response.code === 200 ){
 
                 $('#successMessage').fadeIn(200).delay(5000).fadeOut(1500);
 
             }//if
+            else{
+
+                $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 )
+
+            }//else
 
         }//try
         catch( ex ){
 
-            console.log('Exception: ' , ex);
+            $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 )
+
+            console.log(ex);
 
         }//catch
 
