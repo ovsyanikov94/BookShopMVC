@@ -2,8 +2,6 @@ $(document).ready( function (  ){
 
     $('#AddBookButton').click( async function ( ){
 
-        debugger;
-
         const extentions = [
             '.jpg',
             '.jpeg',

@@ -170,7 +170,7 @@ class BookService{
                 mkdir("images");
             } // If
 
-            //mkdir("images/{$bookID}");
+//            mkdir("images/{$bookID}");
 
             //$path = "/BookShopMVC/public/images/{$bookID}/{$name}";
             $path = "images/{$bookID}/{$name}";
@@ -181,7 +181,7 @@ class BookService{
 
             } // If
 
-            $stm = MySQL::$db->prepare("UPDATE bookImages SET bookID= :bookID, bookImagePath= :bookImagePath");
+            $stm = MySQL::$db->prepare("UPDATE bookImages SET bookID= :bookID, bookImagePath= :bookImagePath WHERE bookID=:bookID");
             $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_INT );
             $stm->bindParam(':bookImagePath' , $path , \PDO::PARAM_STR );
 
@@ -202,7 +202,7 @@ class BookService{
         $authors = $params['authors'];
         $genres = $params['genres'];
 
-        $stm = MySQL::$db->prepare("UPDATE bookauthors SET authorID=:authorID, bookID=:bookID");
+        $stm = MySQL::$db->prepare("UPDATE bookauthors SET authorID=:authorID, bookID=:bookID WHERE bookID=:bookID");
         $stm->bindParam( ':bookID' , $bookID ,  \PDO::PARAM_INT);
 
         foreach ( $authors as $authorID ){
@@ -213,19 +213,18 @@ class BookService{
 
         } // Foreach
 
-        $stm = MySQL::$db->prepare("UPDATE booksgenres SET authorID=:authorID, bookID= :bookID");
+        $stm = MySQL::$db->prepare("UPDATE booksgenres SET genreID=:genreID, bookID=:bookID WHERE bookID= :bookID");
         $stm->bindParam( ':bookID' , $bookID ,  \PDO::PARAM_INT);
 
         foreach ( $genres as $genreID ){
 
-            $stm->bindParam( ':authorID' , $genreID ,  \PDO::PARAM_INT);
+            $stm->bindParam( ':genreID' , $genreID ,  \PDO::PARAM_INT);
 
             $stm->execute();
 
         } // Foreach
 
-        $result = $stm->execute();
-        return $result;
+        return $bookID;
 
     } // EditBook
 
