@@ -249,7 +249,7 @@ $(document).ready( function (  ){
     });
 
     //SHOW MORE
-    $('#show_more').click(async function () {
+    $('#show_more').click(async function (){
 
         let $limit = 10;
         let $offset = 5;
@@ -266,28 +266,32 @@ $(document).ready( function (  ){
             });
 
             $.each(response, function (i) {
+
                 for (let i in response) {
 
                     $('#booksList').append(`
-                   <tr data-book-id="{{ book.bookID }}">
-                        <td>{{ book.bookID }}</td>
-                        <td>{{ book.bookTitle }}</td>
-                        <td>{{ book.bookISBN }}</td>
-                        <td>{{ book.bookPages }}</td>
-                        <td>{{ book.bookPrice }}</td>
-                        <td>{{ book.bookAmount }}</td>
+                    <tr data-book-id="${ response.bookID }">
+                        <td>${ response.bookID }</td>
+                        <td>${ response.bookTitle }</td>
+                        <td>${ response.bookISBN }</td>
+                        <td>${ response.bookPages }</td>
+                        <td>${ response.bookPrice }</td>
+                        <td>${ response.bookAmount }</td>
                         <td>
-                            <button class="btn btn-danger" data-book-id="{{ book.bookID }}" data-book-title="{{ book.bookTitle }}">Удалить</button>
+                            <button class="btn btn-danger" data-book-id="${ response.bookID }" data-book-title="${ response.bookTitle }">Удалить</button>
                         </td>
                         <td>
-                            <a class="btn btn-outline-primary" href="/BookShopMVC/public/edit-books/{{ book.bookID }}" data-book-id="{{ book.bookID }}">Редактировать</a>
+                            <a class="btn btn-outline-primary" href="/BookShopMVC/public/edit-books/${ response.bookID }" data-book-id="${ book.bookID }">Редактировать</a>
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="/BookShopMVC/public/info-book/{{ book.bookID }}">Посмотреть</a>
+                            <a class="btn btn-primary" href="/BookShopMVC/public/info-book/${ response.bookID }">Посмотреть</a>
                         </td>
-                    </tr>
+                    </tr>`
 
-                }//for 
+                    );
+
+                }//for
+
             });
 
             console.log(response);
