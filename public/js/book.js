@@ -2,6 +2,8 @@ $(document).ready( function (  ){
 
     $('#AddBookButton').click( async function ( ){
 
+        debugger;
+
         const extentions = [
             '.jpg',
             '.jpeg',
@@ -53,7 +55,7 @@ $(document).ready( function (  ){
         if(/^.{10,500}/.test(bookDescription) === false ){
 
             $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 ).text('Описание некорректно!');
-                return;
+                return null;
 
         }//if
 

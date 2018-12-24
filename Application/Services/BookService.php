@@ -80,6 +80,21 @@ class BookService{
 
             }//if
 
+            $stm = MySQL::$db->prepare("INSERT INTO bookImages VALUES( DEFAULT  , :bookID , :bookImagePath)");
+            $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_INT );
+            $stm->bindParam(':bookImagePath' , $path , \PDO::PARAM_STR );
+            $result = $stm->execute();
+
+            if( $result === false ){
+
+                $exception = new \stdClass();
+                $exception->errorCode = MySQL::$db->errorCode ();
+                $exception->errorInfo = MySQL::$db->errorInfo ();
+
+                return $exception;
+
+            }//if
+
         }//if
 
         $authors = $params['authors'];
