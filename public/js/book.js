@@ -16,7 +16,7 @@ $(document).ready( function (  ){
         let bookPages = $('#bookPages').val();
         let bookPrice = $('#bookPrice').val();
         let bookAmount = $('#bookAmount').val();
-        let bookDescription = $('#bookDescription').val()
+        let bookDescription = $('#bookDescription').val();
 
         if(/^[а-яa-z0-9\s]{3,50}$/i.test(bookTitle) === false ){
 
@@ -141,6 +141,12 @@ $(document).ready( function (  ){
     // EDIT BOOK
     $('body').on('click','#editBook', function () {
 
+        const extentions = [
+            '.jpg',
+            '.jpeg',
+            '.png',
+            '.bmp',
+        ];
 
         let bookID = $('#bookID').data('bookId');
         let bookTitle = $('#bookTitle').val();
@@ -148,6 +154,7 @@ $(document).ready( function (  ){
         let bookPages = $('#bookPages').val();
         let bookPrice = $('#bookPrice').val();
         let bookAmount = $('#bookAmount').val();
+        let bookDescription = $('#bookDescription').val();
 
         console.log(bookID);
 
@@ -160,25 +167,46 @@ $(document).ready( function (  ){
         bookData.append('bookPages' , bookPages);
         bookData.append('bookPrice' , bookPrice);
         bookData.append('bookAmount' , bookAmount);
+        bookData.append('bookDescription' , bookDescription);
 
-        // let files =  $('#bookFile').prop('files');
-        //
-        // if(files.length !== 0){
-        //
-        //     let file = files[0];
-        //
-        //     let ext = file.name.substring(file.name.lastIndexOf('.'));
-        //
-        //     if( extentions.indexOf( ext ) === -1 ){
-        //
-        //         $('#errorInput').text('Тип файла некорректен').css("display", "block");
-        //         return;
-        //
-        //     } // If
-        //
-        //     bookData.append('bookImage' , file);
-        //
-        // } // If
+        let files =  $('#bookFile').prop('files');
+
+        if(files.length !== 0){
+
+            let file = files[0];
+
+            let ext = file.name.substring(file.name.lastIndexOf('.'));
+
+            if( extentions.indexOf( ext ) === -1 ){
+
+                $('#errorInput').text('Тип файла некорректен').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                return;
+
+            } // If
+
+            bookData.append('bookImage' , file);
+
+        } // If
+
+        let authors = [].map.call( $('#authorsList option:selected') , ( opt )=>{ return $(opt).data('author-id') } );
+        let genres = [].map.call( $('#genresList option:selected') , ( opt )=>{ return $(opt).data('genre-id') } );
+
+        if(  authors.length === 0 ){
+
+            $('#errorInput').css("display", "block").text('Авторы не выбраны!');
+            return;
+
+        }//if
+
+        if(  genres.length === 0 ){
+
+            $('#errorInput').css("display", "block").text('Жанры не выбраны!');
+            return;
+
+        }//if
+
+        bookData.append('authors' , JSON.stringify(authors) );
+        bookData.append('genres' , JSON.stringify(genres) );
 
         try{
 
@@ -190,7 +218,7 @@ $(document).ready( function (  ){
                 processData: false,
                 data: bookData,
                 success: (response)=>{
-
+                    console.log('123', response);
                 }
             });
 

@@ -144,18 +144,87 @@ class BookService{
 
     }//AddBook
 
-    public function EditBookByID($bookTitle , $bookISBN , $bookPages , $bookPrice , $bookAmount, $bookID){
+    public function EditBookByID( $params=[], $id ){
 
-        $stm = MySQL::$db->prepare("UPDATE books SET bookTitle= :bookTitle, bookISBN= :bookISBN, bookPages= :bookPages, bookPrice= :bookPrice, bookAmount= :bookAmount WHERE bookID= :bookID");
-        $stm->bindParam(':bookTitle' , $bookTitle , \PDO::PARAM_STR);
-        $stm->bindParam(':bookISBN' , $bookISBN , \PDO::PARAM_INT);
-        $stm->bindParam(':bookPages' , $bookPages , \PDO::PARAM_INT);
-        $stm->bindParam(':bookPrice' , $bookPrice , \PDO::PARAM_INT);
-        $stm->bindParam(':bookAmount' , $bookAmount , \PDO::PARAM_INT);
+        $bookID = $id;
+
+        $stm = MySQL::$db->prepare("UPDATE books SET bookTitle= :bookTitle, bookISBN= :bookISBN, bookPages= :bookPages, bookPrice= :bookPrice, bookAmount= :bookAmount, bookDescription= :bookDescription WHERE bookID= :bookID");
+        $stm->bindParam(':bookTitle' , $params['bookTitle'] , \PDO::PARAM_STR);
+        $stm->bindParam(':bookISBN' ,  $params['bookISBN'] , \PDO::PARAM_STR);
+        $stm->bindParam(':bookPages' ,  $params['bookPages'] , \PDO::PARAM_INT);
+        $stm->bindParam(':bookPrice' ,  $params['bookPrice'] , \PDO::PARAM_STR);
+        $stm->bindParam(':bookAmount' ,  $params['bookAmount'] , \PDO::PARAM_INT);
+        $stm->bindParam(':bookDescription' , $params['bookDescription'] , \PDO::PARAM_STR);
         $stm->bindParam(':bookID', $bookID, \PDO::PARAM_INT);
 
-        $result = $stm->execute();
+        $stm->execute();
 
+        if( isset( $_FILES['bookImage'] ) ){
+
+
+            $name =  $_FILES['bookImage']['name'];
+
+            $name = time() . "_$name";
+
+            if( !file_exists("images")){
+                mkdir("images");
+            } // If
+
+            //mkdir("images/{$bookID}");
+
+            //$path = "/BookShopMVC/public/images/{$bookID}/{$name}";
+            $path = "images/{$bookID}/{$name}";
+
+            if( !move_uploaded_file($_FILES['bookImage']['tmp_name'] , $path) ){
+
+                throw new \Exception('File upload error!');
+
+            } // If
+
+            $stm = MySQL::$db->prepare("UPDATE bookImages SET bookID= :bookID, bookImagePath= :bookImagePath");
+            $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_INT );
+            $stm->bindParam(':bookImagePath' , $path , \PDO::PARAM_STR );
+
+            $result = $stm->execute();
+
+            if( $result === false ){
+
+                $exception = new \stdClass();
+                $exception->errorCode = MySQL::$db->errorCode ();
+                $exception->errorInfo = MySQL::$db->errorInfo ();
+
+                return $exception;
+
+            } // If
+
+        } // If
+
+        $authors = $params['authors'];
+        $genres = $params['genres'];
+
+        $stm = MySQL::$db->prepare("UPDATE bookauthors SET authorID=:authorID, bookID=:bookID");
+        $stm->bindParam( ':bookID' , $bookID ,  \PDO::PARAM_INT);
+
+        foreach ( $authors as $authorID ){
+
+            $stm->bindParam( ':authorID' , $authorID ,  \PDO::PARAM_INT);
+
+            $stm->execute();
+
+        } // Foreach
+
+        $stm = MySQL::$db->prepare("UPDATE booksgenres SET authorID=:authorID, bookID= :bookID");
+        $stm->bindParam( ':bookID' , $bookID ,  \PDO::PARAM_INT);
+
+        foreach ( $genres as $genreID ){
+
+            $stm->bindParam( ':authorID' , $genreID ,  \PDO::PARAM_INT);
+
+            $stm->execute();
+
+        } // Foreach
+
+        $result = $stm->execute();
         return $result;
 
     } // EditBook

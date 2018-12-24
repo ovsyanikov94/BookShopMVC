@@ -182,27 +182,25 @@ class BookController extends BaseController{
         }//catch
 
 
-
-
-
     }//addBookAction
 
     public function acceptEditBookAction($id){
 
         $bookTitle = $this->request->GetPostValue('bookTitle');
 
-        if(! filter_var($bookTitle , FILTER_VALIDATE_REGEXP , array(
-                "options" => array("regexp"=>"/^[\w\s]{2,50}$/iu"))
-        )){
+        $matches = array();
+
+        $check = preg_match('/^[а-яa-z0-9\s]{3,50}$/iu',$bookTitle , $matches );
+
+        if( !$check ){
 
             $this->json( 400 , array(
-                'title_err' => $bookTitle,
-                'POST' => $_POST
+                'title_err' => $bookTitle
             ) );
 
             return;
 
-        }//If
+        }//if
 
         $bookISBN = $this->request->GetPostValue('bookISBN');
 
@@ -235,7 +233,7 @@ class BookController extends BaseController{
         $bookPrice = $this->request->GetPostValue('bookPrice');
 
         if(! filter_var($bookPrice , FILTER_VALIDATE_REGEXP , array(
-                "options" => array("regexp"=>"/^\d+[\.,]{1}(\d{1,7})$/"))
+                "options" => array("regexp"=>"/^\d{1,7}/"))
         )){
 
             $this->json( 400 , array(
@@ -260,16 +258,55 @@ class BookController extends BaseController{
 
         }//if
 
-        $bookID = $id;
+        $bookDescription = $this->request->GetPostValue('bookDescription');
+
+        if(! filter_var($bookDescription , FILTER_VALIDATE_REGEXP , array(
+                "options" => array("regexp"=>"/^.{10,500}/"))
+        )){
+
+            $this->json( 400 , array(
+                'Description_err' => $bookDescription
+            ) );
+
+            return;
+
+        }//if
 
         $bookService = new BookService();
 
-        $result = $bookService->EditBookByID($bookTitle , $bookISBN , $bookPages , $bookPrice , $bookAmount, $bookID);
+        $authors = json_decode($this->request->GetPostValue('authors'));
+        $genres = json_decode($this->request->GetPostValue('genres'));
 
-        $this->json( 200 , array(
-            'book' => $result,
-            'code' => 200
-        ) );
+        try{
+
+
+            $result = $bookService->EditBookByID( [
+                'bookTitle' => $bookTitle,
+                'bookISBN' => $bookISBN,
+                'bookPages' => $bookPages ,
+                'bookPrice' => $bookPrice,
+                'bookAmount' => $bookAmount,
+                'bookDescription' => $bookDescription,
+                'authors' => $authors,
+                'genres' => $genres
+            ], $id);
+
+            $this->json( 200 , array(
+                'code' => 200,
+                'book' => $result
+            ) );
+
+
+        }//try
+        catch( \Exception $ex ){
+
+            $this->json( 500 , array(
+                'code' => 500,
+                'book' => $ex
+            ) );
+
+        }//catch
+
 
     } // acceptEditBookAction
 
@@ -301,12 +338,19 @@ class BookController extends BaseController{
     public function editBookAction($id){
 
         $bookService = new BookService();
-        $result = $bookService->GetBookById($id);
+        $genresService = new GenresService();
+        $authorsService = new AuthorService();
+
+        $books = $bookService->GetBookById($id);
+        $genres = $genresService->GetGenres(100);
+        $authors = $authorsService->GetAuthors(100);
 
         $template = $this->twig->load( 'Book/edit-book.twig');
 
         echo $template->render(array(
-            'book' => $result
+            'book' => $books,
+            'genres' => $genres,
+            'authors' => $authors
         ));
 
     } // deleteBookAction
