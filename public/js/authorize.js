@@ -64,6 +64,18 @@
                 },//data
                 'success': (data) => {
 
+                    if(data.code === 405 && !data.emailVerify){
+
+                        $('#errorInput')
+                            .html("Ваш Email не подтверждён!<br> Проверьте свой Email.")
+                            .fadeOut(750)
+                            .delay(2500)
+                            .fadeIn(1500);
+
+                        return;
+
+                    }//if
+
                     //если пользователь не найден в базе
                     if(!data.authorize){
 
@@ -76,7 +88,7 @@
                     }//if
                     else{
 
-                        location.href = `${window.paths.AjaxServerUrl}authors`;
+                        //location.href = `${window.paths.AjaxServerUrl}authors`;
 
                     }//else
 

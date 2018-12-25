@@ -77,7 +77,7 @@ class UserController extends BaseController{
             $message = new messageConst();
 
             $message->tuneTemplate($userLogin,$heshToken);
-           $mailres = mail($userEmail , $message->verificationSubject,$message->verificationTemplate,$message->header);
+            $mailres = mail($userEmail , $message->verificationSubject,$message->verificationTemplate,$message->header);
 
             $this->json(200,array(
                 'verification'=> false,
