@@ -14,9 +14,9 @@ class messageConst{
     public $verificationSubject = "Book-shop";
     public $verificationTemplate = null;
 
-    public $header = "Content-type: text/html; charset=iso-8859-1\r\n";
+    public $header = "From: book.shop.api@gmail.com\r\nContent-type: text/html; charset=iso-8859-1\r\n";
     public function tuneTemplate($userName,$hesh){
 
-        $this->verificationTemplate = '<h3> ВОВА </h3> </br> <a href="/BookShopMVC/public/verification/sdfagsdfgsdfghsdfhdfh"></a>';
+        $this->verificationTemplate = "<h3>$userName</h3> </br> <a href='http://localhost:5012/BookShopMVC/public/verification/?token=$hesh'>Confirm</a>";
     }//
 }//messageConst

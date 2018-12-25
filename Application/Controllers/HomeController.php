@@ -11,6 +11,20 @@ namespace Application\Controllers;
 
 class HomeController extends BaseController{
 
+    public function indexAction(  ){
+
+        try {
+
+            $template = $this->twig->load('Home/index.twig');
+            echo $template->render( );
+
+        }//try
+        catch (\Exception $ex) {
+
+        }//catch
+
+    }
+
     public function Action404(  ){
 
         try {

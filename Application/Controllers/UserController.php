@@ -77,7 +77,7 @@ class UserController extends BaseController{
             $message = new messageConst();
 
             $message->tuneTemplate($userLogin,$heshToken);
-           $mailres = mail('mr.uakor@gmail.com', $message->verificationSubject,$message->verificationTemplate,$message->header);
+           $mailres = mail($userEmail , $message->verificationSubject,$message->verificationTemplate,$message->header);
 
             $this->json(200,array(
                 'verification'=> false,
@@ -118,14 +118,16 @@ class UserController extends BaseController{
 
     }//getSingleUser
 
-    public function verificationUser($token){
+    public function verificationUser(){
 
         $userService = new UserService();
+
+        $token = $this->request->GetGetValue('token');
 
         $userVer = $userService->verificationUser($token);
 
         if($userVer !==0){
-            $template = $this->twig->load('User/author.twig');
+            $template = $this->twig->load('User/users.twig');
 
             echo $template->render( );
         }//if
