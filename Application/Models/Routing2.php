@@ -18,7 +18,9 @@ return array(
         '/new-book' => 'BookController@newBookAction',
         '/info-book/(\d+)' => 'BookController@infoBookAction',
         '/edit-books/(\d+)' => 'BookController@editBookAction',
+        '/verification'=>'UserController@verificationUser',
         '/get-books' => 'BookController@getMoreBooks',
+
     ],
     'post' => [
         '/new-book' => 'BookController@addBookAction',
