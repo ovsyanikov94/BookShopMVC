@@ -30,18 +30,36 @@ class BookService{
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
 
-        return $stm->fetch(\PDO::FETCH_OBJ);
+        $book = $stm->fetch(\PDO::FETCH_OBJ);
+
+        $stm = MySQL::$db->prepare("SELECT bookImagePath FROM bookImages WHERE bookID = :id");
+        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
+        $stm->execute();
+
+        $image = $stm->fetch(\PDO::FETCH_OBJ);
+
+        if( $image ){
+            $book->bookImagePath = $image->bookImagePath;
+        }
+
+        $book->authors = $this->GetBookAuthors( $book->bookID );
+        $book->genres = $this->GetBookGenres( $book->bookID );
+
+
+        return $book;
+
 
     }//GetBookById
 
     public function AddBook( $params = [] ){
 
-        $stm = MySQL::$db->prepare("INSERT INTO books VALUES( DEFAULT  , :bookTitle , :bookISBN , :bookPages, :bookPrice, :bookAmount)");
+        $stm = MySQL::$db->prepare("INSERT INTO books VALUES( DEFAULT  , :bookTitle , :bookISBN , :bookPages, :bookPrice, :bookAmount, :bookDescription)");
         $stm->bindParam(':bookTitle' , $params['bookTitle'] , \PDO::PARAM_STR);
         $stm->bindParam(':bookISBN' ,  $params['bookISBN'] , \PDO::PARAM_STR);
         $stm->bindParam(':bookPages' ,  $params['bookPages'] , \PDO::PARAM_INT);
         $stm->bindParam(':bookPrice' ,  $params['bookPrice'] , \PDO::PARAM_STR);
         $stm->bindParam(':bookAmount' ,  $params['bookAmount'] , \PDO::PARAM_INT);
+        $stm->bindParam(':bookDescription' , $params['bookDescription'] , \PDO::PARAM_STR);
 
         $stm->execute();
 
@@ -76,6 +94,21 @@ class BookService{
             if( !move_uploaded_file($_FILES['bookImage']['tmp_name'] , $path) ){
 
                 throw new \Exception('File upload error!');
+
+            }//if
+
+            $stm = MySQL::$db->prepare("INSERT INTO bookImages VALUES( DEFAULT  , :bookID , :bookImagePath)");
+            $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_INT );
+            $stm->bindParam(':bookImagePath' , $path , \PDO::PARAM_STR );
+            $result = $stm->execute();
+
+            if( $result === false ){
+
+                $exception = new \stdClass();
+                $exception->errorCode = MySQL::$db->errorCode ();
+                $exception->errorInfo = MySQL::$db->errorInfo ();
+
+                return $exception;
 
             }//if
 
@@ -136,6 +169,51 @@ class BookService{
         return $result;
 
     } // DeleteBookById
+
+    public function GetBookAuthors( $bookID ){
+
+        $stm = MySQL::$db->prepare("SELECT * FROM bookauthors WHERE bookID = :id");
+        $stm->bindParam(':id' , $bookID , \PDO::PARAM_INT);
+        $stm->execute();
+
+        $authorIds = $stm->fetchAll(\PDO::FETCH_OBJ);
+        $authorIds  = array_map( function ( $author ){
+
+            return $author->authorID;
+
+        } , $authorIds );
+
+         $authorIds = implode(',',$authorIds);
+
+         $stm = MySQL::$db->prepare("SELECT * FROM authors WHERE authorID IN ($authorIds)");
+         $stm->execute();
+
+         return $stm->fetchAll(\PDO::FETCH_OBJ);
+
+    }//GetBookAuthors
+
+    public function GetBookGenres( $bookID ){
+
+        $stm = MySQL::$db->prepare("SELECT * FROM booksgenres WHERE bookID = :id");
+        $stm->bindParam(':id' , $bookID , \PDO::PARAM_INT);
+        $stm->execute();
+
+        $genresIds = $stm->fetchAll(\PDO::FETCH_OBJ);
+        $genresIds  = array_map( function ( $genre ){
+
+            return $genre->genreID;
+
+        } , $genresIds );
+
+        $genresIds = implode(',',$genresIds);
+
+        $stm = MySQL::$db->prepare("SELECT * FROM genres WHERE genreID IN ($genresIds)");
+        $stm->execute();
+
+        return $stm->fetchAll(\PDO::FETCH_OBJ);
+
+
+    }//GetBookAuthors
 
     public function AppendAuthorsToBook( $bookID , $authors ){
 

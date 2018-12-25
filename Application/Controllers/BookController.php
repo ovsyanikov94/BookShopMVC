@@ -132,6 +132,20 @@ class BookController extends BaseController{
 
         }//if
 
+        $bookDescription = $this->request->GetPostValue('bookDescription');
+
+        if(! filter_var($bookDescription , FILTER_VALIDATE_REGEXP , array(
+                "options" => array("regexp"=>"/^.{10,500}/"))
+        )){
+
+            $this->json( 400 , array(
+                'Description_err' => $bookDescription
+            ) );
+
+            return;
+
+        }//if
+
         $bookService = new BookService();
 
         $authors = json_decode($this->request->GetPostValue('authors'));
@@ -146,6 +160,7 @@ class BookController extends BaseController{
                 'bookPages' => $bookPages ,
                 'bookPrice' => $bookPrice,
                 'bookAmount' => $bookAmount,
+                'bookDescription' => $bookDescription,
                 'authors' => $authors,
                 'genres' => $genres,
             ]);
@@ -177,7 +192,7 @@ class BookController extends BaseController{
         $bookTitle = $this->request->GetPostValue('bookTitle');
 
         if(! filter_var($bookTitle , FILTER_VALIDATE_REGEXP , array(
-                "options" => array("regexp"=>"/^[а-яА-Я\w]{3,50}$/i"))
+                "options" => array("regexp"=>"/^[\w\s]{2,50}$/iu"))
         )){
 
             $this->json( 400 , array(
@@ -187,7 +202,7 @@ class BookController extends BaseController{
 
             return;
 
-        } // If
+        }//If
 
         $bookISBN = $this->request->GetPostValue('bookISBN');
 
@@ -220,7 +235,7 @@ class BookController extends BaseController{
         $bookPrice = $this->request->GetPostValue('bookPrice');
 
         if(! filter_var($bookPrice , FILTER_VALIDATE_REGEXP , array(
-                "options" => array("regexp"=>"/^\d{1,7}/"))
+                "options" => array("regexp"=>"/^\d+[\.,]{1}(\d{1,7})$/"))
         )){
 
             $this->json( 400 , array(
@@ -294,6 +309,6 @@ class BookController extends BaseController{
             'book' => $result
         ));
 
-    } // editBookAction
+    } // deleteBookAction
 
 }//AuthorController
