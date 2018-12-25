@@ -64,6 +64,7 @@
                 },//data
                 'success': (data) => {
 
+                    //если пользователь не подтвердил свой Email
                     if(data.code === 405 && !data.emailVerify){
 
                         $('#errorInput')
