@@ -32,11 +32,11 @@ class BookController extends BaseController{
 
         $bookService = new BookService();
 
-        $limit = $this->request->GetPostValue('limit');
+        $limit = $this->request->GetGetValue('limit');
 
-        $offset = $this->request->GetPostValue('offset');
+        $offset = $this->request->GetGetValue('offset');
 
-        $books = $bookService->GetBooks( $limit, $offset );
+        $books = $bookService->GetBooks( (int)$limit, (int)$offset );
 
         $this->json( 200 , array(
             'code' => 200,

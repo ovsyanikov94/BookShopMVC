@@ -14,7 +14,7 @@ class BookService{
 
     public function GetBooks( $limit = 10 , $offset = 0 ){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM books LIMIT :offset, :limit");
+        $stm = MySQL::$db->prepare("SELECT * FROM books LIMIT :offset,:limit");
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->execute();
