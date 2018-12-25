@@ -161,7 +161,6 @@ class BookService{
 
         if( isset( $_FILES['bookImage'] ) ){
 
-
             $name =  $_FILES['bookImage']['name'];
 
             $name = time() . "_$name";
@@ -170,9 +169,6 @@ class BookService{
                 mkdir("images");
             } // If
 
-//            mkdir("images/{$bookID}");
-
-            //$path = "/BookShopMVC/public/images/{$bookID}/{$name}";
             $path = "images/{$bookID}/{$name}";
 
             if( !move_uploaded_file($_FILES['bookImage']['tmp_name'] , $path) ){
@@ -181,7 +177,7 @@ class BookService{
 
             } // If
 
-            $stm = MySQL::$db->prepare("UPDATE bookImages SET bookID= :bookID, bookImagePath= :bookImagePath WHERE bookID=:bookID");
+            $stm = MySQL::$db->prepare("UPDATE bookImages SET bookImagePath= :bookImagePath WHERE bookID=:bookID");
             $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_INT );
             $stm->bindParam(':bookImagePath' , $path , \PDO::PARAM_STR );
 
