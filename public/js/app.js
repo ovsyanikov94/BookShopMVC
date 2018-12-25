@@ -90,13 +90,15 @@ $( document ).ready( ()=>{
                // let test = JSON.parse(dara);
                 console.log(data);
 
-                if(data['addUser']!==null){
-                    console.log('успешно');
+                if(data!==null){
+                    console.log(data);
                 }//if
                 else {
                     console.log('такой пользователь уже есть ');
                 }//else
 
+            }).fail((data)=>{
+                console.log(data);
             });//ajax
 
         }//if
