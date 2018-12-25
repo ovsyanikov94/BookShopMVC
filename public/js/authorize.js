@@ -64,16 +64,17 @@
                 },//data
                 'success': (data) => {
 
+                    console.log('data.authorize.code: ', data.authorize.code, 'data.authorize.emailVerify: ', data.authorize.emailVerify);
+
                     //если пользователь не подтвердил свой Email
-                    if(data.code === 405 && !data.emailVerify){
+                    if(data.authorize.code === 405 && !data.authorize.emailVerify){
 
                         $('#errorInput')
+
                             .html("Ваш Email не подтверждён!<br> Проверьте свой Email.")
                             .fadeOut(750)
                             .delay(2500)
-                            .fadeIn(1500);
-
-                        return;
+                            .fadeIn(750);
 
                     }//if
 
@@ -88,9 +89,7 @@
 
                     }//if
                     else{
-
                         //location.href = `${window.paths.AjaxServerUrl}authors`;
-
                     }//else
 
                 },//seccess

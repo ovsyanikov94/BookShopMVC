@@ -24,25 +24,25 @@ class AuthorizeService{
             return $result;
         }//if
 
-        //проверка на подтверждение своего email
-        $isEmailVerified = $result->verification;
-
-        if($isEmailVerified){
-
-            $result = array(
-                'code' => 405,
-                'emailVerify' => $isEmailVerified
-            );
-
-            return $result;
-
-        }//if
-
         //проверяем пароль пользователя
         $verifyPassword = $bcrypt->verify($password, $result->userPassword);
 
         //даём разрешение на авторизацию
         if($verifyPassword){
+
+            //проверка на подтверждение своего email
+            $isEmailVerified = $result->verification;
+
+            if(!$isEmailVerified){
+
+                $result = array(
+                    'code' => 405,
+                    'emailVerify' => $isEmailVerified
+                );
+
+                return $result;
+
+            }//if
 
             //если "Запомнить меня" отмечена
             if($rememberMe){
@@ -58,6 +58,8 @@ class AuthorizeService{
            return true;
 
         }//if
+        else
+            return false;
 
     }//LogIn
 
