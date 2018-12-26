@@ -39,11 +39,14 @@
 
             }//if
 
-            //проверка поля логина на корректность ввода
-            if( !/^[a-zA-ZА-Яа-я\d]{4,16}$/i.test(loginOrEmail) ){
+            //проверка поля логина/email на корректность ввода
+            //if( !ValidatorConst.USER_LOGIN_VALIDATOR.test(loginOrEmail) || !ValidatorConst.USER_EMAIL_VALIDATOR.test(loginOrEmail) ){
+
+            //if( !/^[a-z\d]{4,16}$/i.test(loginOrEmail) || !/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(loginOrEmail)){
+            if( !/^[a-z\d]{4,16}$/i.test(loginOrEmail) ){
 
                 $('#errorInput')
-                    .text('Логин содержит не корректные символы.')
+                    .text('Логин/Email содержит не корректные символы.')
                     .fadeOut(500)
                     .delay(3000)
                     .fadeIn(2000);
