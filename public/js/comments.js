@@ -1,10 +1,12 @@
 $(document).ready( function (  ){
+    let limit = 2;
+    let offset = 2;
 
     $('body').on('click', '#AddCommentButton', function () {
 
         let text = $('#AddCommentInput').val();
 
-        if (/^[а-я\s\d\s\w]{4,1500}$/i.test(text) === false) {
+        if (text.length <= 4) {
             $('#errorInput').css("display", "block");
 
         }//if
@@ -30,30 +32,34 @@ $(document).ready( function (  ){
                     let user = data.user;
                     let status = +data .status;
                     let comment = data .comment;
+                    let time = data.date;
 
                     if( status === 200 && comment){
 
-
-
-                        $('#CommentsList').append( `
-                                                   <div data-comment-id="{{ comment.commentID }}" class="card w-100">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">{{ user.userLogin }} Дата: {{ comment.created }}</h5>
-                                                            <p class="card-text">{{ comment.commentText }}</p>
-                                                            <a href="#" >
-                                                                <i id="EditButton" data-user-id="{{ comment.userID }}" data-comment-id="{{ comment.commentID }}" class="far fa-edit fa-2x"></i>
-                                                            </a>
-                                                            <a href="#" ><i id="DeleteButton" data-user-id="{{ comment.userID }}" data-comment-id="{{ comment.commentID }}" class="btn-danger far fa-trash-alt fa-2x"></i>
-                                                            </a>
-                                            
-                                                        </div>
-                                                   </div>`);
-
                         $('#errorMessage').fadeOut(1000);
                         $('#successMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
+
+
+                        $('#CommentsList').prepend(`
+                                                   <div data-comment-id="${ comment.commentID }" class="card w-100">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">${ user.userLogin } Дата: ${ time }</h5>
+                                                            <div data-comment-for-update-id="${ comment.commentID }" class="card-text">${ comment.commentText }}</div>
+                                                            <a href="#" >
+                                                                <i id="EditButton" data-user-id="${ comment.userID }" data-comment-id="${ comment.commentID }" class="far fa-edit fa-2x"></i>
+                                                            </a>
+                                                            <a href="#" ><i id="DeleteButton" data-user-id="${ comment.userID }" data-comment-id="${ comment.commentID }" class="btn-danger far fa-trash-alt fa-2x"></i>
+                                                            </a>
+
+                                                        </div>
+                                                   </div>`
+                        );
+                        $('#AddCommentInput').val('');
                     }//if
                     else{
                         $('#successMessage').fadeOut(1000);
+
+
                         $('#errorMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
                     }//else
 
@@ -69,7 +75,7 @@ $(document).ready( function (  ){
     $('body').on('click', '#EditButton', function () {
         let commentID = $(this).data('comment-id');
         let commenttext = $(`div[data-comment-for-update-id=${commentID}]`).text();
-
+        let userId = $(this).data('current-user-id');
         $('#ModalUpdate').modal();
         $('#ModalUpdateBody').html(`<div class="form-group">
             <label for="formGroupExampleInput">Измените комментарий</label>
@@ -81,19 +87,14 @@ $(document).ready( function (  ){
 
         $('#UpdeteButton').click(function () {
             let newText = $('#UpdateCommentInput').val();
-            if (/^[а-я\s\d\s\w]{4,1500}$/i.test(newText) === false) {
+            if (newText.length <= 4) {
                 $('#errorInput').css("display", "block");
 
             }//if
             else{
                 $('#errorInput').css("display", "none");
-
-
-
-                let userId = $(this).data('current-user-id');
-
-
-
+                    console.log('commentID  ', commentID);
+                    console.log('this  ', this);
                 $.ajax({
                     'url': `${window.paths.AjaxServerUrl}${window.paths.UpdateComment}`,
                     'type': 'PUT',
@@ -110,7 +111,7 @@ $(document).ready( function (  ){
 
 
                         if( status === 200){
-                            console.log('commentID: ', commentID);
+
                             $(`div[data-comment-for-update-id=${commentID}]`).text(data.text);
                             $('#errorMessage').fadeOut(1000);
                             $('#successMessage').text("Комментарий успешно обновлен!").fadeIn(1000).delay( 5000 ).fadeOut( 500 );
@@ -121,7 +122,7 @@ $(document).ready( function (  ){
                         }//else
 
 
-
+                        commentID = null;
                     }//success
                 });
             }//else
@@ -161,6 +162,7 @@ $(document).ready( function (  ){
                         }//if
                         else{
                             $(`div[data-comment-id=${commentID}]`).remove();
+
                         }//else
 
                     }//if
@@ -172,6 +174,61 @@ $(document).ready( function (  ){
 
 
     }  );
+
+    $('#MoreButton').click(function () {
+        let bookId = $(this).data('book-id');
+
+        let URL = `${window.paths.AjaxServerUrl}${window.paths.MoreComments}`;
+        URL = URL.replace(':bookId' , bookId);
+        console.log('limit', limit);
+        console.log('offset', offset);
+        $.ajax({
+            'url': URL,
+            'type': 'GET',
+            'data': {
+                limit: limit,
+                offset: offset,
+
+            },
+            'success': (data) =>{
+
+                let status = +data .status;
+                let comments = data .comments;
+
+                if( status === 200){
+
+                    comments.forEach(comment => {
+
+                        $('#CommentsList').append(`
+                                                   <div data-comment-id="${ comment.comment.commentID }" class="card w-100">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">${ comment.user.userLogin } Дата: ${ comment.date }</h5>
+                                                            <div data-comment-for-update-id="${ comment.comment.commentID }" class="card-text">${ comment.comment.commentText }}</div>
+                                                            <a href="#" >
+                                                                <i id="EditButton" data-user-id="${ comment.comment.userID }" data-comment-id="${ comment.comment.commentID }" class="far fa-edit fa-2x"></i>
+                                                            </a>
+                                                            <a href="#" ><i id="DeleteButton" data-user-id="${ comment.comment.userID }" data-comment-id="${ comment.comment.commentID }" class="btn-danger far fa-trash-alt fa-2x"></i>
+                                                            </a>
+
+                                                        </div>
+                                                   </div>`
+                        );
+
+                    });//forEach
+
+                    if(comments.length < limit ){
+                        $('#More').css("display", "none");
+                    }
+
+                    offset += limit;
+                }//if
+
+
+
+
+            }//success
+        });
+    })
 
 });
 

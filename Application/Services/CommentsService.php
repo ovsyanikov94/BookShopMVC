@@ -12,7 +12,7 @@ use Application\Utils\MySQL;
 class CommentsService
 {
 
-    public function GetCommentsByBookId($id, $limit = 10 , $offset = 0){
+    public function GetCommentsByBookId($id, $limit = 2 , $offset = 0){
 
         $stm = MySQL::$db->prepare("SELECT * FROM comments WHERE bookID=:id ORDER BY `comments`.`created` DESC LIMIT :offset, :limit");
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
@@ -22,6 +22,17 @@ class CommentsService
 
         return $stm->fetchAll(\PDO::FETCH_OBJ);
     }//GetCommentsByBookId
+
+    public function GetCommentByStatusId($id, $limit = 2 , $offset = 0){
+
+        $stm = MySQL::$db->prepare("SELECT * FROM comments WHERE statusID=:id ORDER BY `comments`.`created` ASC LIMIT :offset, :limit");
+        $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
+        $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
+        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
+        $stm->execute();
+
+        return $stm->fetchAll(\PDO::FETCH_OBJ);
+    }//GetCommentByStatusId
 
     public function GetCommentById($id){
 
@@ -47,7 +58,7 @@ class CommentsService
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
 
-        return $stm->fetchAll(\PDO::FETCH_OBJ);
+        return $stm->fetch(\PDO::FETCH_OBJ);
     }//GetUser
 
     public function AddComment( $text, $bookId, $userId, $time  ){
@@ -79,14 +90,31 @@ class CommentsService
 
     }//DeleteAuthorByID
 
-    public function UpdateCommentByID($commentID, $commentText){
+    public function UpdateCommentByID($commentID, $commentText, $time){
 
 
         $stm = MySQL::$db->prepare("UPDATE comments 
-                                    SET commentText= :commentText
+                                    SET commentText= :commentText, updated= :time
                                     WHERE commentID=:id");
         $stm->bindParam(':commentText' , $commentText , \PDO::PARAM_STR);
         $stm->bindParam(':id' , $commentID , \PDO::PARAM_INT);
+        $stm->bindParam(':time' , $time , \PDO::PARAM_INT);
+        $result = $stm->execute();
+
+        return $result;
+
+
+    }//UpdateAuthorByID
+
+    public function UpdateCommentStatusByID($commentID, $commentStatus, $time){
+
+
+        $stm = MySQL::$db->prepare("UPDATE comments 
+                                    SET statusID= :commentStatus, updated= :time
+                                    WHERE commentID=:id");
+        $stm->bindParam(':commentStatus' , $commentStatus , \PDO::PARAM_STR);
+        $stm->bindParam(':id' , $commentID , \PDO::PARAM_INT);
+        $stm->bindParam(':time' , $time , \PDO::PARAM_INT);
         $result = $stm->execute();
 
         return $result;

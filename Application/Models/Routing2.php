@@ -19,6 +19,8 @@ return array(
         '/verification'=>'UserController@verificationUser',
         '/edit-books/(\d+)' => 'BookController@editBookAction',
         '/comments/(\d+)' => 'CommentsController@commentListAction',
+        '/comments-mod/(\d+)' => 'CommentsController@commentModerationListAction',
+        '/more-comments/(\d+)' => 'CommentsController@commentMoreAction',
     ],
     'post' => [
         '/new-book' => 'BookController@addBookAction',
@@ -38,6 +40,7 @@ return array(
     'put' => [
         '/author/(\d+)' => 'AuthorController@updateAuthorAction',
         '/comment' => 'CommentsController@updateCommentAction',
+        '/comment-status' => 'CommentsController@updateCommentStatusAction',
     ]
 
 );

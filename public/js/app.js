@@ -125,10 +125,20 @@ window.paths = {
     RemoveComment: 'comment/:commentID',
     UpdateComment: 'comment',
     AddComment: 'add_comment',
+    MoreComments: 'more-comments/:bookId',
+    UpdateStatus: 'comment-status',
 
     //BOOK
     AddBook: 'new-book',
     EditBook: 'edit-book/:bookID',
     DeleteBook: 'delete-book/:bookID'
+
+};
+
+window.StatusConsts = {
+    StatusAll: 0,
+    StatusNew: 1,
+    StatusApprove: 2,
+    StatusReject: 3,
 
 };

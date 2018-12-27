@@ -9,28 +9,12 @@
     <h2>{{ book.bookTitle }}</h2>
 
     <style>
-        #wind {
-            width: 400px;
-            height: 300px;
-            text-align: center;
-            padding: 15px;
-            border: 2px solid #999999;
-            color: #333333;
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            margin: auto;
-            background: #ffffff;
-        }
 
         .close {
             width: 70%;
             display: inline-block;
             border: 1px solid #0000cc;
             color: #0000cc;
-            padding: 0 12px;
             margin-right: 15%;
             margin-left: 15%;
             margin-top: 5%;
@@ -42,16 +26,6 @@
         }
         .close:hover {background: #e6e6ff;}
 
-        #fon {
-            background: rgba(102, 102, 102, 0.5);
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: none;
-        }
-
 
     </style>
 
@@ -60,7 +34,7 @@
     <form >
         <div class="form-group">
             <label for="formGroupExampleInput">Новый комментарий</label>
-            <textarea type="text" class="form-control" id="AddCommentInput" placeholder="Написать комментарий"></textarea>
+            <textarea type="text" class="form-control" id="AddCommentInput" placeholder="Напишите комментарий длинной от 4 до 1500 символов!"></textarea>
             <div class="form-group">
                 <div id="errorInput" style=" display: none;" class="message alert alert-danger">Текст комментария не может быть меньше 4-х символов!</div>
             </div>
@@ -81,11 +55,11 @@
 
     </form>
 
-    <div id="#CommentsList">
+    <div id="CommentsList">
         {% for comment in comments %}
             <div data-comment-id="{{ comment.comment.commentID }}" class="card w-100">
                 <div class="card-body">
-                    <h5 class="card-title">{{ comment.user[0].userLogin }} Дата: {{ comment.date }}</h5>
+                    <h5 class="card-title">{{ comment.user.userLogin }} Дата: {{ comment.date }}</h5>
                     <div data-comment-for-update-id="{{ comment.comment.commentID }}" class="card-text">{{ comment.comment.commentText }}</div>
                     <a href="#" >
                         <i id="EditButton" data-user-id="{{ comment.comment.userID }}" data-comment-id="{{ comment.comment.commentID }}" class="far fa-edit fa-2x"></i>
@@ -97,6 +71,13 @@
 
 
         {%endfor  %}
+    </div>
+
+    <div id="More" class="row" style="margin-top: 20px; margin-bottom: 30px;">
+
+            <div id="MoreButton" data-book-id="{{  book.bookID }}" class="btn btn-outline-primary col-3 ">ЕЩЁ</div>
+
+
     </div>
 
     <div id="ModalUpdate" class="modal" tabindex="-1" role="dialog">
