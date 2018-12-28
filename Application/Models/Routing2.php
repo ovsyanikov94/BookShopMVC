@@ -21,6 +21,8 @@ return array(
         '/comments/(\d+)' => 'CommentsController@commentListAction',
         '/comments-mod/(\d+)' => 'CommentsController@commentModerationListAction',
         '/more-comments/(\d+)' => 'CommentsController@commentMoreAction',
+        '/get-books' => 'BookController@getMoreBooks',
+
     ],
     'post' => [
         '/new-book' => 'BookController@addBookAction',

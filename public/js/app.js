@@ -131,7 +131,8 @@ window.paths = {
     //BOOK
     AddBook: 'new-book',
     EditBook: 'edit-book/:bookID',
-    DeleteBook: 'delete-book/:bookID'
+    DeleteBook: 'delete-book/:bookID',
+    GetBooks: 'get-books'
 
 };
 
