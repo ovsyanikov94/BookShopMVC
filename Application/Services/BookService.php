@@ -14,7 +14,7 @@ class BookService{
 
     public function GetBooks( $limit = 10 , $offset = 0 ){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM books LIMIT :offset, :limit");
+        $stm = MySQL::$db->prepare("SELECT * FROM books LIMIT :offset,:limit");
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->execute();
@@ -31,6 +31,12 @@ class BookService{
         $stm->execute();
 
         $book = $stm->fetch(\PDO::FETCH_OBJ);
+
+        if(!$book){
+
+            return false;
+
+        }//if
 
         $stm = MySQL::$db->prepare("SELECT bookImagePath FROM bookImages WHERE bookID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);

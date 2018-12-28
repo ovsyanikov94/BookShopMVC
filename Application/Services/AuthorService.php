@@ -59,6 +59,7 @@ class AuthorService{
 
     public function UpdateAuthorByID( $id, $firstName , $lastName ){
 
+
         $stm = MySQL::$db->prepare("UPDATE authors 
                                     SET authorFirstName= :authorFirstName, authorLastName=:authorLastName 
                                     WHERE authorID=:id");

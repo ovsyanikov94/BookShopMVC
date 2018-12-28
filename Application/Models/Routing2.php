@@ -17,8 +17,13 @@ return array(
         '/books' => 'BookController@bookListAction',
         '/new-book' => 'BookController@newBookAction',
         '/info-book/(\d+)' => 'BookController@infoBookAction',
+        '/verification'=>'UserController@verificationUser',
         '/edit-books/(\d+)' => 'BookController@editBookAction',
-        '/verification'=>'UserController@verificationUser'
+        '/comments/(\d+)' => 'CommentsController@commentListAction',
+        '/comments-mod/(\d+)' => 'CommentsController@commentModerationListAction',
+        '/more-comments/(\d+)' => 'CommentsController@commentMoreAction',
+        '/get-books' => 'BookController@getMoreBooks',
+        '/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
     ],
     'post' => [
         '/new-book' => 'BookController@addBookAction',
@@ -26,15 +31,19 @@ return array(
         '/genre' => 'GenresController@updateGenreAction',
         '/add_genre' => 'GenresController@addPostGenreAction',
         '/addUser'=>'UserController@addUser',
-        '/edit-book/(\d+)' => 'BookController@acceptEditBookAction'
+        '/edit-book/(\d+)' => 'BookController@acceptEditBookAction',
+        '/add_comment' => 'CommentsController@addCommentAction',
     ],
     'delete' => [
         '/author/(\d+)' => 'AuthorController@deleteAuthorAction',
         '/delete-book/(\d+)' => "BookController@deleteBookAction",
         '/genre/(\d+)' => 'GenresController@deleteGenreAction',
+        '/comment/(\d+)' => 'CommentsController@deleteCommentAction',
     ],
     'put' => [
         '/author/(\d+)' => 'AuthorController@updateAuthorAction',
+        '/comment' => 'CommentsController@updateCommentAction',
+        '/comment-status' => 'CommentsController@updateCommentStatusAction',
     ]
 
 );
