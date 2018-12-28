@@ -24,6 +24,7 @@ return array(
         '/more-comments/(\d+)' => 'CommentsController@commentMoreAction',
         '/get-books' => 'BookController@getMoreBooks',
         '/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
+        '/personal-page' => 'PersonalPageController@personalPageAction',
     ],
     'post' => [
         '/login' => 'AuthorizeController@LoginAction',
