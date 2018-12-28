@@ -19,6 +19,14 @@ class AuthorizeService{
         //возвращаем объект из базы данных
         $result = $stm->fetch(\PDO::FETCH_OBJ);
 
+        $userForSessionAndCookies = array(
+
+            'userID' => $result->userID,
+            'userLogin' => $result->userLogin,
+            'userEmail' => $result->userEmail,
+
+        );
+
         //есди пользователь не найден
         if(!$result){
             return array(
@@ -35,6 +43,7 @@ class AuthorizeService{
             //проверка на подтверждение своего email
             $isEmailVerified = $result->verification;
 
+            //пользователь не подтвердил свой email
             if(!$isEmailVerified){
 
                 $result = array(
@@ -46,7 +55,7 @@ class AuthorizeService{
 
             }//if
 
-            //если "Запомнить меня" отмечена
+            //если "Запомнить меня" НЕ отмечена
             if(!$rememberMe){
 
                 //начинаем сессию
@@ -58,28 +67,39 @@ class AuthorizeService{
             }//if
             else{
 
-                $userSerializeResult = serialize(array(
-                    'userID' => $result->userID,
-                    'userLogin' => $result->userLogin
-                ));
+                //если "Запомнить меня" отмечена
+//                $userSerializeResult = serialize(array(
+//                    'userID' => $result->userID,
+//                    'userLogin' => $result->userLogin
+//                ));
 
+                //если "Запомнить меня" отмечена
+                $userSerializeResultForCookie = serialize($userForSessionAndCookies);
+
+                //сетим данные пользователя в cookie
                 setcookie(
                     'cookie_user' ,
-                    $userSerializeResult ,
+                    $userSerializeResultForCookie ,
                     time()+60*60*24*30
                 );
 
             }//else
 
+           //авторизируем пользователя
            return array(
                'code' => 200
            );
 
         }//if
-        else
+        else{
+
+            //если парооли не совпадают
             return array(
                 'code' => 401
             );
+
+        }//else
+
 
     }//LogIn
 
