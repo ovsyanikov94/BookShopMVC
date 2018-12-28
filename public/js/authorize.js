@@ -4,6 +4,12 @@
 
     $('document').ready(function () {
 
+        // setInterval(5000 , ()=>{
+        //
+        //     //$.ajax(...)
+        //
+        // });
+
         //кнопка "Войти" на странице авторизации
         $('#Login').click( function() {
 
@@ -43,8 +49,10 @@
             //if( !ValidatorConst.USER_LOGIN_VALIDATOR.test(loginOrEmail) || !ValidatorConst.USER_EMAIL_VALIDATOR.test(loginOrEmail) ){
 
             //if( !/^[a-z\d]{4,16}$/i.test(loginOrEmail) || !/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(loginOrEmail)){
-            if( !/^[a-z\d]{4,16}$/i.test(loginOrEmail) ){
+            // if( !/^[a-z\d]{4,16}$/i.test(loginOrEmail) ){
 
+            if( !window.ValidatorConst.USER_LOGIN_VALIDATOR.test(loginOrEmail) &&
+                !window.ValidatorConst.USER_EMAIL_VALIDATOR.test(loginOrEmail) ){
                 $('#errorInput')
                     .text('Логин/Email содержит не корректные символы.')
                     .fadeOut(500)
@@ -59,7 +67,7 @@
 
             $.ajax({
                 'url': url,
-                'type': 'GET',
+                'type': 'POST',
                 'data': {
                     login: loginOrEmail,
                     password: password,
@@ -67,35 +75,35 @@
                 },//data
                 'success': (data) => {
 
-                    console.log('data.authorize.code: ', data.authorize.code, 'data.authorize.emailVerify: ', data.authorize.emailVerify);
+                    console.log('data' , data);
 
-                    //если пользователь не подтвердил свой Email
-                    if(data.authorize.code === 405 && !data.authorize.emailVerify){
+                    if(+data.code === 200){
 
-                        $('#errorInput')
-
-                            .html("Ваш Email не подтверждён!<br> Проверьте свой Email.")
-                            .fadeOut(750)
-                            .delay(2500)
-                            .fadeIn(750);
+                        location.href = `${window.paths.AjaxServerUrl}authors`;
 
                     }//if
-
-                    //если пользователь не найден в базе
-                    if(!data.authorize){
-
-                        $('#errorInput')
-                            .html("Такой Логин/Email или Пароль не существуют!<br> Вы можете зарегестрироваться.")
-                            .fadeOut(750)
-                            .delay(2500)
-                            .fadeIn(1500);
-
-                    }//if
-                    else{
-                        //location.href = `${window.paths.AjaxServerUrl}authors`;
-                    }//else
 
                 },//seccess
+                statusCode: {
+                    '401': ()=>{
+                        $('#errorInput')
+                            .html("Пользователь не найден!<br> Вы можете зарегестрироваться.")
+                            .fadeIn(750)
+                            .delay(2500)
+                            .fadeOut(750);
+                    },
+                    '405': ()=>{
+
+                        $('#errorInput')
+                            .html("Ваш Email не подтверждён!<br> Проверьте свой Email.")
+                            .fadeIn(750)
+                            .delay(2500)
+                            .fadeOut(750);
+
+                    },
+                }
+
+
 
             });
 

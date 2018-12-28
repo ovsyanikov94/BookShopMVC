@@ -21,7 +21,9 @@ class AuthorizeService{
 
         //есди пользователь не найден
         if(!$result){
-            return $result;
+            return array(
+                'code' => 401
+            );
         }//if
 
         //проверяем пароль пользователя
@@ -45,7 +47,7 @@ class AuthorizeService{
             }//if
 
             //если "Запомнить меня" отмечена
-            if($rememberMe){
+            if(!$rememberMe){
 
                 //начинаем сессию
                 session_start();
@@ -54,12 +56,30 @@ class AuthorizeService{
                 $_SESSION['session_user'] = $result;
 
             }//if
+            else{
 
-           return true;
+                $userSerializeResult = serialize(array(
+                    'userID' => $result->userID,
+                    'userLogin' => $result->userLogin
+                ));
+
+                setcookie(
+                    'cookie_user' ,
+                    $userSerializeResult ,
+                    time()+60*60*24*30
+                );
+
+            }//else
+
+           return array(
+               'code' => 200
+           );
 
         }//if
         else
-            return false;
+            return array(
+                'code' => 401
+            );
 
     }//LogIn
 

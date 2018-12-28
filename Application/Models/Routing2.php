@@ -4,7 +4,6 @@
 return array(
     'get' => [
         '/authorize' => 'AuthorizeController@authorizeAction',
-        '/login' => 'AuthorizeController@LoginAction',
         '/home' => 'HomeController@indexAction',
         '/' => 'HomeController@indexAction',
         '/authors' => 'AuthorController@authorListAction',
@@ -27,6 +26,7 @@ return array(
         '/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
     ],
     'post' => [
+        '/login' => 'AuthorizeController@LoginAction',
         '/new-book' => 'BookController@addBookAction',
         '/author' => 'AuthorController@addAuthorAction',
         '/add_genre' => 'GenresController@addGenreAction',
