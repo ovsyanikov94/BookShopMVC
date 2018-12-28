@@ -107,9 +107,10 @@ $( document ).ready( ()=>{
 
 } );
 
-
 window.paths = {
+
     AjaxServerUrl: '/BookShopMVC/public/',
+    Login: 'login',
 
     //AUTHOR
     RemoveAuthor: 'author/:authorID',

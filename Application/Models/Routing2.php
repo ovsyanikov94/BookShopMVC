@@ -2,8 +2,8 @@
 
 
 return array(
-
     'get' => [
+        '/authorize' => 'AuthorizeController@authorizeAction',
         '/home' => 'HomeController@indexAction',
         '/' => 'HomeController@indexAction',
         '/authors' => 'AuthorController@authorListAction',
@@ -26,8 +26,10 @@ return array(
         '/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
     ],
     'post' => [
+        '/login' => 'AuthorizeController@LoginAction',
         '/new-book' => 'BookController@addBookAction',
         '/author' => 'AuthorController@addAuthorAction',
+        '/add_genre' => 'GenresController@addGenreAction',
         '/genre' => 'GenresController@updateGenreAction',
         '/add_genre' => 'GenresController@addPostGenreAction',
         '/addUser'=>'UserController@addUser',

@@ -6,3 +6,4 @@ use Application\Controllers\ApplicationController;
 
 $app = new ApplicationController();
 $app->Start();
+

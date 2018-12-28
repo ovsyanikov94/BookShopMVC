@@ -13,12 +13,12 @@
 
         {% for user in users %}
             <tr>
-                <td>{{ user.serID }}</td>
+                <td>{{ user.userID }}</td>
                 <td>{{ user.userLogin }}</td>
                 <td>{{ user.userEmail }}</td>
 
                 <td>
-                    <a href="/BookShopMVC/public/user/{{ user.userLogin}}" class="btn btn-primary" >подробнее</a>
+                    <a href="/BookShopMVC/public/user/{{ user.userLogin }}" class="btn btn-primary" >подробнее</a>
                 </td>
             </tr>
         {%endfor  %}
