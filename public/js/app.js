@@ -122,9 +122,25 @@ window.paths = {
     UpdateGenre: 'genre',
     AddGenre: 'add_genre',
 
+    //COMMENTS
+    RemoveComment: 'comment/:commentID',
+    UpdateComment: 'comment',
+    AddComment: 'add_comment',
+    MoreComments: 'more-comments/:bookId',
+    UpdateStatus: 'comment-status',
+
     //BOOK
     AddBook: 'new-book',
     EditBook: 'edit-book/:bookID',
-    DeleteBook: 'delete-book/:bookID'
+    DeleteBook: 'delete-book/:bookID',
+    GetBooks: 'get-books'
+
+};
+
+window.StatusConsts = {
+    StatusAll: 0,
+    StatusNew: 1,
+    StatusApprove: 2,
+    StatusReject: 3,
 
 };
