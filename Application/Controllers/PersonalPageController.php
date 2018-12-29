@@ -11,13 +11,24 @@ namespace Application\Controllers;
 
 class PersonalPageController extends BaseController {
 
-//загрузка личного кабинета
+    //загрузка странички личного кабинета
     public function personalPageAction(){
+
+        $template = $this->twig->load('PersonalPage/personal-page.twig');
 
         try{
 
-            $template = $this->twig->load('PersonalPage/personal-page.twig');
-            echo $template->render();
+            if( isset($_COOKIE["cookie_user"]) ){
+
+                $CookieUser = unserialize($_COOKIE["cookie_user"]);
+                echo $template->render( array( 'user' => $CookieUser ) );
+
+            }//if
+            else{
+
+                echo $template->render( array( 'user' => $_SESSION["session_user"] ) );
+
+            }//else
 
         }//try
         catch (\Exception $ex){
@@ -31,5 +42,7 @@ class PersonalPageController extends BaseController {
         }//catch
 
     }//personalPageAction
+
+
 
 }//PersonalPageController

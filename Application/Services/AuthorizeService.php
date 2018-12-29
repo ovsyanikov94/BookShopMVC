@@ -62,7 +62,7 @@ class AuthorizeService{
                 session_start();
 
                 //записываем пользователя в сессию
-                $_SESSION['session_user'] = $result;
+                $_SESSION['session_user'] = $userForSessionAndCookies;
 
             }//if
             else{
