@@ -28,6 +28,7 @@ return array(
     ],
     'post' => [
         '/login' => 'AuthorizeController@LoginAction',
+        '/logout' => 'ApplicationController@LogoutAction',
         '/new-book' => 'BookController@addBookAction',
         '/author' => 'AuthorController@addAuthorAction',
         '/add_genre' => 'GenresController@addGenreAction',

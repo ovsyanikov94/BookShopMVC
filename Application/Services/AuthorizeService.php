@@ -19,6 +19,14 @@ class AuthorizeService{
         //возвращаем объект из базы данных
         $result = $stm->fetch(\PDO::FETCH_OBJ);
 
+        //есди пользователь не найден
+        if(!$result){
+            return array(
+                'code' => 401
+            );
+        }//if
+
+        //данные для сессии и cookie
         $userForSessionAndCookies = array(
 
             'userID' => $result->userID,
@@ -26,13 +34,6 @@ class AuthorizeService{
             'userEmail' => $result->userEmail,
 
         );
-
-        //есди пользователь не найден
-        if(!$result){
-            return array(
-                'code' => 401
-            );
-        }//if
 
         //проверяем пароль пользователя
         $verifyPassword = $bcrypt->verify($password, $result->userPassword);
@@ -52,6 +53,19 @@ class AuthorizeService{
                 );
 
                 return $result;
+
+            }//if
+
+            //получаем аватарку пользователя
+            $avatarStm = MySQL::$db->prepare("SELECT * FROM useravatar WHERE userID = :userID");
+            $avatarStm->bindParam('userID', $result->userID);
+            $avatarStm->execute();
+
+            $avatarResult = $avatarStm->fetch(\PDO::FETCH_OBJ);
+
+            if($avatarResult){
+
+                $userForSessionAndCookies = ['userAvatarImagePath' => $avatarResult->userImagePath];
 
             }//if
 

@@ -4,15 +4,20 @@
 
     <title>Личный кабинет</title>
 
-    <script defer src="js/personal-page.js"></script>
+    <script defer src="/BookShopMVC/public/js/personal-page.js"></script>
 
     <div class="row">
 
         <div class="col-4">
 
-            <img src="../public/images/avatars/43698072_273177756879459_4154127805892454113_n.jpg" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
+            {% if not user.userAvatarImagePath %}
+                <img src="../public/images/avatars/default_avatar.jpg" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
 
-            <button type="button" class="btn btn-sm btn-secondary btn-block">Сменить аватар</button>
+                {% else %}
+                    <img src="../{{ user.userAvatarImagePath  }}" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
+            {% endif %}
+
+            <button type="button" class="btn btn-sm btn-secondary btn-block" id="changeAvatarButton">Сменить аватар</button>
             <button type="button" class="btn btn-sm btn-dark btn-block" >Настроить профиль</button>
 
         </div>

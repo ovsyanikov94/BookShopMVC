@@ -105,9 +105,22 @@ $( document ).ready( ()=>{
 
     });
 
-    $('body').on('click', '#signOut', function () {
+    //Кнопка "Выйти" для LogOut
+    $('#signOut').click(function () {
 
         console.log('SignOut');
+
+        let url = `${window.paths.AjaxServerUrl}${window.paths.Logout}`;
+
+        $.ajax({
+            'url': url,
+            'type': 'POST',
+            'success': () =>{
+
+                location.href = `${window.paths.AjaxServerUrl}authorize`;
+
+            }//success
+        })
 
     });
 
@@ -117,6 +130,7 @@ window.paths = {
 
     AjaxServerUrl: '/BookShopMVC/public/',
     Login: 'login',
+    Logout: 'logout',
 
     //AUTHOR
     RemoveAuthor: 'author/:authorID',
