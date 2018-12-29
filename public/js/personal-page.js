@@ -9,6 +9,8 @@
 
             console.log('Change Avatar');
 
+            $('#avatarFile').show();
+
         });//#changeAvatarButton
 
 

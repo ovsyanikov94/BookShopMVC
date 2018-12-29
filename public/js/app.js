@@ -108,8 +108,6 @@ $( document ).ready( ()=>{
     //Кнопка "Выйти" для LogOut
     $('#signOut').click(function () {
 
-        console.log('SignOut');
-
         let url = `${window.paths.AjaxServerUrl}${window.paths.Logout}`;
 
         $.ajax({
@@ -120,7 +118,7 @@ $( document ).ready( ()=>{
                 location.href = `${window.paths.AjaxServerUrl}authorize`;
 
             }//success
-        })
+        });
 
     });
 
