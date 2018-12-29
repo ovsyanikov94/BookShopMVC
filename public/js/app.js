@@ -105,6 +105,12 @@ $( document ).ready( ()=>{
 
     });
 
+    $('body').on('click', '#signOut', function () {
+
+        console.log('SignOut');
+
+    });
+
 } );
 
 window.paths = {
