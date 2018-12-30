@@ -17,7 +17,12 @@
                     <img src="../{{ user.userAvatarImagePath  }}" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
             {% endif %}
 
-            <input id="avatarFile" accept="image/jpeg" type="file" class="form-control" style="display: none">
+
+
+            <div id="avatarFile" style="display: none; padding-bottom: 7px">
+                <input accept="image/jpeg" type="file" class="form-control">
+                <button type="button" class="btn btn-sm btn-primary btn-block" id="savePhoto">Сохранить фотографию</button>
+            </div>
 
             <button type="button" class="btn btn-sm btn-secondary btn-block" id="changeAvatarButton">Сменить аватар</button>
             <button type="button" class="btn btn-sm btn-dark btn-block" >Настроить профиль</button>
