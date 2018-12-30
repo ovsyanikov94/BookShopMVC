@@ -127,8 +127,13 @@ $( document ).ready( ()=>{
 window.paths = {
 
     AjaxServerUrl: '/BookShopMVC/public/',
+
+    //AUTHORIZE
     Login: 'login',
     Logout: 'logout',
+
+    //PERSONAL PAGE
+    SaveNewAvatar: 'save-avatar',
 
     //AUTHOR
     RemoveAuthor: 'author/:authorID',

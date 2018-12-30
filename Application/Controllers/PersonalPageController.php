@@ -9,6 +9,8 @@
 namespace Application\Controllers;
 
 
+use Application\Services\PersonalPageService;
+
 class PersonalPageController extends BaseController {
 
     //загрузка странички личного кабинета
@@ -42,6 +44,36 @@ class PersonalPageController extends BaseController {
         }//catch
 
     }//personalPageAction
+
+    //смена аватара(фотографии) пользователя
+    public function ChangeUserAvatar(){
+
+        $personalPageService = new PersonalPageService();
+
+        try{
+
+            $CookieUser = unserialize($_COOKIE["cookie_user"]);
+
+            $userID = $CookieUser['userID'];
+
+            $result = $personalPageService->ChangeUserAvatar(['userID' => $userID]);
+
+            $this->json( 200 , array(
+                'code' => 200,
+                'avatarResult' => $result
+            ) );
+
+        }//try
+        catch(\Exception $ex){
+
+            $this->json( 500 , array(
+                'code' => 500,
+                'avatarException' => $ex
+            ) );
+
+        }//catch
+
+    }//ChangeUserAvatar
 
 
 

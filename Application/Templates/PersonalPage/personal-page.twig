@@ -17,11 +17,23 @@
                     <img src="../{{ user.userAvatarImagePath  }}" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
             {% endif %}
 
+            <div id="hiddenAvatarBlock" style="display: none; padding-bottom: 7px">
 
+                <input id="avatarFile" accept="image/jpeg" type="file" class="form-control">
+                <button type="button" class="btn btn-sm btn-primary btn-block" id="saveNewAvatar">Сохранить фотографию</button>
 
-            <div id="avatarFile" style="display: none; padding-bottom: 7px">
-                <input accept="image/jpeg" type="file" class="form-control">
-                <button type="button" class="btn btn-sm btn-primary btn-block" id="savePhoto">Сохранить фотографию</button>
+                <div class="form-group">
+                    <div id="errorInput" style=" display: none;" class="message alert alert-danger"></div>
+                </div>
+
+                <div class="form-group">
+                    <div id="errorMessage" style=" display: none;" class="message alert alert-danger">Ошибка при добавлении !</div>
+                </div>
+
+                <div class="form-group">
+                    <div id="successMessage"  style=" display: none;" class="message alert alert-success">Ваша фотография обновлена</div>
+                </div>
+
             </div>
 
             <button type="button" class="btn btn-sm btn-secondary btn-block" id="changeAvatarButton">Сменить аватар</button>
