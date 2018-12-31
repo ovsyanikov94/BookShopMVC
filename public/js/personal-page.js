@@ -88,15 +88,47 @@
 
         });//#savePhoto
 
+        //подтверждение изменений личной информации
         $('#ConfirmChangesModalButton').click(function () {
 
+            //получаем новые значения персональных данных
             let newLogin = $('#newLoginInput').val();
             let newEmail = $('#newEmailInput').val();
+
+            //Проводим проверку полей на пустое значение
+            if(newLogin.length === 0){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле Логина не должно быть пустым.').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+            }//if
+
+            if(newEmail.length === 0){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле Email не должно быть пустым.').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+            }//if
+
+            //проводим проверку на правильность воода новых персональных данных
+            if(!window.ValidatorConst.USER_LOGIN_VALIDATOR.test(newLogin)){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле Логина содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+            }//if
+
+            if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле Email содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+            }//if
 
             console.log('new login: ', newLogin);
             console.log('new email: ', newEmail);
 
-        });
+        });//ConfirmChangesModalButton
 
 
     });//document.ready
