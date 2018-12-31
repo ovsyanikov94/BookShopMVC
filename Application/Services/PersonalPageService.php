@@ -23,8 +23,11 @@ class PersonalPageService  {
         //получаем файл аватара(фоторграфии) пользователя
         if( isset( $_FILES['avatarFile'] ) ){
 
+            //получаем расширение полученного файла
+            $fileExtension = strrchr($_FILES['avatarFile']['name'], ".");
+
             //имя файла для аватара(фотографии) пользователя
-            $fileName = "Avatar" . "_$userLogin";
+            $fileName = "Avatar" . "_$userLogin" . "$fileExtension";
 
             //полный путь к аватарке(фотографии) пользователя
             $userAvatarDirectoryPath = "images/avatars/{$userID}/{$fileName}";

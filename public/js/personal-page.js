@@ -84,10 +84,19 @@
 
             }//if
 
-
             $('#hiddenAvatarBlock').hide();
 
         });//#savePhoto
+
+        $('#ConfirmChangesModalButton').click(function () {
+
+            let newLogin = $('#newLoginInput').val();
+            let newEmail = $('#newEmailInput').val();
+
+            console.log('new login: ', newLogin);
+            console.log('new email: ', newEmail);
+
+        });
 
 
     });//document.ready

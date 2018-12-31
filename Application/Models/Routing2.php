@@ -25,6 +25,7 @@ return array(
         '/get-books' => 'BookController@getMoreBooks',
         '/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
         '/personal-page' => 'PersonalPageController@personalPageAction',
+        '/edit-personal-data' => 'PersonalPageController@EditPersonalDataAction'
     ],
     'post' => [
         '/login' => 'AuthorizeController@LoginAction',
