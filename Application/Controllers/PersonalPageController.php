@@ -76,7 +76,7 @@ class PersonalPageController extends BaseController {
 
     }//ChangeUserAvatar
 
-    //изменение личной информации пользователя
+    //страница изменения личной информации пользователя
     public function EditPersonalDataAction(){
 
         $template = $this->twig->load('PersonalPage/edit-personal-data.twig');
@@ -108,6 +108,36 @@ class PersonalPageController extends BaseController {
 
     }//EditPersonalDataAction
 
+    //сохранение новой личной информации пользователя
+    public function SaveNewPersonalData(){
 
+        $CookieUser = unserialize($_COOKIE["cookie_user"]);
+
+        $userID = $CookieUser['userID'];
+        $userLogin = $this->request->GetPutValue('newLogin');
+        $userEmail= $this->request->GetPutValue('newEmail');
+
+        $personalPageService = new PersonalPageService();
+
+        try{
+
+           $result = $personalPageService->UpdateUserPersonalData( ['userID' => $userID , 'userLogin' => $userLogin , 'userEmail' => $userEmail ]);
+
+            $this->json( $result['code'],
+                array(
+                'result' => $result['code']
+            ) );
+
+        }//try
+        catch(\Exception $ex){
+
+            $this->json( 500 , array(
+                'code' => 500,
+                'avatarException' => $ex
+            ) );
+
+        }//catch
+
+    }//SaveNewPersonalData
 
 }//PersonalPageController

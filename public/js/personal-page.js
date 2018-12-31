@@ -30,7 +30,7 @@
                 let extsn = newAvatarFile.name.substring(newAvatarFile.name.lastIndexOf('.'));
 
                 //допустимые расширения для загрузки
-                const extentions = [
+                const extensions = [
                     '.jpg',
                     '.jpeg',
                     '.png',
@@ -38,9 +38,9 @@
                 ];
 
                 //проверяем расширение файла на допустимое
-                if( extentions.indexOf( extsn ) ){
+                if( extensions.indexOf( extsn ) ){
 
-                    $('#errorInput').text('Тип файла некорректен').fadeIn(500).delay( 5000 ).fadeOut( 500 )
+                    $('#errorInput').text('Тип файла некорректен').fadeIn(500).delay( 5000 ).fadeOut( 500 );
                     return;
 
                 }//if
@@ -101,12 +101,16 @@
                 $('#exampleModalCenter').modal('hide');
                 $('#errorMessage').text('Поле Логина не должно быть пустым.').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
+                return;
+
             }//if
 
             if(newEmail.length === 0){
 
                 $('#exampleModalCenter').modal('hide');
                 $('#errorMessage').text('Поле Email не должно быть пустым.').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+                return;
 
             }//if
 
@@ -116,6 +120,8 @@
                 $('#exampleModalCenter').modal('hide');
                 $('#errorMessage').text('Поле Логина содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
+                return;
+
             }//if
 
             if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
@@ -123,10 +129,50 @@
                 $('#exampleModalCenter').modal('hide');
                 $('#errorMessage').text('Поле Email содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
+                return;
+
             }//if
 
-            console.log('new login: ', newLogin);
-            console.log('new email: ', newEmail);
+            let url = `${window.paths.AjaxServerUrl}${window.paths.SaveNewPersonalData}`;
+
+            $.ajax({
+
+               'url': url,
+                'method': 'PUT',
+                'data':{
+                   newLogin: newLogin,
+                   newEmail: newEmail
+                },
+                'success': (data)=>{
+
+                   if(+data.code === 200){
+                       $('#successMessage').text('Данные успешно обновлены!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                   }//if
+
+                },//success
+                'statusCode':{
+                   '301': ()=>{
+
+                       $('#errorInput')
+                           .text("Пользователь с такими данными уже есть.")
+                           .fadeIn(750)
+                           .delay(2500)
+                           .fadeOut(750);
+
+                   },
+                   '500': ()=>{
+
+                       $('#errorInput')
+                           .text("Ошибка загрузки данных")
+                           .fadeIn(750)
+                           .delay(2500)
+                           .fadeOut(750);
+
+                   }
+
+                }//statusCode
+
+            });
 
         });//ConfirmChangesModalButton
 

@@ -99,4 +99,46 @@ class PersonalPageService  {
 
     }//ChangeUserAvatar
 
+    //обновление персональной информации пользователя
+    public function  UpdateUserPersonalData( $params = [] ){
+
+        //получаем новые персональные данные
+        $userID = +$params['userID'];
+        $userLogin = $params['userLogin'];
+        $userEmail = $params['userEmail'];
+
+        //проверяем входящие данные с уже имеющемися
+        $checkUserStm = MySQL::$db->perepare("SELECT * FROM users WHERE (userLogin = :userLogin OR userEmail = :userEmail)");
+        $checkUserStm->bindParam('userLogin', $userLogin, \PDO::PARAM_STR);
+        $checkUserStm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
+
+        $checkUserResult = $checkUserStm->execute();
+
+        //если совпадений нет - обновляем
+        if(!$checkUserResult){
+
+            //обновляем запись в базе данных
+            $stm = MySQL::$db->prepare("UPDATE users SET userLogin = :userLogin, userEmail = :userLogin WHERE userID = :userID");
+            $stm->bindParam('userLogin', $userLogin, \PDO::PARAM_STR);
+            $stm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
+            $stm->bindParam('userID', $userID, \PDO::PARAM_INT);
+            $result = $stm->execute();
+
+            if($result){
+                return array( 'code' => 200 );
+            }//if
+            else {
+                return array( 'code' => 500 );
+            }//else
+
+        }//if
+        else{
+
+            //если пользователь с одним из параметров есть
+            return array( 'code' => 301 );
+
+        }//else
+
+    }//UpdateUserPersonalData
+
 }//PersonalPageService

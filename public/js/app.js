@@ -134,6 +134,7 @@ window.paths = {
 
     //PERSONAL PAGE
     SaveNewAvatar: 'save-avatar',
+    SaveNewPersonalData: 'save-new-personal-data',
 
     //AUTHOR
     RemoveAuthor: 'author/:authorID',
