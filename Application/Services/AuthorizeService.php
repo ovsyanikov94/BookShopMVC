@@ -63,16 +63,13 @@ class AuthorizeService{
 
             $avatarResult = $avatarStm->fetch(\PDO::FETCH_OBJ);
 
+            //если у пользователя есть свой аватар(фоторграфия)
             if($avatarResult){
 
-                //$userForSessionAndCookies = ['userAvatarImagePath' => $avatarResult->userImagePath];
-                $userForSessionAndCookies = array(
-                    'userAvatarImagePath' => $avatarResult->userImagePath,
-                );
+                //добавляем в сессию или cookie фотографию пользователя
+                $userForSessionAndCookies['userAvatarImagePath'] = $avatarResult->userImagePath;
 
             }//if
-
-
 
             //если "Запомнить меня" НЕ отмечена
             if(!$rememberMe){
@@ -85,12 +82,6 @@ class AuthorizeService{
 
             }//if
             else{
-
-                //если "Запомнить меня" отмечена
-//                $userSerializeResult = serialize(array(
-//                    'userID' => $result->userID,
-//                    'userLogin' => $result->userLogin
-//                ));
 
                 //если "Запомнить меня" отмечена
                 $userSerializeResultForCookie = serialize($userForSessionAndCookies);
