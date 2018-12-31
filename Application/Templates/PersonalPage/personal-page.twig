@@ -11,10 +11,13 @@
         <div class="col-4">
 
             {% if not user.userAvatarImagePath %}
+
                 <img src="../public/images/avatars/default_avatar.jpg" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
 
                 {% else %}
-                    <img src="../{{ user.userAvatarImagePath  }}" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
+
+                    <img src="../public/{{ user.userAvatarImagePath }}" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
+
             {% endif %}
 
             <div id="hiddenAvatarBlock" style="display: none; padding-bottom: 7px">

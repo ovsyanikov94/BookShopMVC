@@ -65,9 +65,14 @@ class AuthorizeService{
 
             if($avatarResult){
 
-                $userForSessionAndCookies = ['userAvatarImagePath' => $avatarResult->userImagePath];
+                //$userForSessionAndCookies = ['userAvatarImagePath' => $avatarResult->userImagePath];
+                $userForSessionAndCookies = array(
+                    'userAvatarImagePath' => $avatarResult->userImagePath,
+                );
 
             }//if
+
+
 
             //если "Запомнить меня" НЕ отмечена
             if(!$rememberMe){

@@ -18,13 +18,14 @@ class PersonalPageService  {
     public function ChangeUserAvatar( $params = [] ){
 
         $userID = $params['userID'];
+        $userLogin = $params['userLogin'];
 
         //получаем файл аватара(фоторграфии) пользователя
         if( isset( $_FILES['avatarFile'] ) ){
 
-            $fileName = $_FILES['avatarFile']['name'];
+            //$fileName = $_FILES['avatarFile']['name'];
 
-            $fileName = time() . "_$fileName";
+            $fileName = "Avatar" . "_$userLogin";
 
             //если дериктории аваторов не существует
             if( !file_exists("images/avatars") ){
@@ -38,9 +39,9 @@ class PersonalPageService  {
             mkdir("images/avatars/{$userID}");
 
             //полный путь к аватарке(фотографии) пользователя
-            $userAvatarDIrectioryPath = "images/avatars/{$userID}/{$fileName}";
+            $userAvatarDirectoryPath = "images/avatars/{$userID}/{$fileName}";
 
-            if( !move_uploaded_file($_FILES['avatarFile']['tmp_name'] , $userAvatarDIrectioryPath) ){
+            if( !move_uploaded_file($_FILES['avatarFile']['tmp_name'] , $userAvatarDirectoryPath) ){
 
                 throw new \Exception('File upload error!');
 
@@ -49,7 +50,7 @@ class PersonalPageService  {
             //создаём запись в базе данных
             $stm = MySQL::$db->prepare("INSERT INTO useravatar VALUES ( DEFAULT , :userID , :userAvatarPath )");
             $stm->bindParam('userID', $userID , \PDO::PARAM_INT);
-            $stm->bindParam('userAvatarPath', $userAvatarDIrectioryPath , \PDO::PARAM_STR);
+            $stm->bindParam('userAvatarPath', $userAvatarDirectoryPath , \PDO::PARAM_STR);
             $result = $stm->execute();
 
             //если создание записи не удалось

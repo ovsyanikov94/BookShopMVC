@@ -55,8 +55,9 @@ class PersonalPageController extends BaseController {
             $CookieUser = unserialize($_COOKIE["cookie_user"]);
 
             $userID = $CookieUser['userID'];
+            $userLogin = $CookieUser['userLogin'];
 
-            $result = $personalPageService->ChangeUserAvatar(['userID' => $userID]);
+            $result = $personalPageService->ChangeUserAvatar(['userID' => $userID , 'userLogin' => $userLogin]);
 
             $this->json( 200 , array(
                 'code' => 200,
