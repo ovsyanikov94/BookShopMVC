@@ -115,7 +115,8 @@
             }//if
 
             //проводим проверку на правильность воода новых персональных данных
-            if(!window.ValidatorConst.USER_LOGIN_VALIDATOR.test(newLogin)){
+            //if(!window.ValidatorConst.USER_LOGIN_VALIDATOR.test(newLogin)){
+            if(!/^[a-z\d]{4,16}$/i.test(newLogin)){
 
                 $('#exampleModalCenter').modal('hide');
                 $('#errorMessage').text('Поле Логина содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
@@ -124,7 +125,8 @@
 
             }//if
 
-            if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
+           // if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
+            if(!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(newEmail)){
 
                 $('#exampleModalCenter').modal('hide');
                 $('#errorMessage').text('Поле Email содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
@@ -176,6 +178,50 @@
 
         });//ConfirmChangesModalButton
 
+        //изменение пароля пользователя
+        $('#ConfirmPasswordChangesModalButton').click(function () {
+
+            let oldPassword = $('#oldPasswordInput').val();
+            let newPassword = $('#newPasswordInput').val();
+            let confirmNewPassword = $('#confirmNewPassword').val();
+
+            if(!/^[a-z_?!^%()\d]{6,30}$/i.test(oldPassword)){
+
+                $('#errorMessage').text('Старый пароль содержит не корректные симовлы').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                $('#exampleModalCenter').modal('hide');
+
+                return;
+
+            }//if
+
+            if(!/^[a-z_?!^%()\d]{6,30}$/i.test(newPassword)){
+
+                $('#errorMessage').text('Новый пароль содержит не корректные симовлы').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                $('#exampleModalCenter').modal('hide');
+
+                return;
+
+            }//if
+
+            if(!/^[a-z_?!^%()\d]{6,30}$/i.test(confirmNewPassword)){
+
+                $('#errorMessage').text('Старый пароль содержит не корректные символы').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                $('#exampleModalCenter').modal('hide');
+
+                return;
+
+            }//if
+
+            if(newPassword !== confirmNewPassword){
+
+                $('#errorMessage').text('Новый пароль не совпадает!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                $('#exampleModalCenter').modal('hide');
+
+                return;
+
+            }//if
+
+        });//changePassword
 
     });//document.ready
 

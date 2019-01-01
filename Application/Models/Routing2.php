@@ -25,7 +25,9 @@ return array(
         '/get-books' => 'BookController@getMoreBooks',
         '/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
         '/personal-page' => 'PersonalPageController@personalPageAction',
-        '/edit-personal-data' => 'PersonalPageController@EditPersonalDataAction'
+        '/edit-personal-data' => 'PersonalPageController@EditPersonalDataAction',
+        '/change-password' => 'PersonalPageController@ChangePasswordAction'
+
     ],
     'post' => [
         '/login' => 'AuthorizeController@LoginAction',
@@ -35,7 +37,6 @@ return array(
         '/author' => 'AuthorController@addAuthorAction',
         '/add_genre' => 'GenresController@addGenreAction',
         '/genre' => 'GenresController@updateGenreAction',
-        '/add_genre' => 'GenresController@addPostGenreAction',
         '/addUser'=>'UserController@addUser',
         '/edit-book/(\d+)' => 'BookController@acceptEditBookAction',
         '/add_comment' => 'CommentsController@addCommentAction',
@@ -50,6 +51,7 @@ return array(
         '/author/(\d+)' => 'AuthorController@updateAuthorAction',
         '/comment' => 'CommentsController@updateCommentAction',
         '/comment-status' => 'CommentsController@updateCommentStatusAction',
+        '/save-new-personal-data' => 'PersonalPageController@SaveNewPersonalData'
     ]
 
 );

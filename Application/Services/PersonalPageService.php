@@ -108,11 +108,15 @@ class PersonalPageService  {
         $userEmail = $params['userEmail'];
 
         //проверяем входящие данные с уже имеющемися
-        $checkUserStm = MySQL::$db->perepare("SELECT * FROM users WHERE (userLogin = :userLogin OR userEmail = :userEmail)");
+        $checkUserStm = MySQL::$db->prepare("SELECT * FROM users WHERE userLogin = :userLogin OR userEmail = :userEmail");
         $checkUserStm->bindParam('userLogin', $userLogin, \PDO::PARAM_STR);
         $checkUserStm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
 
-        $checkUserResult = $checkUserStm->execute();
+        $checkUserStm->execute();
+
+        $checkUserResult = $checkUserStm->fetch(\PDO::FETCH_OBJ);
+
+
 
         //если совпадений нет - обновляем
         if(!$checkUserResult){

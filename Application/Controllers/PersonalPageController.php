@@ -140,4 +140,36 @@ class PersonalPageController extends BaseController {
 
     }//SaveNewPersonalData
 
+    //страница смены пароля пользователя
+    public function ChangePasswordAction(){
+
+        $template = $this->twig->load('PersonalPage/change-password.twig');
+
+        try{
+
+            if( isset($_COOKIE["cookie_user"]) ){
+
+                $CookieUser = unserialize($_COOKIE["cookie_user"]);
+                echo $template->render( array( 'user' => $CookieUser ) );
+
+            }//if
+            else{
+
+                echo $template->render( array( 'user' => $_SESSION["session_user"] ) );
+
+            }//else
+
+        }//try
+        catch(\Exception $ex){
+
+            echo "<pre>";
+            print_r($ex);
+            echo "<pre>";
+
+            include '../Application/Views/Errors/InternalError.php';
+
+        }//catch
+
+    }//ChangePasswordAction
+
 }//PersonalPageController
