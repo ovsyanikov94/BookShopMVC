@@ -8,7 +8,6 @@
 
 namespace Application\Controllers;
 
-
 use Application\Services\PersonalPageService;
 
 class PersonalPageController extends BaseController {
