@@ -264,7 +264,7 @@
 
                    if(data.code === 200){
 
-                       $('#successMessage').text('Новый пароль не совпадает!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                       $('#successMessage').text('Пароль успешно изменён!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
                        $('#exampleModalCenter').modal('hide');
 
                    }//if
@@ -280,6 +280,8 @@
                            .delay(2500)
                            .fadeOut(750);
 
+                       $('#exampleModalCenter').modal('hide');
+
                    },
                    '600':()=>{
 
@@ -288,6 +290,8 @@
                            .fadeIn(750)
                            .delay(2500)
                            .fadeOut(750);
+
+                       $('#exampleModalCenter').modal('hide');
 
                    },
                    '601':()=>{
@@ -298,6 +302,8 @@
                            .delay(2500)
                            .fadeOut(750);
 
+                       $('#exampleModalCenter').modal('hide');
+
                    },
                    '602':()=>{
 
@@ -306,6 +312,8 @@
                            .fadeIn(750)
                            .delay(2500)
                            .fadeOut(750);
+
+                       $('#exampleModalCenter').modal('hide');
 
                    },
                    '603':()=>{
@@ -316,6 +324,8 @@
                            .delay(2500)
                            .fadeOut(750);
 
+                       $('#exampleModalCenter').modal('hide');
+
                    },
                    '605':()=>{
 
@@ -324,6 +334,8 @@
                            .fadeIn(750)
                            .delay(2500)
                            .fadeOut(750);
+
+                       $('#exampleModalCenter').modal('hide');
 
                    },
 

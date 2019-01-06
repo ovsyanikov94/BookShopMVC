@@ -51,7 +51,8 @@ return array(
         '/author/(\d+)' => 'AuthorController@updateAuthorAction',
         '/comment' => 'CommentsController@updateCommentAction',
         '/comment-status' => 'CommentsController@updateCommentStatusAction',
-        '/save-new-personal-data' => 'PersonalPageController@SaveNewPersonalData'
+        '/save-new-personal-data' => 'PersonalPageController@SaveNewPersonalData',
+        '/update-user-password' => 'PersonalPageController@ChangePassword',
     ]
 
 );
