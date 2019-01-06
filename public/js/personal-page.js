@@ -185,6 +185,34 @@
             let newPassword = $('#newPasswordInput').val();
             let confirmNewPassword = $('#confirmNewPassword').val();
 
+            //проверки на пустоту полей паролей
+            if(oldPassword.length === 0){
+
+                $('#errorMessage').text('Поле старого пароля не может быть пустым').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                $('#exampleModalCenter').modal('hide');
+
+                return;
+
+            }//if
+
+            if(newPassword.length === 0){
+
+                $('#errorMessage').text('Поле нового пароля не может быть пустым').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                $('#exampleModalCenter').modal('hide');
+
+                return;
+
+            }//if
+
+            if(confirmNewPassword.length === 0){
+
+                $('#errorMessage').text('Поле подтверждения нового пароля не может быть пустым').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                $('#exampleModalCenter').modal('hide');
+
+                return;
+
+            }//if
+
             if(!/^[a-z_?!^%()\d]{6,30}$/i.test(oldPassword)){
 
                 $('#errorMessage').text('Старый пароль содержит не корректные симовлы').fadeIn(500).delay( 5000 ).fadeOut( 500 );
@@ -220,6 +248,37 @@
                 return;
 
             }//if
+
+            let url = `${window.paths.AjaxServerUrl}${window.paths.ChangePassword}`;
+
+            $.ajax({
+
+               'url': url,
+               'method': 'PUT',
+               'data':{
+                   oldPassword: oldPassword,
+                   newPassword: newPassword,
+                   confirmNewPassword: confirmNewPassword
+               },
+               'success': (data)=>{
+
+                   if(data.code === 200){
+
+                       $('#successMessage').text('Новый пароль не совпадает!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                       $('#exampleModalCenter').modal('hide');
+
+                   }//if
+
+               },//success
+               'error':(data)=>{
+
+                   if(data.code === 500){
+                       $('#errorMessage').text('Ошибка сервера!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                       $('#exampleModalCenter').modal('hide');
+                   }//if
+
+               }//error
+            });
 
         });//changePassword
 
