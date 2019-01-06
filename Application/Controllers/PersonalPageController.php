@@ -172,4 +172,45 @@ class PersonalPageController extends BaseController {
 
     }//ChangePasswordAction
 
+    //отправка новых данных для изменения пароля
+    public function ChangePassword(){
+
+        $CookieUser = unserialize($_COOKIE["cookie_user"]);
+
+        $userID = $CookieUser['userID'];
+
+        $oldPassword = $this->request->GetPutValue('oldPassword');
+        $newPassword = $this->request->GetPutValue('newPassword');
+        $confirmNewPassword = $this->request->GetPutValue('confirmNewPassword');
+
+        $personalPageService = new PersonalPageService();
+
+        try{
+
+            $result = $personalPageService->UpdateUserPassword( [
+
+                    'userID' => $userID,
+                    'oldPassword' => $oldPassword,
+                    'newPassword' => $newPassword,
+                    'confirmNewPassword' => $confirmNewPassword
+
+                ]);
+
+            $this->json( $result['code'],
+                array(
+                    'result' => $result['code']
+                ) );
+
+        }//try
+        catch(\Exception $ex){
+
+            $this->json( 500 , array(
+                'code' => 500,
+                'avatarException' => $ex
+            ) );
+
+        }//catch
+
+    }//ChangePassword
+
 }//PersonalPageController

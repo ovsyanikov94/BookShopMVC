@@ -270,14 +270,64 @@
                    }//if
 
                },//success
-               'error':(data)=>{
+               'statusCode':{
 
-                   if(data.code === 500){
-                       $('#errorMessage').text('Ошибка сервера!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
-                       $('#exampleModalCenter').modal('hide');
-                   }//if
+                   '500': ()=>{
 
-               }//error
+                       $('#errorInput')
+                           .text("Ошибка загрузки данных")
+                           .fadeIn(750)
+                           .delay(2500)
+                           .fadeOut(750);
+
+                   },
+                   '600':()=>{
+
+                       $('#errorInput')
+                           .text("Ошибка загрузки данных. Пришёл не корректный старый пароль")
+                           .fadeIn(750)
+                           .delay(2500)
+                           .fadeOut(750);
+
+                   },
+                   '601':()=>{
+
+                       $('#errorInput')
+                           .text("Ошибка загрузки данных. Пришёл не корректный новый пароль")
+                           .fadeIn(750)
+                           .delay(2500)
+                           .fadeOut(750);
+
+                   },
+                   '602':()=>{
+
+                       $('#errorInput')
+                           .text("Ошибка загрузки данных. Пришёл не корректный подтверждённый пароль")
+                           .fadeIn(750)
+                           .delay(2500)
+                           .fadeOut(750);
+
+                   },
+                   '603':()=>{
+
+                       $('#errorInput')
+                           .text("Ошибка загрузки данных. Новые пароли не совпадают!")
+                           .fadeIn(750)
+                           .delay(2500)
+                           .fadeOut(750);
+
+                   },
+                   '605':()=>{
+
+                       $('#errorInput')
+                           .text("Ошибка загрузки данных. Пользователь не найден!")
+                           .fadeIn(750)
+                           .delay(2500)
+                           .fadeOut(750);
+
+                   },
+
+               }
             });
 
         });//changePassword

@@ -12,6 +12,8 @@ namespace Application\Services;
 use Application\Controllers\BaseController;
 use Application\Utils\MySQL;
 
+use Bcrypt\Bcrypt;
+
 class PersonalPageService  {
 
     //сохранение аватара(фотографии) пользователя
@@ -118,6 +120,7 @@ class PersonalPageService  {
 
 
 
+
         //если совпадений нет - обновляем
         if(!$checkUserResult){
 
@@ -144,5 +147,77 @@ class PersonalPageService  {
         }//else
 
     }//UpdateUserPersonalData
+
+    //обновление пароля пользователя
+    public function UpdateUserPassword( $params = [] ){
+
+        //получаем данные для обновления пароля
+        $userID = +$params['userID'];
+        $oldPassword = $params['oldPassword'];
+        $newPassword = $params['newPassword'];
+        $confirmNewPassword = $params['confirmNewPassword'];
+
+        $passwordPattern = '/^[a-z_?!^%()\d]{6,30}$/iu';
+
+        //проверяем корректность новых паролей
+        if( !preg_match( $passwordPattern, $oldPassword ) ){
+
+            return array( 'code' => 600); //старый пароль не соответствует паттерну
+
+        }//if
+
+        if( !preg_match( $passwordPattern, $newPassword ) ){
+
+            return array( 'code' => 601); //новый пароль не соответствует паттерну
+
+        }//if
+
+        if( !preg_match( $passwordPattern, $confirmNewPassword ) ){
+
+            return array( 'code' => 602); //подтверждение нового пароля не соответствует паттерну
+
+        }//if
+
+        //если ВДРУГ новый пароль не совпадает с подтвеждёнием нового пароля
+        if($newPassword !== $confirmNewPassword){
+
+            return array( 'code' => 603);
+
+        }//if
+
+        //проверяем наличие пользователя в базе данных
+        $userStm = MySQL::$db->prepare("SELECT * FROM users WHERE userID = :userID");
+        $userStm->bindParam('userID', $userID, \PDO::PARAM_INT);
+        $userResult = $userStm->execute();
+
+        //если пользователь есть
+        if($userResult){
+
+            //шифруем и обновляем паролья пользователя
+            $bcrypt = new Bcrypt();
+            $bcrypt_version = '2y';
+
+            $encodedNewPassword = $bcrypt->encrypt($newPassword, $bcrypt_version);
+
+            $passwordStm = MySQL::$db->prepare("UPDATE users SET userPassword = :newPassword WHERE userID = :userID");
+            $passwordStm->bindParam('userPassword', $encodedNewPassword, \PDO::PARAM_STR);
+            $passwordStm->bindParam('userID', $userID, \PDO::PARAM_INT);
+            $passwordResult = $passwordStm->execute();
+
+            if($passwordResult){
+                return array( 'code' => 200 );
+            }//if
+            else {
+                return array( 'code' => 500 );
+            }//else
+
+        }//if
+        else{
+
+            return array('code' => 605); //пользователь в базе не найден!
+
+        }//else
+
+    }//UpdateUserPassword
 
 }//PersonalPageService
