@@ -36,6 +36,8 @@ $(document).ready( function (  ){
 
                     if( status === 200 && comment){
 
+                        offset++;
+                        console.log('offset ', offset);
                         $('#errorMessage').fadeOut(1000);
                         $('#successMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
 
@@ -156,12 +158,16 @@ $(document).ready( function (  ){
                 'success': ( data )=>{
 
                     if( +data.code === 200 ){
+                        offset--;
 
+                        console.log('offset ', offset);
                         if( self.attr('id') === 'removeComment' ){
                             location.href = `${window.paths.AjaxServerUrl}comments/${bookID}`;
                         }//if
                         else{
                             $(`div[data-comment-id=${commentID}]`).remove();
+
+
 
                         }//else
 

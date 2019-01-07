@@ -36,7 +36,7 @@ $(document).ready( function (  ){
 
     }  );
     $('body').on('click', '#RejectButton', function () {
-        let commentID = $(this).data('comment-id');
+                let commentID = $(this).data('comment-id');
                 $.ajax({
                     'url': `${window.paths.AjaxServerUrl}${window.paths.UpdateStatus}`,
                     'type': 'PUT',
@@ -69,6 +69,7 @@ $(document).ready( function (  ){
                 });
 
 
-    }  );
+    });
+
 
 });
