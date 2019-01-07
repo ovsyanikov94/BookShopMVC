@@ -8,15 +8,25 @@ use Application\Services\BookService;
 
 class CommentsController extends BaseController{
 
-    public $currentUser = 1;
+    public $currentUser = 8;
 
     public function commentListAction($id){
 
         $commentService = new CommentsService();
+        $bookService = new BookService();
+
+        $book = $bookService->GetBookById($id);
+
+        if(!$book){
+
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+            echo $template->render();
+            return;
+
+        }//if
 
         $comments = $commentService->GetCommentsByBookId($id);
-
-        $book = $commentService->GetBookTitle($id);
 
         $template = $this->twig->load('Comment/comment-list.twig');
 
@@ -40,6 +50,7 @@ class CommentsController extends BaseController{
             )
          );
     }//commentListAction
+
     public function commentModerationListAction($id){
 
         $commentService = new CommentsService();
@@ -68,6 +79,7 @@ class CommentsController extends BaseController{
             )
          );
     }//commentListAction
+
     public function commentMoreAction($id){
 
         $commentService = new CommentsService();
@@ -102,13 +114,38 @@ class CommentsController extends BaseController{
 
     }//commentListAction
 
+    public function addCommentPageAction( $id ){
+
+        $bookService = new BookService();
+
+        $book = $bookService->GetBookById($id);
+
+        if(!$book){
+
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+            echo $template->render();
+            return;
+
+        }//if
+
+        $template = $this->twig->load('Comment/add-comment.twig');
+        echo $template->render( array(
+            'userID' => 8,
+            'bookID' => $id,
+        ) );
+        
+    }
+    
     public function addCommentAction(){
 
         $text = $this->request->GetPostValue('text');
         $bookId = $this->request->GetPostValue('bookId');
         $userId = $this->request->GetPostValue('userId');
+
         $bookService = new BookService();
         $commentsService = new CommentsService();
+
         if (iconv_strlen ( $text ) > 4 &&
             $bookService->GetBookById($bookId) &&
             $commentsService->GetUser($userId)
@@ -212,4 +249,5 @@ class CommentsController extends BaseController{
             ));
 
     }//updateCommentStatusAction
+
 }//CommentsController

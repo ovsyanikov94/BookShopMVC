@@ -2,6 +2,7 @@
 
 
 return array(
+
     'get' => [
         '/home' => 'HomeController@indexAction',
         '/' => 'HomeController@indexAction',
@@ -21,6 +22,8 @@ return array(
         '/comments/(\d+)' => 'CommentsController@commentListAction',
         '/comments-mod/(\d+)' => 'CommentsController@commentModerationListAction',
         '/more-comments/(\d+)' => 'CommentsController@commentMoreAction',
+        '/get-books' => 'BookController@getMoreBooks',
+        '/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
     ],
     'post' => [
         '/new-book' => 'BookController@addBookAction',
