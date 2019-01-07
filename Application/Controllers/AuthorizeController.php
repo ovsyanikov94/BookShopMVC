@@ -5,7 +5,6 @@ namespace Application\Controllers;
 
 use Application\Services\AuthorizeService;
 
-
 class AuthorizeController extends BaseController {
 
     //Загрузка страницы авторизации
@@ -34,14 +33,14 @@ class AuthorizeController extends BaseController {
 
         $authorizeService = new AuthorizeService();
 
-        $login = $_GET['login'];
-        $password = $_GET['password'];
+        $login = $this->request->GetPostValue('login');
+        $password = $this->request->GetPostValue('password');
+        $isRememberMeChecked = $this->request->GetPostValue('rememberMeCheckbox'); //галочка "Запомнить меня"
 
-        $result = $authorizeService->LogIn($login, $password);
+        $result = $authorizeService->LogIn($login, $password, $isRememberMeChecked);
 
-        $this->json( 200 , array(
-            'code' => 200,
-            'authorize' => $result
+        $this->json( $result['code'] , array(
+            'code' =>$result['code']
         ) );
 
     }//LoginAction

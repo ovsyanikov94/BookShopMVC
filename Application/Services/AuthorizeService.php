@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Application\Services;
 
-
 use Application\Utils\MySQL;
-
-
 use Bcrypt\Bcrypt;
 
 class AuthorizeService{
 
-    public function LogIn( $login, $password ){
+    public function LogIn( $login, $password, $rememberMe){
 
         $bcrypt = new Bcrypt();
 
@@ -25,23 +21,65 @@ class AuthorizeService{
 
         //есди пользователь не найден
         if(!$result){
-            return $result;
+            return array(
+                'code' => 401
+            );
         }//if
 
         //проверяем пароль пользователя
-        $verifyPassword = $bcrypt->verify($password, $result.userPassword);
+        $verifyPassword = $bcrypt->verify($password, $result->userPassword);
 
         //даём разрешение на авторизацию
         if($verifyPassword){
-           return true;
-        }//if
 
-//        $stm = MySQL::$db->prepare("SELECT * FROM users WHERE (userLogin = :login OR userEmail = :login) AND userPassword = :password");
-//        $stm->bindParam(':login', $login, \PDO::PARAM_STR);
-//        $stm->bindParam(':password', $password, \PDO::PARAM_STR);
-//        $stm->execute();
-//
-//        return $stm->fetch(\PDO::FETCH_OBJ);
+            //проверка на подтверждение своего email
+            $isEmailVerified = $result->verification;
+
+            if(!$isEmailVerified){
+
+                $result = array(
+                    'code' => 405,
+                    'emailVerify' => $isEmailVerified
+                );
+
+                return $result;
+
+            }//if
+
+            //если "Запомнить меня" отмечена
+            if(!$rememberMe){
+
+                //начинаем сессию
+                session_start();
+
+                //записываем пользователя в сессию
+                $_SESSION['session_user'] = $result;
+
+            }//if
+            else{
+
+                $userSerializeResult = serialize(array(
+                    'userID' => $result->userID,
+                    'userLogin' => $result->userLogin
+                ));
+
+                setcookie(
+                    'cookie_user' ,
+                    $userSerializeResult ,
+                    time()+60*60*24*30
+                );
+
+            }//else
+
+           return array(
+               'code' => 200
+           );
+
+        }//if
+        else
+            return array(
+                'code' => 401
+            );
 
     }//LogIn
 
