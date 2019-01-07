@@ -21,6 +21,7 @@ return array(
         '/edit-books/(\d+)' => 'BookController@editBookAction',
         '/comments/(\d+)' => 'CommentsController@commentListAction',
         '/comments-mod/(\d+)' => 'CommentsController@commentModerationListAction',
+        '/comments-mod-more/(\d+)' => 'CommentsController@commentModerationMoreAction',
         '/more-comments/(\d+)' => 'CommentsController@commentMoreAction',
         '/get-books' => 'BookController@getMoreBooks',
         '/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',

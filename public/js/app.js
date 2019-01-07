@@ -128,6 +128,8 @@ window.paths = {
     AddComment: 'add_comment',
     MoreComments: 'more-comments/:bookId',
     UpdateStatus: 'comment-status',
+    ModerationComments: 'comments-mod/',
+    ModerationMoreComments: 'comments-mod-more/',
 
     //BOOK
     AddBook: 'new-book',

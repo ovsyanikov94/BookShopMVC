@@ -17,6 +17,7 @@ $(document).ready( function (  ){
     let offset = 2;
     let commentID = -1;
     let userId = -1;
+    let deleteURL = null;
 
     $('body').on('click', '#AddCommentButton', function () {
 
@@ -87,6 +88,34 @@ $(document).ready( function (  ){
 
     }  );
 
+    $('body').on('click', '#ConfirmButton', function () {
+        console.log('deleteURL ', deleteURL);
+        console.log('commentID ', commentID);
+        if(!deleteURL ||
+            commentID === -1){
+            return;
+        }//if
+
+        $.ajax({
+            'url': deleteURL,
+            'type': 'DELETE',
+            'success': ( data )=>{
+
+                if( +data.code === 200 ){
+
+                    offset--;
+                    console.log('offset ', offset);
+
+                        $(`div[data-comment-id=${commentID}]`).remove();
+
+                }//if
+                deleteURL = null;
+                commentID = -1;
+            return;
+            }//success
+        });
+    });
+
     $('body').on('click' , '#UpdateButton' ,function () {
 
         let newText = $('#UpdateCommentInput').val();
@@ -97,8 +126,6 @@ $(document).ready( function (  ){
         else{
 
             $('#errorInput').css("display", "none");
-
-            console.log('commentID  ', commentID);
 
             $.ajax({
                 'url': `${window.paths.AjaxServerUrl}${window.paths.UpdateComment}`,
@@ -126,8 +153,7 @@ $(document).ready( function (  ){
                         $('#errorMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
                     }//else
 
-
-                    commentID = null;
+                    commentID = -1;
                 }//success
             });
         }//else
@@ -152,44 +178,18 @@ $(document).ready( function (  ){
 
     $('body').on('click','#DeleteButton' , function (  ){
 
-        let commentID = +$( this ).data('comment-id');
-        let userID = $( this ).data('user-id');
+        commentID = +$( this ).data('comment-id');
+        userID = $( this ).data('user-id');
         let bookID = $( this ).data('book-id');
 
 
-        let deleteURL = `${window.paths.AjaxServerUrl}${window.paths.RemoveComment}`;
+        deleteURL = `${window.paths.AjaxServerUrl}${window.paths.RemoveComment}`;
         deleteURL = deleteURL.replace(':commentID' , commentID);
         let self = $(this);
 
         $('#Modal').modal();
-        $('#ModalTitle').html('<h3>Удаление комментария</h3>');
+        $('#ModalTitle').html('<h5> Удаление комментария</h5>');
         $('#ModalBody').html('<h5> Вы действительно хотите удалить комментарий :?</h5>');
-
-        $('#ConfirmButton').click(function () {
-
-            $.ajax({
-                'url': deleteURL,
-                'type': 'DELETE',
-                'success': ( data )=>{
-
-                    if( +data.code === 200 ){
-
-                        offset--;
-
-                        if( self.attr('id') === 'removeComment' ){
-                            location.href = `${window.paths.AjaxServerUrl}comments/${bookID}`;
-                        }//if
-                        else{
-                            $(`div[data-comment-id=${commentID}]`).remove();
-
-                        }//else
-
-                    }//if
-
-                }//success
-            });
-
-        });
 
 
     }  );

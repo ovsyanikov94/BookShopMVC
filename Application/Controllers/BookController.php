@@ -11,6 +11,7 @@ namespace Application\Controllers;
 use Application\Services\AuthorService;
 use Application\Services\BookService;
 use Application\Services\GenresService;
+use Application\Services\CommentsService;
 
 class BookController extends BaseController{
 
@@ -290,11 +291,14 @@ class BookController extends BaseController{
 
         $bookService = new BookService();
         $bookForInfo = $bookService->GetBookById($id);
+        $commentService = new CommentsService();
+        $amount = $commentService->GetAmountCommentsByBookId($id);
 
         $template = $this->twig->load( 'Book/info-book.twig');
 
         echo $template->render(array(
-            'book' => $bookForInfo
+            'book' => $bookForInfo,
+            'commentAmount' => $amount
         ));
 
     } // infoBookAction

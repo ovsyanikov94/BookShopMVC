@@ -8,7 +8,7 @@ use Application\Services\BookService;
 
 class CommentsController extends BaseController{
 
-    public $currentUser = 8;
+    public $currentUser = 1;
 
     public function commentListAction($id){
 
@@ -56,6 +56,7 @@ class CommentsController extends BaseController{
         $commentService = new CommentsService();
 
         $comments = $commentService->GetCommentByStatusId($id);
+        $statuses = $commentService->GetStatuses();
 
         $template = $this->twig->load('Comment/moderated-comment-list.twig');
 
@@ -68,16 +69,47 @@ class CommentsController extends BaseController{
                 'comment' => $comments[$i],
                 'user' => $commentService->GetUser($comments[$i]->userID),
                 'date' => $dateStr,
-                'book' => $book,
+                'book' => $book
             ];
 
         }//for
 
         echo $template->render(array(
                 'comments' => $commentWithUser,
-
+                'statuses'=> $statuses,
+                'selectedId'=> $id
             )
          );
+    }//commentListAction
+    public function commentModerationMoreAction($id){
+
+        $commentService = new CommentsService();
+
+        $limit = $this->request->GetGetValue('limit');
+        $offset = $this->request->GetGetValue('offset');
+
+        $comments = $commentService->GetCommentByStatusId($id, $limit, $offset);
+
+        $commentWithUser = [];
+
+        for($i=0; $i < count($comments); $i++ ){
+            $book = $commentService->GetBookTitle($comments[$i]->bookID);
+            $dateStr = date("d-m-Y H:i:s", $comments[$i]->created);
+            $commentWithUser[$i] = [
+                'comment' => $comments[$i],
+                'user' => $commentService->GetUser($comments[$i]->userID),
+                'date' => $dateStr,
+                'book' => $book
+            ];
+
+        }//for
+
+        $this->json( 200 , array(
+            'status' => 200,
+            'comments' => $commentWithUser,
+
+        ) );
+
     }//commentListAction
 
     public function commentMoreAction($id){
@@ -131,7 +163,7 @@ class CommentsController extends BaseController{
 
         $template = $this->twig->load('Comment/add-comment.twig');
         echo $template->render( array(
-            'userID' => 8,
+            'userID' => $this->currentUser,
             'bookID' => $id,
         ) );
         
