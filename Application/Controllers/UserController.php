@@ -10,6 +10,9 @@ namespace Application\Controllers;
 
 use Application\Services\UserService;
 use Application\Controllers\patternConst;
+use Application\Controllers\messageConst;
+
+use Bcrypt\Bcrypt;
 
 class UserController extends BaseController{
 
@@ -59,9 +62,31 @@ class UserController extends BaseController{
             return;
         }//if
 
+        $bcrypt = new Bcrypt();
+        $bcrypt_version = '2y';
+        $heshToken = $bcrypt->encrypt($userEmail,$bcrypt_version);
+
         $userService = new UserService();
 
-        $result = $userService->addUser($userLogin,$usrPassword,$userEmail);
+        $result = $userService->addUser($userLogin,$usrPassword,$userEmail, $heshToken);
+
+        if($result !==null){
+
+
+
+            $message = new messageConst();
+
+            $message->tuneTemplate($userLogin,$heshToken);
+           $mailres = mail($userEmail , $message->verificationSubject,$message->verificationTemplate,$message->header);
+
+            $this->json(200,array(
+                'verification'=> false,
+                'addUser'=> $result,
+                'res'=>$mailres
+            ));
+
+            //https://www.w3schools.com/php/php_ref_mail.asp
+        }//if
 
         $this->json(200,array(
             'addUser'=> $result
@@ -91,5 +116,27 @@ class UserController extends BaseController{
             'user' => $user
         ) );
 
-    }
+    }//getSingleUser
+
+    public function verificationUser(){
+
+        $userService = new UserService();
+
+        $token = $this->request->GetGetValue('token');
+
+        $userVer = $userService->verificationUser($token);
+
+        if($userVer !==0){
+            $template = $this->twig->load('User/users.twig');
+
+            echo $template->render( );
+        }//if
+        else{
+            $template = $this->twig->load('ErrorPages/Error.twig');
+
+            echo $template->render( );
+        }//else
+
+
+    }//verificationUser
 }//UserController
