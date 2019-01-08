@@ -28,8 +28,10 @@ class PersonalPageService  {
             //получаем расширение полученного файла
             $fileExtension = strrchr($_FILES['avatarFile']['name'], ".");
 
+            $time = time();
+
             //имя файла для аватара(фотографии) пользователя
-            $fileName = "Avatar" . "_$userLogin" . "$fileExtension";
+            $fileName = "Avatar_$time$fileExtension";
 
             //полный путь к аватарке(фотографии) пользователя
             $userAvatarDirectoryPath = "images/avatars/{$userID}/{$fileName}";
@@ -56,7 +58,10 @@ class PersonalPageService  {
                 $stm->bindParam('userID', $userID, \PDO::PARAM_INT);
                 $result = $stm->execute();
 
-                return $result;
+                return [
+                    'status' => $result,
+                    'path' =>$userAvatarDirectoryPath
+                ];
 
             }//if
             else{ //создаём новую директорию и сохраняем новый аватар(фотографию) пользователя
@@ -152,7 +157,7 @@ class PersonalPageService  {
     public function UpdateUserPassword( $params = [] ){
 
         //получаем данные для обновления пароля
-        $userID = +$params['userID'];
+        $userID = intval($params['userID']);
         $oldPassword = $params['oldPassword'];
         $newPassword = $params['newPassword'];
         $confirmNewPassword = $params['confirmNewPassword'];
@@ -200,7 +205,7 @@ class PersonalPageService  {
             $encodedNewPassword = $bcrypt->encrypt($newPassword, $bcrypt_version);
 
             $passwordStm = MySQL::$db->prepare("UPDATE users SET userPassword = :newPassword WHERE userID = :userID");
-            $passwordStm->bindParam('userPassword', $encodedNewPassword, \PDO::PARAM_STR);
+            $passwordStm->bindParam('newPassword', $encodedNewPassword, \PDO::PARAM_STR);
             $passwordStm->bindParam('userID', $userID, \PDO::PARAM_INT);
             $passwordResult = $passwordStm->execute();
 

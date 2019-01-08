@@ -16,8 +16,6 @@
         //сохранить новую фотографию
         $('#saveNewAvatar').click( async function () {
 
-            console.log('Save Avatar');
-
             //получаем файл
             let avatarFile = $('#avatarFile').prop('files');
 
@@ -37,10 +35,16 @@
                     '.bmp',
                 ];
 
+                extsn = extsn.toLowerCase();
+
                 //проверяем расширение файла на допустимое
                 if( extensions.indexOf( extsn ) ){
 
-                    $('#errorInput').text('Тип файла некорректен').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                    $('#errorInput').text('Тип файла некорректен')
+                        .fadeIn(500)
+                        .delay( 5000 )
+                        .fadeOut( 500 );
+
                     return;
 
                 }//if
@@ -65,6 +69,9 @@
                     if( +newAvatarResponse.code === 200 ){
 
                         $('#successMessage').fadeIn(200).delay(5000).fadeOut(1500);
+
+                        $('#userAvatar').attr('src' , `${newAvatarResponse.path}?`  );
+                        $('#hiddenAvatarBlock').hide();
 
                     }//if
                     else{

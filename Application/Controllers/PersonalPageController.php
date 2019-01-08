@@ -21,15 +21,16 @@ class PersonalPageController extends BaseController {
 
             if( isset($_COOKIE["cookie_user"]) ){
 
-                $CookieUser = unserialize($_COOKIE["cookie_user"]);
-                echo $template->render( array( 'user' => $CookieUser ) );
+                $User = unserialize($_COOKIE["cookie_user"]);
 
             }//if
             else{
 
-                echo $template->render( array( 'user' => $_SESSION["session_user"] ) );
+                $User = unserialize($_SESSION["session_user"]);
 
             }//else
+
+            echo $template->render( array( 'user' => $User ) );
 
         }//try
         catch (\Exception $ex){
@@ -51,17 +52,50 @@ class PersonalPageController extends BaseController {
 
         try{
 
-            $CookieUser = unserialize($_COOKIE["cookie_user"]);
+            if( isset($_COOKIE["cookie_user"])){
+                $CookieUser = unserialize($_COOKIE["cookie_user"]);
+            }//if
+            else if ( isset($_SESSION['session_user']) ){
+              $CookieUser = unserialize($_SESSION['session_user']);
+            }//else if
+            else {
+                $CookieUser = null;
+            }//else
+
+            if(!$CookieUser){
+
+                return $this->json( 200 , array(
+                    'code' => 401
+                ) );
+
+            }//if
 
             $userID = $CookieUser['userID'];
             $userLogin = $CookieUser['userLogin'];
 
-            $result = $personalPageService->ChangeUserAvatar(['userID' => $userID , 'userLogin' => $userLogin]);
+            $result = $personalPageService->ChangeUserAvatar(
+                [
+                    'userID' => $userID ,
+                    'userLogin' => $userLogin
+                ]
+            );
 
-            $this->json( 200 , array(
-                'code' => 200,
-                'avatarResult' => $result
-            ) );
+            if($result['status']){
+
+                $this->json( 200 , array(
+                    'code' => 200,
+                    'path' => $result['path']
+                ) );
+
+            }//if
+            else{
+                $this->json( 500 , array(
+                    'code' => 500,
+                    'path' => null
+                ) );
+            }
+
+
 
         }//try
         catch(\Exception $ex){
@@ -174,9 +208,31 @@ class PersonalPageController extends BaseController {
     //отправка новых данных для изменения пароля
     public function ChangePassword(){
 
-        $CookieUser = unserialize($_COOKIE["cookie_user"]);
+        if( isset($_COOKIE["cookie_user"]) ){
 
-        $userID = $CookieUser['userID'];
+            $user = unserialize($_COOKIE["cookie_user"]);
+
+        }//if
+        else if( isset($_SESSION["session_user"]) ) {
+
+            $user = unserialize($_SESSION["session_user"]);
+
+        }//else if
+        else{
+            $user = null;
+        }//else
+
+        if( !$user ){
+
+
+            $this->json( 401 ,
+                array(
+                    'code' => 401
+                ) );
+
+        }//if
+
+        $userID = $user['userID'];
 
         $oldPassword = $this->request->GetPutValue('oldPassword');
         $newPassword = $this->request->GetPutValue('newPassword');
@@ -197,7 +253,7 @@ class PersonalPageController extends BaseController {
 
             $this->json( $result['code'],
                 array(
-                    'result' => $result['code']
+                    'code' => $result['code']
                 ) );
 
         }//try
