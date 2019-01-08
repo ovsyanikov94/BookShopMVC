@@ -65,6 +65,10 @@ class ApplicationController extends BaseController {
 
     public function Start(  ){
 
+        session_start([
+            'cookie_lifetime' => 86400,
+        ]);
+
         MySQL::$db = new \PDO(
             "mysql:dbname=booksdb;host=127.0.0.1;charset=utf8",
             "books-admin",

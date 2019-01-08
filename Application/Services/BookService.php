@@ -32,6 +32,12 @@ class BookService{
 
         $book = $stm->fetch(\PDO::FETCH_OBJ);
 
+        if(!$book){
+
+            return false;
+
+        }//if
+
         $stm = MySQL::$db->prepare("SELECT bookImagePath FROM bookImages WHERE bookID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
