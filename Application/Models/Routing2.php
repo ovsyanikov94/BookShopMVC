@@ -24,14 +24,19 @@ return array(
         '/more-comments/(\d+)' => 'CommentsController@commentMoreAction',
         '/get-books' => 'BookController@getMoreBooks',
         '/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
+        '/personal-page' => 'PersonalPageController@personalPageAction',
+        '/edit-personal-data' => 'PersonalPageController@EditPersonalDataAction',
+        '/change-password' => 'PersonalPageController@ChangePasswordAction'
+
     ],
     'post' => [
         '/login' => 'AuthorizeController@LoginAction',
+        '/logout' => 'ApplicationController@LogoutAction',
+        '/save-avatar' => 'PersonalPageController@ChangeUserAvatar',
         '/new-book' => 'BookController@addBookAction',
         '/author' => 'AuthorController@addAuthorAction',
         '/add_genre' => 'GenresController@addGenreAction',
         '/genre' => 'GenresController@updateGenreAction',
-        '/add_genre' => 'GenresController@addPostGenreAction',
         '/addUser'=>'UserController@addUser',
         '/edit-book/(\d+)' => 'BookController@acceptEditBookAction',
         '/add_comment' => 'CommentsController@addCommentAction',
@@ -46,6 +51,8 @@ return array(
         '/author/(\d+)' => 'AuthorController@updateAuthorAction',
         '/comment' => 'CommentsController@updateCommentAction',
         '/comment-status' => 'CommentsController@updateCommentStatusAction',
+        '/save-new-personal-data' => 'PersonalPageController@SaveNewPersonalData',
+        '/update-user-password' => 'PersonalPageController@ChangePassword',
     ]
 
 );
