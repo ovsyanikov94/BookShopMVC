@@ -70,7 +70,7 @@
 
                         $('#successMessage').fadeIn(200).delay(5000).fadeOut(1500);
 
-                        $('#userAvatar').attr('src' , `${newAvatarResponse.path}?`  );
+                        $('#userAvatar').attr('src' , `${newAvatarResponse.path}`);
                         $('#hiddenAvatarBlock').hide();
 
                     }//if
@@ -84,8 +84,6 @@
                 catch(ex){
 
                     $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
-
-                    console.log(ex);
 
                 }//catch
 

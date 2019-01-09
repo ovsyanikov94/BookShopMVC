@@ -10,13 +10,13 @@
 
         <div class="col-4">
 
-            {% if not user.userAvatarImagePath %}
+            {% if not user.userAvatar %}
 
                     <img id="userAvatar" src="../public/images/avatars/default_avatar.jpg" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
 
                 {% else %}
 
-                    <img id="userAvatar" src="../public/{{ user.userAvatarImagePath }}" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
+                    <img id="userAvatar" src="../public/{{ user.userAvatar }}" class="img-thumbnail img-responsive" alt="your-avatar" style="margin-bottom: 7px;">
 
             {% endif %}
 

@@ -16,6 +16,37 @@ use Bcrypt\Bcrypt;
 
 class PersonalPageService  {
 
+    //получение данных о пользователе
+    public function GetUserData( $params = [] ){
+
+        $userID = +$params['userID'];
+
+        //получаем персональные данные о текущем пользователе
+        $userStm = MySQL::$db->prepare("SELECT userLogin, userEmail FROM users WHERE userID = :userID");
+        $userStm->bindParam('userID', $userID, \PDO::PARAM_INT);
+        $userStm->execute();
+
+        $userData = $userStm->fetch(\PDO::FETCH_OBJ);
+
+        //получаем путь к аватарке(фотографии) пользователя
+        $userAvatarStm = MySQL::$db->prepare("SELECT userImagePath FROM useravatar WHERE userID = :userID");
+        $userAvatarStm->bindParam('userID', $userID, \PDO::PARAM_INT);
+        $userAvatarStm->execute();
+
+        $userAvatar = $userAvatarStm->fetch(\PDO::FETCH_OBJ);
+
+        $user = array(
+
+            'userLogin' => $userData->userLogin,
+            'userEmail' => $userData->userEmail,
+            'userAvatar' => $userAvatar->userImagePath
+
+        );
+
+        return $user;
+
+    }//GetUserData
+
     //сохранение аватара(фотографии) пользователя
     public function ChangeUserAvatar( $params = [] ){
 
@@ -24,6 +55,19 @@ class PersonalPageService  {
 
         //получаем файл аватара(фоторграфии) пользователя
         if( isset( $_FILES['avatarFile'] ) ){
+
+            //удаление старого файла аватара(фотографии пользователя)
+            $userAvatarDirectory = "images/avatars/{$userID}/*";
+
+            $files = glob($userAvatarDirectory); // получение всех файлов в папке пользователя
+
+            foreach($files as $file){ // итерируем файлы
+
+                if(is_file($file)){
+                    unlink($file); // удалить файл
+                }//if
+
+            }//foreach
 
             //получаем расширение полученного файла
             $fileExtension = strrchr($_FILES['avatarFile']['name'], ".");

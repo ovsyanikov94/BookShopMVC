@@ -19,18 +19,24 @@ class PersonalPageController extends BaseController {
 
         try{
 
+            //данные о пользователе из cookie или сессии
             if( isset($_COOKIE["cookie_user"]) ){
 
-                $User = unserialize($_COOKIE["cookie_user"]);
+                $userStorage = unserialize($_COOKIE["cookie_user"]);
 
             }//if
             else{
 
-                $User = unserialize($_SESSION["session_user"]);
+                $userStorage = unserialize($_SESSION["session_user"]);
 
             }//else
 
-            echo $template->render( array( 'user' => $User ) );
+            $personalPageService = new PersonalPageService();
+
+            //получаем данные о пользователе
+            $user = $personalPageService->GetUserData( [ 'userID' => $userStorage['userID'] ] );
+
+            echo $template->render( array( 'userStorage' => $userStorage, 'user' => $user ) );
 
         }//try
         catch (\Exception $ex){
@@ -94,8 +100,6 @@ class PersonalPageController extends BaseController {
                     'path' => null
                 ) );
             }
-
-
 
         }//try
         catch(\Exception $ex){
