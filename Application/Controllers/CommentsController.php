@@ -8,12 +8,33 @@ use Application\Services\BookService;
 
 class CommentsController extends BaseController{
 
-    public $currentUser = 1;
+    public $currentUser = -1;
 
     public function commentListAction($id){
 
         $commentService = new CommentsService();
         $bookService = new BookService();
+
+            if( isset($_COOKIE["cookie_user"])){
+                $CookieUser = unserialize($_COOKIE["cookie_user"]);
+            }//if
+            else if ( isset($_SESSION['session_user']) ){
+                $CookieUser = unserialize($_SESSION['session_user']);
+            }//else if
+            else {
+                $CookieUser = null;
+            }//else
+
+            if(!$CookieUser){
+                $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+                echo $template->render();
+                return;
+
+            }//if
+
+            $currentUser = $CookieUser['userID'];
+
 
         $book = $bookService->GetBookById($id);
 
@@ -46,7 +67,7 @@ class CommentsController extends BaseController{
         echo $template->render(array(
                 'comments' => $commentWithUser,
                 'book' => $book,
-                'currentUser' => $this->currentUser
+                'currentUser' => $currentUser
             )
          );
     }//commentListAction
@@ -150,6 +171,27 @@ class CommentsController extends BaseController{
 
         $bookService = new BookService();
 
+        if( isset($_COOKIE["cookie_user"])){
+            $CookieUser = unserialize($_COOKIE["cookie_user"]);
+        }//if
+        else if ( isset($_SESSION['session_user']) ){
+            $CookieUser = unserialize($_SESSION['session_user']);
+        }//else if
+        else {
+            $CookieUser = null;
+        }//else
+
+        if(!$CookieUser){
+
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+            echo $template->render();
+            return;
+
+        }//if
+
+        $currentUser = $CookieUser['userID'];
+
         $book = $bookService->GetBookById($id);
 
         if(!$book){
@@ -163,7 +205,7 @@ class CommentsController extends BaseController{
 
         $template = $this->twig->load('Comment/add-comment.twig');
         echo $template->render( array(
-            'userID' => $this->currentUser,
+            'userID' => $currentUser,
             'bookID' => $id,
         ) );
         

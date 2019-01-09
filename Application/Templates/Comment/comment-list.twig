@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div id="CommentsList">
+    <div id="CommentsList" data-current-user-id="{{ currentUser }}">
 
         {% for comment in comments %}
             <div data-comment-id="{{ comment.comment.commentID }}" class="card w-100">

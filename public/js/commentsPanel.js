@@ -93,8 +93,7 @@ $(document).ready( function (  ){
         let status = $('#commentsComboBox option:selected').data('status-id');
 
         let URL = `${window.paths.AjaxServerUrl}${window.paths.ModerationMoreComments}${status}`;
-        console.log('limit', limit);
-        console.log('offset', offset);
+
 
         $.ajax({
             'url': URL,

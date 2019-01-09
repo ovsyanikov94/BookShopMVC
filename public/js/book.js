@@ -284,10 +284,10 @@ $(document).ready( function (  ){
                             <button class="btn btn-danger" data-book-id="${ book.bookID }" data-book-title="${ book.bookTitle }">Удалить</button>
                         </td>
                         <td>
-                            <a class="btn btn-outline-primary" href="/BookShopMVC/public/edit-books/${ response.bookID }" data-book-id="${ book.bookID }">Редактировать</a>
+                            <a class="btn btn-outline-primary" href="/BookShopMVC/public/edit-books/${ book.bookID }" data-book-id="${ book.bookID }">Редактировать</a>
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="/BookShopMVC/public/info-book/${ response.bookID }">Посмотреть</a>
+                            <a class="btn btn-primary" href="/BookShopMVC/public/info-book/${ book.bookID }">Посмотреть</a>
                         </td>
                     </tr>`
 

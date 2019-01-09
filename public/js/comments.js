@@ -1,17 +1,5 @@
 $(document).ready( function (  ){
 
-    //Pagination
-    // onPage= 2
-    // total = 6
-    // pages = 3
-
-    // onPage= 2
-    // total = 7
-    // pages = 4
-
-    // onPage= 2
-    // total = 5000
-    // pages = 4
 
     let limit = 2;
     let offset = 2;
@@ -55,22 +43,22 @@ $(document).ready( function (  ){
 
                         $('#errorMessage').fadeOut(1000);
                         $('#successMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
-
-
-                        $('#CommentsList').prepend(`
-                                                   <div data-comment-id="${ comment.commentID }" class="card w-100">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">${ user.userLogin } Дата: ${ time }</h5>
-                                                            <div data-comment-for-update-id="${ comment.commentID }" class="card-text">${ comment.commentText }</div>
-                                                            <a href="#" >
-                                                                <i id="EditButton" data-user-id="${ comment.userID }" data-comment-id="${ comment.commentID }" class="far fa-edit fa-2x"></i>
-                                                            </a>
-                                                            <a href="#" ><i id="DeleteButton" data-user-id="${ comment.userID }" data-comment-id="${ comment.commentID }" class="btn-danger far fa-trash-alt fa-2x"></i>
-                                                            </a>
-
-                                                        </div>
-                                                   </div>`
-                        );
+                        //console.log('comment :', comment);
+                        location.href = `${window.paths.AjaxServerUrl}comments/${comment.bookID}`;
+                        // $('#CommentsList').prepend(`
+                        //                            <div data-comment-id="${ comment.commentID }" class="card w-100">
+                        //                                 <div class="card-body">
+                        //                                     <h5 class="card-title">${ user.userLogin } Дата: ${ time }</h5>
+                        //                                     <div data-comment-for-update-id="${ comment.commentID }" class="card-text">${ comment.commentText }</div>
+                        //                                     <a href="#" >
+                        //                                         <i id="EditButton" data-user-id="${ comment.userID }" data-comment-id="${ comment.commentID }" class="far fa-edit fa-2x"></i>
+                        //                                     </a>
+                        //                                     <a href="#" ><i id="DeleteButton" data-user-id="${ comment.userID }" data-comment-id="${ comment.commentID }" class="btn-danger far fa-trash-alt fa-2x"></i>
+                        //                                     </a>
+                        //
+                        //                                 </div>
+                        //                            </div>`
+                        // );
                     }//if
                     else{
                         $('#successMessage').fadeOut(1000);
@@ -89,8 +77,7 @@ $(document).ready( function (  ){
     }  );
 
     $('body').on('click', '#ConfirmButton', function () {
-        console.log('deleteURL ', deleteURL);
-        console.log('commentID ', commentID);
+
         if(!deleteURL ||
             commentID === -1){
             return;
@@ -104,7 +91,7 @@ $(document).ready( function (  ){
                 if( +data.code === 200 ){
 
                     offset--;
-                    console.log('offset ', offset);
+
 
                         $(`div[data-comment-id=${commentID}]`).remove();
 
@@ -166,12 +153,23 @@ $(document).ready( function (  ){
         commentID = $(this).data('comment-id');
         let commentText = $(`div[data-comment-for-update-id=${commentID}]`).text();
 
-        userId = $(this).data('current-user-id');
+        userId = +$(this).data('user-id');
+        let currentUserId = +$('#CommentsList').data('current-user-id');
 
-        $('#UpdateCommentInput').val( commentText );
+        if(currentUserId === userId){
 
+            $('#UpdateCommentInput').val( commentText );
 
-        $('#ModalUpdate').modal();
+            $('#ModalUpdate').modal();
+
+        }//if
+        else{
+            $('#Modal').modal();
+            $('#ModalTitle').html('<h5> Редактирование комментария</h5>');
+            $('#ModalBody').html('<h5> Вы можете редактировать только свои сообщения!</h5>');
+            $('#ConfirmButton').hide();
+        }
+
 
 
     }  );
@@ -179,17 +177,25 @@ $(document).ready( function (  ){
     $('body').on('click','#DeleteButton' , function (  ){
 
         commentID = +$( this ).data('comment-id');
-        userID = $( this ).data('user-id');
-        let bookID = $( this ).data('book-id');
+        let currentUserId = +$('#CommentsList').data('current-user-id');
+        userId = +$( this ).data('user-id');
 
+        if(currentUserId === userId){
+            deleteURL = `${window.paths.AjaxServerUrl}${window.paths.RemoveComment}`;
+            deleteURL = deleteURL.replace(':commentID' , commentID);
+            let self = $(this);
 
-        deleteURL = `${window.paths.AjaxServerUrl}${window.paths.RemoveComment}`;
-        deleteURL = deleteURL.replace(':commentID' , commentID);
-        let self = $(this);
+            $('#Modal').modal();
+            $('#ModalTitle').html('<h5> Удаление комментария</h5>');
+            $('#ModalBody').html('<h5> Вы действительно хотите удалить комментарий :?</h5>');
 
-        $('#Modal').modal();
-        $('#ModalTitle').html('<h5> Удаление комментария</h5>');
-        $('#ModalBody').html('<h5> Вы действительно хотите удалить комментарий :?</h5>');
+        }//if
+        else{
+            $('#Modal').modal();
+            $('#ModalTitle').html('<h5> Удаление комментария</h5>');
+            $('#ModalBody').html('<h5> Вы можете удалять только свои сообщения!</h5>');
+            $('#ConfirmButton').hide();
+        }
 
 
     }  );
