@@ -116,24 +116,58 @@ class PersonalPageController extends BaseController {
     //страница изменения личной информации пользователя
     public function EditPersonalDataAction(){
 
+//        $template = $this->twig->load('PersonalPage/edit-personal-data.twig');
+//
+//        try{
+//
+//            if( isset($_COOKIE["cookie_user"]) ){
+//
+//                $CookieUser = unserialize($_COOKIE["cookie_user"]);
+//                echo $template->render( array( 'user' => $CookieUser ) );
+//
+//            }//if
+//            else{
+//
+//                echo $template->render( array( 'user' => $_SESSION["session_user"] ) );
+//
+//            }//else
+//
+//        }//try
+//        catch(\Exception $ex){
+//
+//            echo "<pre>";
+//            print_r($ex);
+//            echo "<pre>";
+//
+//            include '../Application/Views/Errors/InternalError.php';
+//
+//        }//catch
+
         $template = $this->twig->load('PersonalPage/edit-personal-data.twig');
 
         try{
 
+            //данные о пользователе из cookie или сессии
             if( isset($_COOKIE["cookie_user"]) ){
 
-                $CookieUser = unserialize($_COOKIE["cookie_user"]);
-                echo $template->render( array( 'user' => $CookieUser ) );
+                $userStorage = unserialize($_COOKIE["cookie_user"]);
 
             }//if
             else{
 
-                echo $template->render( array( 'user' => $_SESSION["session_user"] ) );
+                $userStorage = unserialize($_SESSION["session_user"]);
 
             }//else
 
+            $personalPageService = new PersonalPageService();
+
+            //получаем данные о пользователе
+            $user = $personalPageService->GetUserData( [ 'userID' => $userStorage['userID'] ] );
+
+            echo $template->render( array( 'userStorage' => $userStorage, 'user' => $user ) );
+
         }//try
-        catch(\Exception $ex){
+        catch (\Exception $ex){
 
             echo "<pre>";
             print_r($ex);
@@ -148,17 +182,26 @@ class PersonalPageController extends BaseController {
     //сохранение новой личной информации пользователя
     public function SaveNewPersonalData(){
 
-        $CookieUser = unserialize($_COOKIE["cookie_user"]);
+        //данные о пользователе из cookie или сессии
+        if( isset($_COOKIE["cookie_user"]) ){
 
-        $userID = $CookieUser['userID'];
-        $userLogin = $this->request->GetPutValue('newLogin');
+            $userStorage = unserialize($_COOKIE["cookie_user"]);
+
+        }//if
+        else{
+
+            $userStorage = unserialize($_SESSION["session_user"]);
+
+        }//else
+
+        $userID = $userStorage['userID'];
         $userEmail= $this->request->GetPutValue('newEmail');
 
         $personalPageService = new PersonalPageService();
 
         try{
 
-           $result = $personalPageService->UpdateUserPersonalData( ['userID' => $userID , 'userLogin' => $userLogin , 'userEmail' => $userEmail ]);
+           $result = $personalPageService->UpdateUserPersonalData( [ 'userID' => $userID , 'userEmail' => $userEmail ]);
 
             $this->json( $result['code'],
                 array(

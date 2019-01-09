@@ -75,7 +75,7 @@ class PersonalPageService  {
             $time = time();
 
             //имя файла для аватара(фотографии) пользователя
-            $fileName = "Avatar_$time$fileExtension";
+            $fileName = "Avatar_{$time}{$fileExtension}";
 
             //полный путь к аватарке(фотографии) пользователя
             $userAvatarDirectoryPath = "images/avatars/{$userID}/{$fileName}";
@@ -155,27 +155,23 @@ class PersonalPageService  {
 
         //получаем новые персональные данные
         $userID = +$params['userID'];
-        $userLogin = $params['userLogin'];
         $userEmail = $params['userEmail'];
 
         //проверяем входящие данные с уже имеющемися
-        $checkUserStm = MySQL::$db->prepare("SELECT * FROM users WHERE userLogin = :userLogin OR userEmail = :userEmail");
-        $checkUserStm->bindParam('userLogin', $userLogin, \PDO::PARAM_STR);
+        $checkUserStm = MySQL::$db->prepare("SELECT userEmail FROM users WHERE userEmail = :userEmail");
+
         $checkUserStm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
 
         $checkUserStm->execute();
 
         $checkUserResult = $checkUserStm->fetch(\PDO::FETCH_OBJ);
 
-
-
-
         //если совпадений нет - обновляем
         if(!$checkUserResult){
 
             //обновляем запись в базе данных
-            $stm = MySQL::$db->prepare("UPDATE users SET userLogin = :userLogin, userEmail = :userLogin WHERE userID = :userID");
-            $stm->bindParam('userLogin', $userLogin, \PDO::PARAM_STR);
+            $stm = MySQL::$db->prepare("UPDATE users SET userEmail = :userEmail WHERE userID = :userID");
+
             $stm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
             $stm->bindParam('userID', $userID, \PDO::PARAM_INT);
             $result = $stm->execute();
@@ -190,7 +186,7 @@ class PersonalPageService  {
         }//if
         else{
 
-            //если пользователь с одним из параметров есть
+            //если пользователь с таким email уже есть
             return array( 'code' => 301 );
 
         }//else
@@ -242,7 +238,7 @@ class PersonalPageService  {
         //если пользователь есть
         if($userResult){
 
-            //шифруем и обновляем паролья пользователя
+            //шифруем и обновляем пароль пользователя
             $bcrypt = new Bcrypt();
             $bcrypt_version = '2y';
 
