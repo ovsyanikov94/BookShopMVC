@@ -39,8 +39,9 @@ class AuthorizeController extends BaseController {
 
         $result = $authorizeService->LogIn($login, $password, $isRememberMeChecked);
 
-        $this->json( $result['code'] , array(
-            'code' =>$result['code']
+        $this->json( $result['code'] ,
+                      array(
+                            'code' => $result['code']
         ) );
 
     }//LoginAction

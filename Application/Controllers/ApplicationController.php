@@ -107,4 +107,26 @@ class ApplicationController extends BaseController {
 
     }//Start
 
+    //Выход из учётной записи пользователя
+    public function LogoutAction(){
+
+        //чистим сессию
+        if(isset($_SESSION['session_user'])){
+
+            $_SESSION = array();
+
+        }//if
+
+        //чистим cookie
+        if( isset( $_COOKIE['cookie_user']) ){
+
+            unset($_COOKIE['cookie_user']);
+            setcookie("cookie_user", "", 1);
+
+        }//if
+
+        $this->json(200, array());
+
+    }//LogoutAction
+
 }//Application

@@ -10,7 +10,7 @@ class AuthorizeService{
     public function LogIn( $login, $password, $rememberMe){
 
         $bcrypt = new Bcrypt();
-
+        $rememberMe = filter_var($rememberMe , FILTER_VALIDATE_BOOLEAN);
         //ищем пользователя
         $stm = MySQL::$db->prepare( "SELECT * FROM users WHERE userLogin = :login OR userEmail = :login" );
         $stm->bindParam(':login', $login, \PDO::PARAM_STR);
@@ -26,6 +26,15 @@ class AuthorizeService{
             );
         }//if
 
+        //данные для сессии и cookie
+        $userForSessionAndCookies = array(
+
+            'userID' => $result->userID,
+            'userLogin' => $result->userLogin,
+            'userEmail' => $result->userEmail,
+
+        );
+
         //проверяем пароль пользователя
         $verifyPassword = $bcrypt->verify($password, $result->userPassword);
 
@@ -35,6 +44,7 @@ class AuthorizeService{
             //проверка на подтверждение своего email
             $isEmailVerified = $result->verification;
 
+            //пользователь не подтвердил свой email
             if(!$isEmailVerified){
 
                 $result = array(
@@ -46,40 +56,66 @@ class AuthorizeService{
 
             }//if
 
-            //если "Запомнить меня" отмечена
+            // 123a ( key ... )
+            // 8mka
+
+            //получаем аватарку пользователя
+            $avatarStm = MySQL::$db->prepare("SELECT * FROM useravatar WHERE userID = :userID");
+            $avatarStm->bindParam('userID', $result->userID);
+            $avatarStm->execute();
+
+            $avatarResult = $avatarStm->fetch(\PDO::FETCH_OBJ);
+
+            //если у пользователя есть свой аватар(фоторграфия)
+            if($avatarResult){
+
+                //добавляем в сессию или cookie фотографию пользователя
+                $userForSessionAndCookies['userAvatarImagePath'] = $avatarResult->userImagePath;
+
+            }//if
+
+            //если "Запомнить меня" НЕ отмечена
             if(!$rememberMe){
 
                 //начинаем сессию
-                session_start();
+                //session_start(); // 890dljkashdhiwqiodjmnonpwuiqowfn
 
                 //записываем пользователя в сессию
-                $_SESSION['session_user'] = $result;
+                $_SESSION['session_user'] = serialize($userForSessionAndCookies);
+
+                unset($_COOKIE['cookie_user']);
+                setcookie("cookie_user", "", 1);
 
             }//if
             else{
 
-                $userSerializeResult = serialize(array(
-                    'userID' => $result->userID,
-                    'userLogin' => $result->userLogin
-                ));
+                //если "Запомнить меня" отмечена
+                $userSerializeResultForCookie = serialize($userForSessionAndCookies);
 
+                //сетим данные пользователя в cookie
                 setcookie(
                     'cookie_user' ,
-                    $userSerializeResult ,
+                    $userSerializeResultForCookie ,
                     time()+60*60*24*30
                 );
 
             }//else
 
+           //авторизируем пользователя
            return array(
                'code' => 200
            );
 
         }//if
-        else
+        else{
+
+            //если парооли не совпадают
             return array(
                 'code' => 401
             );
+
+        }//else
+
 
     }//LogIn
 
