@@ -9,12 +9,19 @@
 namespace Application\Controllers;
 //use Pug\Pug;
 
+use Application\Services\UserService;
+
 class HomeController extends BaseController{
 
     public function indexAction(  ){
 
-        $template = $this->twig->load('Home/index.twig');
-        echo $template->render( );
+        $userService = new UserService();
+        $user = $userService->getCurrentUser();
+
+        $template = $this->twig->load('public/home.twig');
+        echo $template->render( [
+            'user' => $user
+        ] );
 
     }//indexAction
 

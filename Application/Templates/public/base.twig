@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script src="/BookShopMVC/node_modules/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="/BookShopMVC/node_modules/bootstrap/dist/css/bootstrap.css">
+
+    <script defer src="https://use.fontawesome.com/releases/v5.6.1/js/all.js" integrity="sha384-R5JkiUweZpJjELPWqttAYmYM1P3SNEJRM6ecTQF05pFFtxmCO+Y1CiUhvuDzgSVZ" crossorigin="anonymous"></script>
+
+    <script src="/BookShopMVC/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/BookShopMVC/public/css/app.css">
+
+    <script src="/BookShopMVC/public/js/app.js"></script>
+
+
+    <title>Title</title>
+</head>
+
+<body >
+
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    {% if user  %}
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/BookShopMVC/public/">BookShop({{ user.session }})</a>
+    {% else %}
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/BookShopMVC/public/">BookShop</a>
+    {% endif %}
+
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap" >
+
+            <div id="signOut">
+                <a class="nav-link" href="#" id="signOut">Выйти</a>
+            </div>
+
+
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+
+    {% block content %}
+
+    {% endblock %}
+
+</div>
+

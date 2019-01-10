@@ -26,7 +26,7 @@ class UserService
             $bcrypt_version = '2y';
             $heshPassword = $bcrypt->encrypt($password,$bcrypt_version);
 
-            $stm = MySQL::$db->prepare("INSERT INTO users VALUES( DEFAULT, :login, :email ,:password, false, :hash )");
+            $stm = MySQL::$db->prepare("INSERT INTO users VALUES( DEFAULT, :login, :email , NULL ,:password, false, :hash )");
             $stm->bindParam(':login' , $login , \PDO::PARAM_STR);
             $stm->bindParam(':email' , $email , \PDO::PARAM_STR);
             $stm->bindParam(':hash' , $hesh , \PDO::PARAM_STR);
@@ -78,4 +78,34 @@ class UserService
         return  $stm->fetch(\PDO::FETCH_OBJ);
 
     }
+
+
+    public function getCurrentUser(){
+
+        $user = null;
+
+        if( isset($_SESSION[ 'session_user' ])){
+
+            $user = unserialize($_SESSION[ 'session_user' ]);
+            $user['session'] = 'yes';
+
+        }//if
+        else if(isset($_COOKIE[ 'cookie_user' ])){
+
+            $user = unserialize($_COOKIE[ 'cookie_user' ]);
+
+        }//else if
+        else if( isset($_SESSION['admin'])){
+
+            $user = unserialize($_SESSION[ 'admin' ]);
+
+        }//else if
+        else if( isset($_COOKIE['admin']) ){
+            $user = unserialize($_COOKIE[ 'admin' ]);
+        }//else if
+
+        return $user;
+
+    }//getCurrentUser
+
 }//UserServise

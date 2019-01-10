@@ -80,7 +80,7 @@ class ApplicationController extends BaseController {
 
         $router = new Router();
 
-        $routes = include_once '../Application/Models/Routing2.php';
+        $routes = include_once '../Application/Models/AdminRoutes.php';
 
         $router->setNamespace('Application\\Controllers');
 
@@ -98,10 +98,33 @@ class ApplicationController extends BaseController {
 
         });
 
+
         foreach ($routes as $key => $path ){
 
             foreach ($path as $subKey => $value){
+
+                $router->before('GET|POST|DELETE|PUT' , $subKey , function() {
+
+                    if ( !isset($_SESSION['admin']) && !isset($_COOKIE['admin']) ){
+                        header('location: /BookShopMVC/public/home');
+                    }//if
+
+                });
+
                 $router->$key( $subKey , $value );
+
+            }//foreach
+
+        }//foreach
+
+        $routes = include_once '../Application/Models/PublicRoutes.php';
+
+        foreach ($routes as $key => $path ){
+
+            foreach ($path as $subKey => $value){
+
+                $router->$key( $subKey , $value );
+
             }//foreach
 
         }//foreach
