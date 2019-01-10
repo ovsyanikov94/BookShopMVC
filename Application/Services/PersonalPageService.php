@@ -16,14 +16,60 @@ use Bcrypt\Bcrypt;
 
 class PersonalPageService  {
 
+    //получение данных о пользователе
+    public function GetUserData( $params = [] ){
+
+        $userID = +$params['userID'];
+
+        //получаем персональные данные о текущем пользователе
+        $userStm = MySQL::$db->prepare("SELECT userLogin, userEmail FROM users WHERE userID = :userID");
+        $userStm->bindParam('userID', $userID, \PDO::PARAM_INT);
+        $userStm->execute();
+
+        $userData = $userStm->fetch(\PDO::FETCH_OBJ);
+
+        //получаем путь к аватарке(фотографии) пользователя
+        $userAvatarStm = MySQL::$db->prepare("SELECT userImagePath FROM useravatar WHERE userID = :userID");
+        $userAvatarStm->bindParam('userID', $userID, \PDO::PARAM_INT);
+        $userAvatarStm->execute();
+
+        $userAvatar = $userAvatarStm->fetch(\PDO::FETCH_OBJ);
+
+        $user = array(
+
+            'userLogin' => $userData->userLogin,
+            'userEmail' => $userData->userEmail
+
+        );
+
+        if($userAvatar){
+            $user['userAvatar'] = $userAvatar->userImagePath;
+        }//if
+
+        return $user;
+
+    }//GetUserData
+
     //сохранение аватара(фотографии) пользователя
     public function ChangeUserAvatar( $params = [] ){
 
         $userID = +$params['userID'];
-        $userLogin = $params['userLogin'];
 
         //получаем файл аватара(фоторграфии) пользователя
         if( isset( $_FILES['avatarFile'] ) ){
+
+            //удаление старого файла аватара(фотографии пользователя)
+            $userAvatarDirectory = "images/avatars/{$userID}/*";
+
+            $files = glob($userAvatarDirectory); // получение всех файлов в папке пользователя
+
+            foreach($files as $file){ // итерируем файлы
+
+                if(is_file($file)){
+                    unlink($file); // удалить файл
+                }//if
+
+            }//foreach
 
             //получаем расширение полученного файла
             $fileExtension = strrchr($_FILES['avatarFile']['name'], ".");
@@ -31,7 +77,7 @@ class PersonalPageService  {
             $time = time();
 
             //имя файла для аватара(фотографии) пользователя
-            $fileName = "Avatar_$time$fileExtension";
+            $fileName = "Avatar_{$time}{$fileExtension}";
 
             //полный путь к аватарке(фотографии) пользователя
             $userAvatarDirectoryPath = "images/avatars/{$userID}/{$fileName}";
@@ -111,27 +157,23 @@ class PersonalPageService  {
 
         //получаем новые персональные данные
         $userID = +$params['userID'];
-        $userLogin = $params['userLogin'];
         $userEmail = $params['userEmail'];
 
         //проверяем входящие данные с уже имеющемися
-        $checkUserStm = MySQL::$db->prepare("SELECT * FROM users WHERE userLogin = :userLogin OR userEmail = :userEmail");
-        $checkUserStm->bindParam('userLogin', $userLogin, \PDO::PARAM_STR);
+        $checkUserStm = MySQL::$db->prepare("SELECT userEmail FROM users WHERE userEmail = :userEmail");
+
         $checkUserStm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
 
         $checkUserStm->execute();
 
         $checkUserResult = $checkUserStm->fetch(\PDO::FETCH_OBJ);
 
-
-
-
         //если совпадений нет - обновляем
         if(!$checkUserResult){
 
             //обновляем запись в базе данных
-            $stm = MySQL::$db->prepare("UPDATE users SET userLogin = :userLogin, userEmail = :userLogin WHERE userID = :userID");
-            $stm->bindParam('userLogin', $userLogin, \PDO::PARAM_STR);
+            $stm = MySQL::$db->prepare("UPDATE users SET userEmail = :userEmail WHERE userID = :userID");
+
             $stm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
             $stm->bindParam('userID', $userID, \PDO::PARAM_INT);
             $result = $stm->execute();
@@ -146,7 +188,7 @@ class PersonalPageService  {
         }//if
         else{
 
-            //если пользователь с одним из параметров есть
+            //если пользователь с таким email уже есть
             return array( 'code' => 301 );
 
         }//else
@@ -198,7 +240,7 @@ class PersonalPageService  {
         //если пользователь есть
         if($userResult){
 
-            //шифруем и обновляем паролья пользователя
+            //шифруем и обновляем пароль пользователя
             $bcrypt = new Bcrypt();
             $bcrypt_version = '2y';
 

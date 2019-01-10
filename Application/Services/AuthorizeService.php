@@ -11,6 +11,7 @@ class AuthorizeService{
 
         $bcrypt = new Bcrypt();
         $rememberMe = filter_var($rememberMe , FILTER_VALIDATE_BOOLEAN);
+
         //ищем пользователя
         $stm = MySQL::$db->prepare( "SELECT * FROM users WHERE userLogin = :login OR userEmail = :login" );
         $stm->bindParam(':login', $login, \PDO::PARAM_STR);
@@ -29,9 +30,7 @@ class AuthorizeService{
         //данные для сессии и cookie
         $userForSessionAndCookies = array(
 
-            'userID' => $result->userID,
-            'userLogin' => $result->userLogin,
-            'userEmail' => $result->userEmail,
+            'userID' => $result->userID
 
         );
 
@@ -56,23 +55,12 @@ class AuthorizeService{
 
             }//if
 
-            // 123a ( key ... )
-            // 8mka
-
-            //получаем аватарку пользователя
-            $avatarStm = MySQL::$db->prepare("SELECT * FROM useravatar WHERE userID = :userID");
-            $avatarStm->bindParam('userID', $result->userID);
-            $avatarStm->execute();
-
-            $avatarResult = $avatarStm->fetch(\PDO::FETCH_OBJ);
-
-            //если у пользователя есть свой аватар(фоторграфия)
-            if($avatarResult){
-
-                //добавляем в сессию или cookie фотографию пользователя
-                $userForSessionAndCookies['userAvatarImagePath'] = $avatarResult->userImagePath;
-
-            }//if
+//            //получаем аватарку пользователя
+//            $avatarStm = MySQL::$db->prepare("SELECT userImagePath FROM useravatar WHERE userID = :userID");
+//            $avatarStm->bindParam('userID', $result->userID);
+//            $avatarStm->execute();
+//
+//            $avatarResult = $avatarStm->fetch(\PDO::FETCH_OBJ);
 
             //если "Запомнить меня" НЕ отмечена
             if(!$rememberMe){
@@ -109,13 +97,12 @@ class AuthorizeService{
         }//if
         else{
 
-            //если парооли не совпадают
+            //если пароли не совпадают
             return array(
                 'code' => 401
             );
 
         }//else
-
 
     }//LogIn
 

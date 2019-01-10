@@ -70,7 +70,7 @@
 
                         $('#successMessage').fadeIn(200).delay(5000).fadeOut(1500);
 
-                        $('#userAvatar').attr('src' , `${newAvatarResponse.path}?`  );
+                        $('#userAvatar').attr('src' , `${newAvatarResponse.path}`);
                         $('#hiddenAvatarBlock').hide();
 
                     }//if
@@ -85,8 +85,6 @@
 
                     $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
-                    console.log(ex);
-
                 }//catch
 
             }//if
@@ -99,19 +97,9 @@
         $('#ConfirmChangesModalButton').click(function () {
 
             //получаем новые значения персональных данных
-            let newLogin = $('#newLoginInput').val();
             let newEmail = $('#newEmailInput').val();
 
             //Проводим проверку полей на пустое значение
-            if(newLogin.length === 0){
-
-                $('#exampleModalCenter').modal('hide');
-                $('#errorMessage').text('Поле Логина не должно быть пустым.').fadeIn(500).delay( 5000 ).fadeOut( 500 );
-
-                return;
-
-            }//if
-
             if(newEmail.length === 0){
 
                 $('#exampleModalCenter').modal('hide');
@@ -122,16 +110,6 @@
             }//if
 
             //проводим проверку на правильность воода новых персональных данных
-            //if(!window.ValidatorConst.USER_LOGIN_VALIDATOR.test(newLogin)){
-            if(!/^[a-z\d]{4,16}$/i.test(newLogin)){
-
-                $('#exampleModalCenter').modal('hide');
-                $('#errorMessage').text('Поле Логина содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
-
-                return;
-
-            }//if
-
            // if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
             if(!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(newEmail)){
 
@@ -149,12 +127,12 @@
                'url': url,
                 'method': 'PUT',
                 'data':{
-                   newLogin: newLogin,
                    newEmail: newEmail
                 },
                 'success': (data)=>{
 
                    if(+data.code === 200){
+                       $('#exampleModalCenter').modal('hide');
                        $('#successMessage').text('Данные успешно обновлены!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
                    }//if
 
@@ -168,6 +146,8 @@
                            .delay(2500)
                            .fadeOut(750);
 
+                       $('#exampleModalCenter').modal('hide');
+
                    },
                    '500': ()=>{
 
@@ -176,6 +156,7 @@
                            .fadeIn(750)
                            .delay(2500)
                            .fadeOut(750);
+                       $('#exampleModalCenter').modal('hide');
 
                    }
 
