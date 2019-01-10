@@ -68,6 +68,9 @@ class ApplicationController extends BaseController {
 
     public function Start(  ){
 
+        date_default_timezone_set('Europe/Moscow');
+
+
         session_start([
             'cookie_lifetime' => 86400,
         ]);

@@ -15,10 +15,12 @@ class CommentsService
     public function GetCommentsList($limit = 10 , $offset = 0){
 
         $stm = MySQL::$db->prepare("
-                SELECT c.* , u.* FROM comments c
-                LEFT JOIN users u
-                ON u.userID = c.userID
-                ORDER BY `comments`.`created` 
+                SELECT comment.* , users.userLogin , book.bookTitle FROM comments as comment
+                LEFT JOIN users 
+                ON users.userID = comment.userID
+                LEFT JOIN books book 
+                ON book.bookID = comment.bookID
+                ORDER BY `comment`.`created` 
                 DESC 
                 LIMIT :offset, :limit
         ");
@@ -26,7 +28,15 @@ class CommentsService
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->execute();
 
-        return $stm->fetchAll(\PDO::FETCH_OBJ);
+        $books = $stm->fetchAll(\PDO::FETCH_OBJ);
+
+        foreach ( $books as  &$book){
+
+            $book->created = date('l F Y H:i' , $book->created);
+
+        }//foreach
+
+        return $books;
 
     }//GetCommentsByBookId
 

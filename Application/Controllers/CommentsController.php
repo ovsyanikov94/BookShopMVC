@@ -75,12 +75,17 @@ class CommentsController extends BaseController{
     public function commentListAction(){
 
         $commentService = new CommentsService();
-        $template = $this->twig->load('Comment/moderated-comment-list.twig');
+        $template = $this->twig->load('Comment/comment-list.twig');
 
         $comments = $commentService->GetCommentsList();
+        $statuses = $commentService->GetStatuses();
+
+
+        echo var_dump($statuses);
 
         echo $template->render(array(
-                'comments' => $comments
+                'comments' => $comments,
+                'statuses' => $statuses
             )
          );
     }//commentListAction
