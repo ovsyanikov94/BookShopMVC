@@ -8,7 +8,7 @@
             <img src="../{{ book.bookImagePath }}" style="float: left; width: 300px" class="rounded mr-5 mb-1" alt="Cinque Terre">
         {% endif %}
 
-        <h1 class="display-4">{{ book.bookTitle }}</h1>
+        <h1 class="display-4">{{ book.bookTitle }}{{ commentAmount.amount }}</h1>
         <p class="lead">{{ book.bookDescription }}</p>
         <hr class="my-4">
         <p class="lead"><b>Цена: </b>{{ book.bookPrice }} ₽</p>
@@ -32,6 +32,10 @@
                     <li>{{ genre.genreTitle }}</li>
                 {% endfor %}
             </ul>
+        </p>
+
+        <p class="lead">
+        <a href="/BookShopMVC/public/comments/{{ book.bookID }}"> <b>Комментарии (</b> {{ commentAmount.amount }}<b> )</b> </a>
         </p>
 
     </div>

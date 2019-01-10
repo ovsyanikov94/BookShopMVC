@@ -14,7 +14,7 @@ class CommentsService
 
     public function GetCommentsByBookId($id, $limit = 2 , $offset = 0){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM comments WHERE bookID=:id ORDER BY `comments`.`created` DESC LIMIT :offset, :limit");
+        $stm = MySQL::$db->prepare("SELECT * FROM comments WHERE bookID=:id AND statusID = 2 ORDER BY `comments`.`created` DESC LIMIT :offset, :limit");
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
@@ -23,7 +23,17 @@ class CommentsService
         return $stm->fetchAll(\PDO::FETCH_OBJ);
     }//GetCommentsByBookId
 
-    public function GetCommentByStatusId($id, $limit = 2 , $offset = 0){
+    public function GetAmountCommentsByBookId($id){
+
+        $stm = MySQL::$db->prepare("SELECT COUNT(*) as amount FROM comments WHERE bookID=:id AND statusID = 2");
+
+        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
+        $stm->execute();
+
+        return $stm->fetch(\PDO::FETCH_OBJ);
+    }//GetCommentsByBookId
+
+    public function GetCommentByStatusId($id = 1, $limit = 2 , $offset = 0){
 
         $stm = MySQL::$db->prepare("SELECT * FROM comments WHERE statusID=:id ORDER BY `comments`.`created` ASC LIMIT :offset, :limit");
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
@@ -41,6 +51,14 @@ class CommentsService
         $stm->execute();
 
         return $stm->fetch(\PDO::FETCH_OBJ);
+    }//GetCommentsByBookId
+    public function GetStatuses(){
+
+        $stm = MySQL::$db->prepare("SELECT * FROM statuses");
+
+        $stm->execute();
+
+        return $stm->fetchAll(\PDO::FETCH_OBJ);
     }//GetCommentsByBookId
 
     public function GetBookTitle($id){

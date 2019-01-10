@@ -8,12 +8,33 @@ use Application\Services\BookService;
 
 class CommentsController extends BaseController{
 
-    public $currentUser = 8;
+    public $currentUser = -1;
 
     public function commentListAction($id){
 
         $commentService = new CommentsService();
         $bookService = new BookService();
+
+            if( isset($_COOKIE["cookie_user"])){
+                $CookieUser = unserialize($_COOKIE["cookie_user"]);
+            }//if
+            else if ( isset($_SESSION['session_user']) ){
+                $CookieUser = unserialize($_SESSION['session_user']);
+            }//else if
+            else {
+                $CookieUser = null;
+            }//else
+
+            if(!$CookieUser){
+                $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+                echo $template->render();
+                return;
+
+            }//if
+
+            $currentUser = $CookieUser['userID'];
+
 
         $book = $bookService->GetBookById($id);
 
@@ -46,7 +67,7 @@ class CommentsController extends BaseController{
         echo $template->render(array(
                 'comments' => $commentWithUser,
                 'book' => $book,
-                'currentUser' => $this->currentUser
+                'currentUser' => $currentUser
             )
          );
     }//commentListAction
@@ -56,6 +77,7 @@ class CommentsController extends BaseController{
         $commentService = new CommentsService();
 
         $comments = $commentService->GetCommentByStatusId($id);
+        $statuses = $commentService->GetStatuses();
 
         $template = $this->twig->load('Comment/moderated-comment-list.twig');
 
@@ -68,16 +90,47 @@ class CommentsController extends BaseController{
                 'comment' => $comments[$i],
                 'user' => $commentService->GetUser($comments[$i]->userID),
                 'date' => $dateStr,
-                'book' => $book,
+                'book' => $book
             ];
 
         }//for
 
         echo $template->render(array(
                 'comments' => $commentWithUser,
-
+                'statuses'=> $statuses,
+                'selectedId'=> $id
             )
          );
+    }//commentListAction
+    public function commentModerationMoreAction($id){
+
+        $commentService = new CommentsService();
+
+        $limit = $this->request->GetGetValue('limit');
+        $offset = $this->request->GetGetValue('offset');
+
+        $comments = $commentService->GetCommentByStatusId($id, $limit, $offset);
+
+        $commentWithUser = [];
+
+        for($i=0; $i < count($comments); $i++ ){
+            $book = $commentService->GetBookTitle($comments[$i]->bookID);
+            $dateStr = date("d-m-Y H:i:s", $comments[$i]->created);
+            $commentWithUser[$i] = [
+                'comment' => $comments[$i],
+                'user' => $commentService->GetUser($comments[$i]->userID),
+                'date' => $dateStr,
+                'book' => $book
+            ];
+
+        }//for
+
+        $this->json( 200 , array(
+            'status' => 200,
+            'comments' => $commentWithUser,
+
+        ) );
+
     }//commentListAction
 
     public function commentMoreAction($id){
@@ -118,6 +171,27 @@ class CommentsController extends BaseController{
 
         $bookService = new BookService();
 
+        if( isset($_COOKIE["cookie_user"])){
+            $CookieUser = unserialize($_COOKIE["cookie_user"]);
+        }//if
+        else if ( isset($_SESSION['session_user']) ){
+            $CookieUser = unserialize($_SESSION['session_user']);
+        }//else if
+        else {
+            $CookieUser = null;
+        }//else
+
+        if(!$CookieUser){
+
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+            echo $template->render();
+            return;
+
+        }//if
+
+        $currentUser = $CookieUser['userID'];
+
         $book = $bookService->GetBookById($id);
 
         if(!$book){
@@ -131,7 +205,7 @@ class CommentsController extends BaseController{
 
         $template = $this->twig->load('Comment/add-comment.twig');
         echo $template->render( array(
-            'userID' => 8,
+            'userID' => $currentUser,
             'bookID' => $id,
         ) );
         
