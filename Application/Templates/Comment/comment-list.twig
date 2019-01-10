@@ -16,11 +16,7 @@
         <select class="form-control" id="commentsComboBox">
             <option value="-1">Все</option>
             {% for status in statuses %}
-                {% if status.statusID == selectedId %}
-                    <option data-status-id="{{ status.statusID }}" selected="selected">{{ status.statusTitle }}</option>
-                {% else %}
-                    <option data-status-id="{{ status.statusID }}" >{{ status.statusTitle }}</option>
-                {% endif %}
+                <option data-status-id="{{ status.statusID }}" selected="selected">{{ status.statusTitle }}</option>
             {% endfor %}
         </select>
 
