@@ -24,8 +24,6 @@ class HomeController extends BaseController{
         $template = $this->twig->load('public/home.twig');
         $books = $bookService->GetFullBooks();
 
-        var_dump($books);
-
         echo $template->render( [
             'user' => $user,
             'books' => $books

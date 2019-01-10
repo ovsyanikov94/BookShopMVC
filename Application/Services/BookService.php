@@ -38,7 +38,6 @@ class BookService{
 
             $book->attributes = $this->GetBookById($book->bookID);
 
-            echo var_dump($book);
 
         }//foreach
 
