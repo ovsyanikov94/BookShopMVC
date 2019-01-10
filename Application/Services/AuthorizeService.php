@@ -37,6 +37,7 @@ class AuthorizeService{
         //проверяем пароль пользователя
         $verifyPassword = $bcrypt->verify($password, $result->userPassword);
 
+
         //даём разрешение на авторизацию
         if($verifyPassword){
 
@@ -55,18 +56,9 @@ class AuthorizeService{
 
             }//if
 
-//            //получаем аватарку пользователя
-//            $avatarStm = MySQL::$db->prepare("SELECT userImagePath FROM useravatar WHERE userID = :userID");
-//            $avatarStm->bindParam('userID', $result->userID);
-//            $avatarStm->execute();
-//
-//            $avatarResult = $avatarStm->fetch(\PDO::FETCH_OBJ);
 
             //если "Запомнить меня" НЕ отмечена
             if(!$rememberMe){
-
-                //начинаем сессию
-                //session_start(); // 890dljkashdhiwqiodjmnonpwuiqowfn
 
                 //записываем пользователя в сессию
                 $_SESSION['session_user'] = serialize($userForSessionAndCookies);
