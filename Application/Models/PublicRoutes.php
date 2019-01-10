@@ -12,6 +12,7 @@ return array(
         '/home' => 'HomeController@indexAction',
         '/authorize' => 'AuthorizeController@authorizeAction',
         '/registration'=>'UserController@registration',
+        '/person' => 'PersonController@getPersonAction',
     ],
     'post' => [
         '/addUser'=>'UserController@addUser',
