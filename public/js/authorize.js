@@ -59,7 +59,7 @@
 
             }//if
 
-            let url = `${window.paths.AjaxServerUrl}${window.paths.Login}`;
+            let url = `${window.paths.AjaxServerUserUrl}${window.paths.Login}`;
 
             $.ajax({
                 'url': url,

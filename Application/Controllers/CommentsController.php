@@ -10,30 +10,30 @@ class CommentsController extends BaseController{
 
     public $currentUser = -1;
 
-    public function commentListAction($id){
+    public function commentListByBookAction($id){
 
         $commentService = new CommentsService();
         $bookService = new BookService();
 
-            if( isset($_COOKIE["cookie_user"])){
-                $CookieUser = unserialize($_COOKIE["cookie_user"]);
-            }//if
-            else if ( isset($_SESSION['session_user']) ){
-                $CookieUser = unserialize($_SESSION['session_user']);
-            }//else if
-            else {
-                $CookieUser = null;
-            }//else
+        if( isset($_COOKIE["cookie_user"])){
+            $CookieUser = unserialize($_COOKIE["cookie_user"]);
+        }//if
+        else if ( isset($_SESSION['session_user']) ){
+            $CookieUser = unserialize($_SESSION['session_user']);
+        }//else if
+        else {
+            $CookieUser = null;
+        }//else
 
-            if(!$CookieUser){
-                $template = $this->twig->load('ErrorPages/404-not-found.twig');
+        if(!$CookieUser){
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
 
-                echo $template->render();
-                return;
+            echo $template->render();
+            return;
 
-            }//if
+        }//if
 
-            $currentUser = $CookieUser['userID'];
+        $currentUser = $CookieUser['userID'];
 
 
         $book = $bookService->GetBookById($id);
@@ -68,6 +68,19 @@ class CommentsController extends BaseController{
                 'comments' => $commentWithUser,
                 'book' => $book,
                 'currentUser' => $currentUser
+            )
+        );
+    }//commentListAction
+
+    public function commentListAction(){
+
+        $commentService = new CommentsService();
+        $template = $this->twig->load('Comment/moderated-comment-list.twig');
+
+        $comments = $commentService->GetCommentsList();
+
+        echo $template->render(array(
+                'comments' => $comments
             )
          );
     }//commentListAction

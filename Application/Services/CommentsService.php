@@ -12,6 +12,24 @@ use Application\Utils\MySQL;
 class CommentsService
 {
 
+    public function GetCommentsList($limit = 10 , $offset = 0){
+
+        $stm = MySQL::$db->prepare("
+                SELECT c.* , u.* FROM comments c
+                LEFT JOIN users u
+                ON u.userID = c.userID
+                ORDER BY `comments`.`created` 
+                DESC 
+                LIMIT :offset, :limit
+        ");
+        $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
+        $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
+        $stm->execute();
+
+        return $stm->fetchAll(\PDO::FETCH_OBJ);
+
+    }//GetCommentsByBookId
+
     public function GetCommentsByBookId($id, $limit = 2 , $offset = 0){
 
         $stm = MySQL::$db->prepare("SELECT * FROM comments WHERE bookID=:id AND statusID = 2 ORDER BY `comments`.`created` DESC LIMIT :offset, :limit");

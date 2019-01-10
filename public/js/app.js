@@ -127,7 +127,7 @@ $( document ).ready( ()=>{
 window.paths = {
 
     AjaxServerUrl: '/BookShopMVC/public/admin/',
-    AjaxServeruUserUrl: '/BookShopMVC/public/',
+    AjaxServerUserUrl: '/BookShopMVC/public/',
 
     //AUTHORIZE
     Login: 'login',
