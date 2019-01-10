@@ -14,19 +14,43 @@ class BookService{
 
     public function GetBooks( $limit = 10 , $offset = 0 ){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM books LIMIT :offset,:limit");
+        $stm = MySQL::$db->prepare(
+            "
+              SELECT * FROM books
+              LIMIT :offset,:limit
+            "
+        );
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->execute();
 
-        return $stm->fetchAll(\PDO::FETCH_OBJ);
+        $books = $stm->fetchAll(\PDO::FETCH_OBJ);
+
+        return $books;
 
     }//GetBooks
+
+    public function GetFullBooks( $limit = 10 , $offset = 0  ){
+
+        $books = $this->GetBooks($limit , $offset);
+
+        foreach ($books as &$book){
+
+            $book->attributes = $this->GetBookById($book->bookID);
+
+            echo var_dump($book);
+
+        }//foreach
+
+
+        return $books;
+
+    }//GetFullBooks
 
     public function GetBookById( $id ){
 
 
-        $stm = MySQL::$db->prepare("SELECT * FROM books WHERE bookID = :id");
+        $stm = MySQL::$db->prepare("SELECT bookID FROM books WHERE bookID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
 

@@ -7,7 +7,8 @@
  */
 
 namespace Application\Controllers;
-//use Pug\Pug;
+
+use Application\Services\BookService;
 
 use Application\Services\UserService;
 
@@ -16,11 +17,18 @@ class HomeController extends BaseController{
     public function indexAction(  ){
 
         $userService = new UserService();
+        $bookService = new BookService();
+
         $user = $userService->getCurrentUser();
 
         $template = $this->twig->load('public/home.twig');
+        $books = $bookService->GetFullBooks();
+
+        var_dump($books);
+
         echo $template->render( [
-            'user' => $user
+            'user' => $user,
+            'books' => $books
         ] );
 
     }//indexAction
