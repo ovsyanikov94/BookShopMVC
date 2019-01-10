@@ -156,6 +156,7 @@ window.paths = {
     UpdateStatus: 'comment-status',
 
     //BOOK
+
     AddBook: 'new-book',
     EditBook: 'edit-book/:bookID',
     DeleteBook: 'delete-book/:bookID',
