@@ -38,10 +38,13 @@ class PersonalPageService  {
         $user = array(
 
             'userLogin' => $userData->userLogin,
-            'userEmail' => $userData->userEmail,
-            'userAvatar' => $userAvatar->userImagePath
+            'userEmail' => $userData->userEmail
 
         );
+
+        if($userAvatar){
+            $user['userAvatar'] = $userAvatar->userImagePath;
+        }//if
 
         return $user;
 
@@ -51,7 +54,6 @@ class PersonalPageService  {
     public function ChangeUserAvatar( $params = [] ){
 
         $userID = +$params['userID'];
-        $userLogin = $params['userLogin'];
 
         //получаем файл аватара(фоторграфии) пользователя
         if( isset( $_FILES['avatarFile'] ) ){

@@ -105,23 +105,6 @@
 
         });
 
-        //Кнопка "Выйти" для LogOut
-        $('#signOut').click(function () {
-
-            let url = `${window.paths.AjaxServerUrl}${window.paths.Logout}`;
-
-            $.ajax({
-                'url': url,
-                'type': 'POST',
-                'success': () =>{
-
-                    location.href = `${window.paths.AjaxServerUrl}authorize`;
-
-                }//success
-            });
-
-        });
-
     });
 
 })();

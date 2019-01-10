@@ -70,19 +70,17 @@ class PersonalPageController extends BaseController {
 
             if(!$CookieUser){
 
-                return $this->json( 200 , array(
+                $this->json( 200 , array(
                     'code' => 401
                 ) );
 
             }//if
 
             $userID = $CookieUser['userID'];
-            $userLogin = $CookieUser['userLogin'];
 
             $result = $personalPageService->ChangeUserAvatar(
                 [
-                    'userID' => $userID ,
-                    'userLogin' => $userLogin
+                    'userID' => $userID
                 ]
             );
 
