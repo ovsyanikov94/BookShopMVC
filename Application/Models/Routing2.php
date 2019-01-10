@@ -12,8 +12,7 @@ return array(
         '/genres' => 'GenresController@getGenresAction',
         '/genre_books/(\d+)' => 'GenresController@getGenreBooksAmountAction',
         '/genre/(\d+)' => 'GenresController@getGenreAction',
-        '/info-book/(\d+)' => 'BookController@infoBookAction',
-        '/person' => 'PersonController@getPersonAction',
+        '/info-book/(\d+)' => 'BookController@infoBookAction'
     ],
     'post' => [
         '/new-book' => 'BookController@addBookAction',

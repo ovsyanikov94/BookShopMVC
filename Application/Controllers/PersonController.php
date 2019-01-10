@@ -16,7 +16,7 @@ class PersonController extends BaseController
 
 
 
-        $template = $this->twig->load('Person/person.twig');
+        $template = $this->twig->load('public/Person/person.twig');
 
 
 
