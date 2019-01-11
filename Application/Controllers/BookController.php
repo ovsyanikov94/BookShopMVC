@@ -303,6 +303,24 @@ class BookController extends BaseController{
 
     } // infoBookAction
 
+    public function getPublicBookAction($id){
+
+        $bookService = new BookService();
+        $bookForInfo = $bookService->GetBookById($id);
+        $commentService = new CommentsService();
+        $amount = $commentService->GetAmountCommentsByBookId($id);
+
+        $template = $this->twig->load( 'public/Book/book.twig');
+
+        $bookForInfo->comments = $commentService->GetCommentsByBookId($id);
+
+        echo $template->render(array(
+            'book' => $bookForInfo,
+            'commentAmount' => $amount
+        ));
+
+    } // infoBookAction
+
     public function deleteBookAction($id){
 
         $bookService = new BookService();

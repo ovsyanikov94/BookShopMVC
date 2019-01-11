@@ -14,11 +14,8 @@
             {% for book in books %}
 
                 <div class="card col-xl-3 col-lg-4 col-md-6 col-sm-12" style="width: 18rem; padding: 2px;">
-                    {% if book.attributes.bookImagePath %}
-                        <img class="card-img-top" src="{{ book.attributes.bookImagePath }}" alt="Card image cap">
-                    {% else %}
-                        <img class="card-img-top" src="" alt="Card image cap">
-                    {% endif %}
+
+                    <img class="card-img-top" src="{{ book.attributes.bookImagePath }}" alt="Card image cap">
 
                     <div class="card-body">
 
@@ -43,7 +40,11 @@
                         </h6>
                         <h6 class="card-title">Цена: {{ book.bookTitle }} р.</h6>
                         <div class="row justify-content-center"   >
-                            <div class="btn btn-primary col-xl-8 col-lg-8 col-md-8 col-sm-10"> Добавить в корзину</div>
+
+                            {% if not book.isInCart %}
+                                <div data-is-in-cart="{{ book.isInCart }}" data-book-id="{{ book.bookID }}" class="btn btn-primary add-to-cart col-xl-8 col-lg-8 col-md-8 col-sm-10"> Добавить в корзину</div>
+                            {% endif %}
+
                             <a href="/BookShopMVC/public/book/{{ book.bookID }}" class="btn btn-primary col-xl-8 col-lg-8 col-md-8 col-sm-10 " style="margin-top: 2px">О книге</a>
                         </div>
 

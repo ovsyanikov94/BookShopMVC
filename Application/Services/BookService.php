@@ -49,7 +49,7 @@ class BookService{
     public function GetBookById( $id ){
 
 
-        $stm = MySQL::$db->prepare("SELECT bookID FROM books WHERE bookID = :id");
+        $stm = MySQL::$db->prepare("SELECT * FROM books WHERE bookID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
 
@@ -69,7 +69,10 @@ class BookService{
 
         if( $image ){
             $book->bookImagePath = $image->bookImagePath;
-        }
+        }//if
+        else{
+            $book->bookImagePath = "images/books/default.jpg";
+        }//else
 
         $book->authors = $this->GetBookAuthors( $book->bookID );
         $book->genres = $this->GetBookGenres( $book->bookID );

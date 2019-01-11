@@ -9,10 +9,14 @@
 return array(
 
     'get' => [
+        '/' => 'HomeController@indexAction',
         '/home' => 'HomeController@indexAction',
+        '/cart' => 'CartController@cartAction',
+        '/orders' => 'CartController@ordersAction',
         '/authorize' => 'AuthorizeController@authorizeAction',
         '/registration'=>'UserController@registration',
         '/person' => 'PersonController@getPersonAction',
+        '/book/(\d+)' => 'BookController@getPublicBookAction',
     ],
     'post' => [
         '/addUser'=>'UserController@addUser',

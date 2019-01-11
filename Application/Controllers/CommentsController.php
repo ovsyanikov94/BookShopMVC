@@ -81,7 +81,7 @@ class CommentsController extends BaseController{
         $statuses = $commentService->GetStatuses();
 
 
-        echo var_dump($statuses);
+        //echo var_dump($statuses);
 
         echo $template->render(array(
                 'comments' => $comments,
