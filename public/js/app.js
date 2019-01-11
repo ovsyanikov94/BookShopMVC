@@ -215,4 +215,3 @@ window.StatusConsts = {
 };
 
 $.cookie.json = true;
-
