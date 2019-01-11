@@ -1,0 +1,38 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+    <div class="form-group">
+        <a href="/BookShopMVC/public/add-orderdetails/" class="btn btn-primary" >Добавить заказ</a>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">orderID</th>
+            <th scope="col">bookID</th>
+            <th scope="col">Удалить</th>
+            <th scope="col">Обновить</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for od in orderdetails %}
+            <tr>
+                <td>{{ od.id }}</td>
+                <td>{{ od.orderID }}</td>
+                <td>{{ od.bookID }}</td>
+                <td>
+                    <button class="btn btn-danger removeOD" data-od-id="{{ od.id }}">Удалить</button>
+                </td>
+                <td>
+                    <a href="/BookShopMVC/public/orderdetails/{{ od.id }}" class="btn btn-primary" >Обновить</a>
+                </td>
+            </tr>
+        {%endfor  %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
