@@ -91,7 +91,7 @@
 
             $('#hiddenAvatarBlock').hide();
 
-        });//#savePhoto
+        });//#saveNewAvatar
 
         //подтверждение изменений личной информации
         $('#ConfirmChangesModalButton').click(function () {
@@ -124,7 +124,7 @@
 
             $.ajax({
 
-               'url': url,
+                'url': url,
                 'method': 'PUT',
                 'data':{
                    newEmail: newEmail
@@ -132,8 +132,10 @@
                 'success': (data)=>{
 
                    if(+data.code === 200){
+
                        $('#exampleModalCenter').modal('hide');
                        $('#successMessage').text('Данные успешно обновлены!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
                    }//if
 
                 },//success
@@ -250,7 +252,7 @@
                },
                'success': (data)=>{
 
-                   if(data.code === 200){
+                   if(+data.code === 200){
 
                        $('#successMessage').text('Пароль успешно изменён!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
                        $('#exampleModalCenter').modal('hide');
