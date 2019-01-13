@@ -47,6 +47,17 @@
                 </div>
             </li>
         </ul>
+
+        <a href="/BookShopMVC/public/cart"> <div class="row" style="margin-right: 20px">
+
+                    <div class="col-4" >
+                        <img src="/BookShopMVC/public/images/cart/Korzina.png" style="width: 35px" class="rounded float-left" alt="...">
+                    </div>
+                    <div class="col-4">
+                        <p id="Order" style="color: white; font-size: 22px">({{ amountBookInCart }})</p>
+                    </div>
+
+        </div></a>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -81,7 +92,7 @@
             <div id="ModalBody" class="modal-body"></div>
             <div class="modal-footer">
                 <button id="CancelButton"  type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                <button id="ConfirmButton" type="button" class="btn btn-primary" data-dismiss="modal">Ок</button>
+                <button id="OkButton" type="button" class="btn btn-primary" data-dismiss="modal">Ок</button>
             </div>
         </div>
     </div>
