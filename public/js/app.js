@@ -231,4 +231,4 @@ window.StatusConsts = {
 
 };
 
-//$.cookie.json = true;
+$.cookie.json = true;
