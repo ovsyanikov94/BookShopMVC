@@ -17,6 +17,8 @@ return array(
         '/registration'=>'UserController@registration',
         '/person' => 'PersonController@getPersonAction',
         '/book/(\d+)' => 'BookController@getPublicBookAction',
+        '/ordersUser' => 'OrdersController@UserDealInfoByIdAction',
+        '/ordersByUser'=> 'OrdersController@UserDealInfoById'
     ],
     'post' => [
         '/addUser'=>'UserController@addUser',

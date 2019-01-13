@@ -169,6 +169,10 @@ window.paths = {
     AjaxServerUrl: '/BookShopMVC/public/admin/',
     AjaxServerUserUrl: '/BookShopMVC/public/',
 
+    //ORDERS
+
+    getOrders: 'ordersByUser',
+
     //AUTHORIZE
     Login: 'login',
     Logout: 'logout',

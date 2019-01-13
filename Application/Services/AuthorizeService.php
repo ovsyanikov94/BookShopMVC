@@ -95,7 +95,7 @@ class AuthorizeService{
                     setcookie(
                         'cookie_user' ,
                         $userSerializeResultForCookie ,
-                        time()+60*60*24*30
+                        time()+60*60*24*60
                     );
 
                 }//if
