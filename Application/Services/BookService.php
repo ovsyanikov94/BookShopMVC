@@ -14,14 +14,37 @@ class BookService{
 
     public function GetBooks( $limit = 10 , $offset = 0 ){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM books LIMIT :offset,:limit");
+        $stm = MySQL::$db->prepare(
+            "
+              SELECT * FROM books
+              LIMIT :offset,:limit
+            "
+        );
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->execute();
 
-        return $stm->fetchAll(\PDO::FETCH_OBJ);
+        $books = $stm->fetchAll(\PDO::FETCH_OBJ);
+
+        return $books;
 
     }//GetBooks
+
+    public function GetFullBooks( $limit = 10 , $offset = 0  ){
+
+        $books = $this->GetBooks($limit , $offset);
+
+        foreach ($books as &$book){
+
+            $book->attributes = $this->GetBookById($book->bookID);
+
+
+        }//foreach
+
+
+        return $books;
+
+    }//GetFullBooks
 
     public function GetBookById( $id ){
 
@@ -46,7 +69,10 @@ class BookService{
 
         if( $image ){
             $book->bookImagePath = $image->bookImagePath;
-        }
+        }//if
+        else{
+            $book->bookImagePath = "images/books/default.jpg";
+        }//else
 
         $book->authors = $this->GetBookAuthors( $book->bookID );
         $book->genres = $this->GetBookGenres( $book->bookID );

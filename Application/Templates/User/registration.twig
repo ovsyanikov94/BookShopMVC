@@ -1,26 +1,44 @@
-{% extends 'base.twig' %}
-
 {% block content %}
-    <form>
-        <div class="form-group">
-            <label for="exampleInputEmail1">Логин</label>
-            <input id="login" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Login">
-            <small id="loginError" class="form-text ">логин от 4 до 20 символов</small>
+
+    <link rel="stylesheet" href="/BookShopMVC/node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/BookShopMVC/public/css/app.css">
+
+    <script src="/BookShopMVC/node_modules/jquery/dist/jquery.js"></script>
+
+    <script src="/BookShopMVC/public/js/app.js"></script>
+    <script src="/BookShopMVC/public/js/validators.js"></script>
+
+    <div class="container-fluid">
+
+        <div class="row justify-content-center">
+
+            <form class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Логин</label>
+                    <input id="login" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Login">
+                    <small id="loginError" class="form-text ">логин от 4 до 20 символов</small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">@Email</label>
+                    <input id="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email">
+                    <small id="emailError" class="form-text ">название@email.домен</small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Пароль</label>
+                    <input id="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Подтвердить пароль </label>
+                    <input  id="confirmPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <small id="confirmPasswordError" class="form-text  none">неверный пароль</small>
+                </div>
+                <div id = "checkIn" type="submit" class="btn btn-primary">регистрация</div>
+            </form>
+
         </div>
-        <div class="form-group">
-            <label for="exampleInputEmail1">@Email</label>
-            <input id="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email">
-            <small id="emailError" class="form-text ">название@email.домен</small>
-        </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Пароль</label>
-            <input id="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Подтвердить пароль </label>
-            <input  id="confirmPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            <small id="confirmPasswordError" class="form-text  none">неверный пароль</small>
-        </div>
-        <div id = "checkIn" type="submit" class="btn btn-primary">регистрация</div>
-    </form>
+
+
+    </div>
+
+
 {% endblock %}

@@ -105,12 +105,78 @@ $( document ).ready( ()=>{
 
     });
 
+    //Кнопка "Выйти" для LogOut
+    $('#signOut').click(function () {
+
+        let url = `${window.paths.AjaxServerUrl}${window.paths.Logout}`;
+
+        $.ajax({
+            'url': url,
+            'type': 'POST',
+            'success': () =>{
+
+                location.href = `${window.paths.AjaxServerUrl}authorize`;
+
+            }//success
+        });
+
+    });
+
+    //Добавление в корзину
+    $('.add-to-cart').click( async function (){
+
+        let bookID = +$(this).data('book-id');
+        let cart = $.cookie('cart');
+
+        if( !cart ){
+
+            $.cookie('cart' , [
+                {
+                    bookID: bookID,
+                    amount: 1
+                }
+            ] , {expires: 7 , path: '/'});
+
+        }//if
+        else{
+
+            let book = cart.find( b => b.bookID === bookID )  ;
+
+            if(!book){
+
+                cart.push( {
+                    bookID: bookID,
+                    amount: 1
+                });
+
+                $.cookie('cart' , cart , {expires: 7 , path: '/'});
+
+            }//if
+
+        }//else
+        
+        console.log('CART:' , cart);
+
+        $(this).fadeOut(500);
+
+        
+    } );
+
 } );
 
 window.paths = {
 
-    AjaxServerUrl: '/BookShopMVC/public/',
+    AjaxServerUrl: '/BookShopMVC/public/admin/',
+    AjaxServerUserUrl: '/BookShopMVC/public/',
+
+    //AUTHORIZE
     Login: 'login',
+    Logout: 'logout',
+
+    //PERSONAL PAGE
+    SaveNewAvatar: 'save-avatar',
+    SaveNewPersonalData: 'save-new-personal-data',
+    ChangePassword: 'update-user-password',
 
     //AUTHOR
     RemoveAuthor: 'author/:authorID',
@@ -128,8 +194,11 @@ window.paths = {
     AddComment: 'add_comment',
     MoreComments: 'more-comments/:bookId',
     UpdateStatus: 'comment-status',
+    ModerationComments: 'comments-mod/',
+    ModerationMoreComments: 'comments-mod-more/',
 
     //BOOK
+
     AddBook: 'new-book',
     EditBook: 'edit-book/:bookID',
     DeleteBook: 'delete-book/:bookID',
@@ -144,3 +213,6 @@ window.StatusConsts = {
     StatusReject: 3,
 
 };
+
+$.cookie.json = true;
+

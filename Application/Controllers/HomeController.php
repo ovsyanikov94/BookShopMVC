@@ -7,14 +7,36 @@
  */
 
 namespace Application\Controllers;
-//use Pug\Pug;
+
+use Application\Services\BookService;
+
+use Application\Services\CartService;
+use Application\Services\UserService;
 
 class HomeController extends BaseController{
 
     public function indexAction(  ){
 
-        $template = $this->twig->load('Home/index.twig');
-        echo $template->render( );
+        $userService = new UserService();
+        $bookService = new BookService();
+        $cartService = new CartService();
+
+        $cart = $cartService->getCart();
+
+        $user = $userService->getCurrentUser();
+
+        $template = $this->twig->load('public/home.twig');
+        $books = $bookService->GetFullBooks();
+
+        $cartService->prepareBookArray($books);
+
+        //echo var_dump($books);
+
+
+        echo $template->render( [
+            'user' => $user,
+            'books' => $books
+        ] );
 
     }//indexAction
 

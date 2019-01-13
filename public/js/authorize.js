@@ -46,13 +46,9 @@
             }//if
 
             //проверка поля логина/email на корректность ввода
-            //if( !ValidatorConst.USER_LOGIN_VALIDATOR.test(loginOrEmail) || !ValidatorConst.USER_EMAIL_VALIDATOR.test(loginOrEmail) ){
-
-            //if( !/^[a-z\d]{4,16}$/i.test(loginOrEmail) || !/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(loginOrEmail)){
-            // if( !/^[a-z\d]{4,16}$/i.test(loginOrEmail) ){
-
             if( !window.ValidatorConst.USER_LOGIN_VALIDATOR.test(loginOrEmail) &&
                 !window.ValidatorConst.USER_EMAIL_VALIDATOR.test(loginOrEmail) ){
+
                 $('#errorInput')
                     .text('Логин/Email содержит не корректные символы.')
                     .fadeOut(500)
@@ -63,7 +59,7 @@
 
             }//if
 
-            let url = `${window.paths.AjaxServerUrl}${window.paths.Login}`;
+            let url = `${window.paths.AjaxServerUserUrl}${window.paths.Login}`;
 
             $.ajax({
                 'url': url,
@@ -86,11 +82,13 @@
                 },//seccess
                 statusCode: {
                     '401': ()=>{
+
                         $('#errorInput')
                             .html("Пользователь не найден!<br> Вы можете зарегестрироваться.")
                             .fadeIn(750)
                             .delay(2500)
                             .fadeOut(750);
+
                     },
                     '405': ()=>{
 
@@ -101,9 +99,7 @@
                             .fadeOut(750);
 
                     },
-                }
-
-
+                }//statusCode
 
             });
 

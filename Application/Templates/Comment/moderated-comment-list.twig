@@ -7,6 +7,22 @@
 
     <h1>Модерирование комментариев</h1>
 
+    <div class="form-group">
+        <label for="formGroupExampleInput2">Показывать комментарии со статусом:</label>
+
+        <select class="form-control" id="commentsComboBox">
+            {% for status in statuses %}
+                {% if status.statusID == selectedId %}
+                <option data-status-id="{{ status.statusID }}" selected="selected">{{ status.statusTitle }}</option>
+
+                {% else %}
+                    <option data-status-id="{{ status.statusID }}" >{{ status.statusTitle }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+
+    </div>
+
 
     <div id="CommentsModeratedList">
         {% for comment in comments %}

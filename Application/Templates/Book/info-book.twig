@@ -5,7 +5,7 @@
     <div class="jumbotron pt-3 pb-1">
 
         {% if ( book.bookImagePath )%}
-            <img src="../{{ book.bookImagePath }}" style="float: left; width: 300px" class="rounded mr-5 mb-1" alt="Cinque Terre">
+            <img src="../../{{ book.bookImagePath }}" style="float: left; width: 300px" class="rounded mr-5 mb-1" alt="Cinque Terre">
         {% endif %}
 
         <h1 class="display-4">{{ book.bookTitle }}</h1>
@@ -32,6 +32,10 @@
                     <li>{{ genre.genreTitle }}</li>
                 {% endfor %}
             </ul>
+        </p>
+
+        <p class="lead">
+        <a href="/BookShopMVC/public/admin/comments/{{ book.bookID }}"> <b>Комментарии (</b> {{ commentAmount.amount }}<b> )</b> </a>
         </p>
 
     </div>
