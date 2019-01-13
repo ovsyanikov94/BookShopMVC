@@ -14,7 +14,8 @@ class OrderService{
 
     public function GetOrders( $limit = 10 , $offset = 0 ){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM orders LIMIT :offset, :limit");
+        $stm = MySQL::$db->prepare("SELECT orderID, userID, orderDatetime, orderStatus
+                                   FROM orders LIMIT :offset, :limit");
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->execute();
@@ -23,32 +24,33 @@ class OrderService{
 
     }//GetOrders
 
-    public function AddOrder( $genreID , $userID ){
+    public function AddOrder( $time , $userID, $orderStatus ){
 
-        $stm = MySQL::$db->prepare("INSERT INTO orders VALUES( DEFAULT  , :genreID , :userID)");
-        $stm->bindParam(':genreID' , $genreID , \PDO::PARAM_STR);
-        $stm->bindParam(':userID' , $userID , \PDO::PARAM_STR);
+        $stm = MySQL::$db->prepare("INSERT INTO orders(userID, orderDatetime, orderStatus) VALUES(  :userID , :timeOrder, :orderStatusID)");
+        $stm->bindParam(':userID' , $userID , \PDO::PARAM_INT);
+        $stm->bindParam(':orderStatusID' , $orderStatus , \PDO::PARAM_INT);
+        $stm->bindParam(':timeOrder' , $time , \PDO::PARAM_INT);
         $stm->execute();
 
         return  MySQL::$db->lastInsertId();
 
     }//AddOrder
 
-    public function UpdateOrder( $orderID, $genreID , $userID ){
+    public function GetTitleStatusOrderByID($statusId){
 
-        $stm = MySQL::$db->prepare("UPDATE orders SET genreID = :genreID, userID = :userID WHERE orderID = :orderID");
-        $stm->bindParam(':genreID' , $genreID , \PDO::PARAM_STR);
-        $stm->bindParam(':userID' , $userID , \PDO::PARAM_STR);
-        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_STR);
-        $result = $stm->execute();
+        $stm = MySQL::$db->prepare("SELECT  statusTitle
+                                   FROM orderstatus WHERE statusID = :statusId");
+        $stm->bindParam(':statusId' , $statusId , \PDO::PARAM_INT);
+        $stm->execute();
 
-        return  $result;
+        return $stm->fetch(\PDO::FETCH_OBJ);
+    }//GetTitleStatusByID
 
-    }//AddOrder
 
     public function GetOrderByID( $id ){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM orders WHERE orderID = :id");
+        $stm = MySQL::$db->prepare("SELECT orderID, userID, orderDatetime, orderStatus 
+                                    FROM orders WHERE orderID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
 
@@ -56,14 +58,6 @@ class OrderService{
 
     }//GetOrderByID
 
-    public function DeleteOrderByID( $id ){
 
-        $stm = MySQL::$db->prepare("DELETE FROM orders WHERE orderID = :id");
-        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
-        $result = $stm->execute();
-
-        return $result;
-
-    }//DeleteOrderByID
 
 }//OrderService

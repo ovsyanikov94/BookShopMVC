@@ -23,7 +23,10 @@ return array(
         '/admin/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
         '/admin/personal-page' => 'PersonalPageController@personalPageAction',
         '/admin/edit-personal-data' => 'PersonalPageController@EditPersonalDataAction',
-        '/admin/change-password' => 'PersonalPageController@ChangePasswordAction'
+        '/admin/change-password' => 'PersonalPageController@ChangePasswordAction',
+        '/admin/order' => 'OrderController@getOrderAction',
+        '/admin/orderdetails/(\d+)' => 'OrderDetailsController@orderDetailsListAction',
+
 
     ],
     'post' => [
@@ -35,6 +38,7 @@ return array(
         '/admin/genre' => 'GenresController@updateGenreAction',
         '/admin/edit-book/(\d+)' => 'BookController@acceptEditBookAction',
         '/admin/add_comment' => 'CommentsController@addCommentAction',
+        '/admin/addOrder' => 'OrderController@addOrder',
     ],
     'delete' => [
         '/admin/author/(\d+)' => 'AuthorController@deleteAuthorAction',

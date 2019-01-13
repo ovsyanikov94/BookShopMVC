@@ -12,58 +12,44 @@ use Application\Utils\MySQL;
 
 class OrderDetailsService{
 
-    public function GetOrdersDetails( $limit = 10 , $offset = 0 ){
 
-        $stm = MySQL::$db->prepare("SELECT * FROM orderdetails LIMIT :offset, :limit");
-        $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
-        $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
-        $stm->execute();
 
-        return $stm->fetchAll(\PDO::FETCH_OBJ);
+    public function AddOrdersDetails( $orderID , $bookID, $bookPrice, $bookAmount){
 
-    }//GetOrdersDetails
-
-    public function AddOrdersDetails( $orderID , $bookID){
-
-        $stm = MySQL::$db->prepare("INSERT INTO orderdetails VALUES( DEFAULT  , :orderID , :bookID)");
-        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_STR);
-        $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_STR);
+        $stm = MySQL::$db->prepare("INSERT INTO orderdetails (orderID, bookID, bookPrice, bookAmount) 
+                                    VALUES( :orderID , :bookID, :bookPrice, :bookAmount)");
+        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_INT);
+        $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_INT);
+        $stm->bindParam(':bookPrice' , $bookPrice , \PDO::PARAM_STR);
+        $stm->bindParam(':bookAmount' , $bookAmount , \PDO::PARAM_INT);
         $stm->execute();
 
         return  MySQL::$db->lastInsertId();
 
     }//AddOrdersDetails
 
-    public function UpdateOrdersDetails( $id, $orderID , $bookID ){
+    public function GetCountBookInOrderByID($orderID){
 
-        $stm = MySQL::$db->prepare("UPDATE orderdetails SET orderID = :orderID, bookID = :bookID WHERE id = :id");
-        $stm->bindParam(':id' , $id , \PDO::PARAM_STR);
-        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_STR);
-        $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_STR);
-        $result = $stm->execute();
+        $stm = MySQL::$db->prepare("SELECT COUNT(orderID) FROM orderdetails WHERE orderID = :orderID");
+        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_INT);
 
-        return  $result;
-
-    }//UpdateOrdersDetails
-
-    public function GetOrdersDetailsByID( $id ){
-
-        $stm = MySQL::$db->prepare("SELECT * FROM orderdetails WHERE id = :id");
-        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
 
-        return $stm->fetch(\PDO::FETCH_OBJ);
+        return $stm->fetch();
 
-    }//GetOrdersDetailsByID
+    }//GetCountBookInOrderByID
 
-    public function DeleteOrdersDetailsByID( $id ){
 
-        $stm = MySQL::$db->prepare("DELETE FROM orderdetails WHERE id = :id");
-        $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
-        $result = $stm->execute();
+    public function GetOrdersDetailsByOrderId( $orderID){
 
-        return $result;
+        $stm = MySQL::$db->prepare("SELECT bookID,  bookPrice, bookAmount 
+                                    FROM orderdetails 
+                                    WHERE orderID = :orderID");
+        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_INT);
+        $stm->execute();
 
-    }//DeleteOrdersDetailsByID
+        return $stm->fetchAll(\PDO::FETCH_OBJ);
+
+    }//GetOrdersDetails
 
 }//OrderDetailsService

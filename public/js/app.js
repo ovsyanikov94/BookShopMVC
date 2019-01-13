@@ -163,19 +163,19 @@ $( document ).ready( ()=>{
     } );
 
 
-    $('.removeOD').click(function () {
-
-        let odID = $(this).data('od-id');
-
-        $.ajax({
-            'url': `/BookShopMVC/public/delete-order-details/${odID}`,
-            'type': 'DELETE',
-            'success': ( a , b) => {
-                location.reload();
-            }
-        }); // Ajax
-
-    });
+    // $('.removeOD').click(function () {
+    //
+    //     let odID = $(this).data('od-id');
+    //
+    //     $.ajax({
+    //         'url': `/BookShopMVC/public/delete-order-details/${odID}`,
+    //         'type': 'DELETE',
+    //         'success': ( a , b) => {
+    //             location.reload();
+    //         }
+    //     }); // Ajax
+    //
+    // });
 
 } );
 
@@ -217,8 +217,10 @@ window.paths = {
     AddBook: 'new-book',
     EditBook: 'edit-book/:bookID',
     DeleteBook: 'delete-book/:bookID',
-    GetBooks: 'get-books'
+    GetBooks: 'get-books',
 
+    //ORDER
+    AddOrder: 'addOrder'
 };
 
 window.StatusConsts = {
@@ -229,4 +231,4 @@ window.StatusConsts = {
 
 };
 
-$.cookie.json = true;
+//$.cookie.json = true;
