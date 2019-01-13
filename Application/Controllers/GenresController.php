@@ -95,7 +95,7 @@ class GenresController extends BaseController
         ) );
     }//deleteA
 
-    public function addGenreAction(){
+    public function addPostGenreAction(){
 
         $name = $this->request->GetPostValue('name');
 

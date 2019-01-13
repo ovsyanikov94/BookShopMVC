@@ -17,6 +17,10 @@ class AuthorController extends BaseController{
         $authorService = new AuthorService();
         $authors = $authorService->GetAuthors();
 
+        if($_SESSION){
+
+        }
+
         $template = $this->twig->load('Author/authors-list.twig');
 
         echo $template->render( array(
@@ -70,6 +74,7 @@ class AuthorController extends BaseController{
 
 
     public function updateAuthorAction( $id  ){
+
 
 
         $authorFirstname = $this->request->GetPutValue('authorFirstname');

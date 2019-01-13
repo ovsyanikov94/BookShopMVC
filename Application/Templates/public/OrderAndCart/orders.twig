@@ -1,0 +1,56 @@
+{% extends 'public/base.twig' %}
+
+{% block content %}
+
+<div class="tab-pane" id="history" role="tabpanel">
+    <div class="row justify-content">
+        <div class="col text-left">
+            <h3>История покупок:</h3>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Фото</th>
+            <th scope="col">Название книги</th>
+            <th scope="col">Автор</th>
+            <th scope="col">Цена</th>
+            <th scope="col">Дата операции</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyshsaKxkdC0mG0N7Zv4zn7FkIegiTtpK5kK3RSW9ffC5aIm8_" style="float: left; width: 50px"  alt="Cinque Terre">
+            </th>
+            <td>Война и мир</td>
+            <td>Толстой Л.Н.</td>
+            <td>250,20 руб.</td>
+            <td>14.08.2018</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <img src="https://img.yakaboo.ua/media/catalog/product/cache/1/image/398x565/234c7c011ba026e66d29567e1be1d1f7/1/9/199357_43999127.jpg" style="float: left; width: 50px"  alt="Cinque Terre">
+            </th>
+            <td>Алые Паруса</td>
+            <td>Братья Гримм</td>
+            <td>300,00 руб.</td>
+            <td>30.04.2018</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <img src="https://coollib.com/i/94/418894/cover.jpg" style="float: left; width: 50px"  alt="Cinque Terre">
+            </th>
+            <td>Незнайка</td>
+            <td>Носов Н.В.</td>
+            <td>500,00 руб.</td>
+            <td>25.02.2018</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+
+{% endblock %}

@@ -60,7 +60,7 @@ $(document).ready( function (  ){
                     'name': name,
                 },
                 'success': (data) =>{
-console.log(+data.genreID)
+
                     let genreId = +data.genreID;
                     let status = +data .status;
                     let amount = +data .amount;
@@ -79,7 +79,7 @@ console.log(+data.genreID)
                                     <button data-genre-id="${genreId}" data-genre-name="${name}" class="btn btn-danger" >Удалить</button>
                                 </td>
                                 <td>
-                                    <a href="${window.paths.AjaxServerUrl}genre/${genreId}" class="btn btn-primary" >Обновить</a>
+                                    <a href="${window.paths.AjaxServerUrl}${window.paths.UpdateGenre}/${genreId}" class="btn btn-primary" >Обновить</a>
                                 </td>
                             </tr>`
                         );

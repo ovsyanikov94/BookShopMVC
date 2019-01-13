@@ -7,28 +7,51 @@
  */
 
 namespace Application\Controllers;
-//use Pug\Pug;
+
+use Application\Services\BookService;
+
+use Application\Services\CartService;
+use Application\Services\UserService;
 
 class HomeController extends BaseController{
 
-    public function indexAction ( ){
+    public function indexAction(  ){
+
+        $userService = new UserService();
+        $bookService = new BookService();
+        $cartService = new CartService();
+
+        $cart = $cartService->getCart();
+
+        $user = $userService->getCurrentUser();
+
+        $template = $this->twig->load('public/home.twig');
+        $books = $bookService->GetFullBooks();
+
+        $cartService->prepareBookArray($books);
+
+        //echo var_dump($books);
+
+
+        echo $template->render( [
+            'user' => $user,
+            'books' => $books
+        ] );
+
+    }//indexAction
+
+    public function Action404(  ){
 
         try {
 
-            $template = $this->twig->load('Home/index.twig');
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
             echo $template->render( );
 
         }//try
         catch (\Exception $ex) {
 
-            echo "<pre>";
-                print_r($ex);
-            echo "<pre>";
-
-            include '../Application/Views/Errors/InternalError.php';
-
         }//catch
 
-    }//indexAction
+    }
 
 }//HomeController

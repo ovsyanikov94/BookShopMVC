@@ -4,21 +4,39 @@
 
     <div class="jumbotron pt-3 pb-1">
 
-        <img src="http://www.cruzo.net/user/images/k/ecc3ecf42c75db1ffce5d06cbe95b1e6_644.jpg" style="float: left; width: 300px" class="rounded mr-5 mb-1" alt="Cinque Terre">
+        {% if ( book.bookImagePath )%}
+            <img src="../../{{ book.bookImagePath }}" style="float: left; width: 300px" class="rounded mr-5 mb-1" alt="Cinque Terre">
+        {% endif %}
+
         <h1 class="display-4">{{ book.bookTitle }}</h1>
-        <p class="lead">О книге: авно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться.
-            Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное
-           ногие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum
-            в качестве текста по умолчанию, так что поиск  распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст..
-            Здесь ваш текст.. Здесь ваш текст.." М распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст..
-            Здесь ваш текст.. Здесь ваш текст.." М распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст..
-            Здесь ваш текст.. Здесь ваш текст.." Мпо ключевым словам "lorem ipsum" сразу показывает, как много веб-страниц
-            всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много версий. Некоторые версии
-            появились по ошибке, некоторые - намеренно (например, юмористические варианты).</p>
+        <p class="lead">{{ book.bookDescription }}</p>
         <hr class="my-4">
         <p class="lead"><b>Цена: </b>{{ book.bookPrice }} ₽</p>
         <p class="lead"><b>Кол-во страниц:</b> {{ book.bookPages }} стр.</p>
         <p class="lead"><b>ISBN: </b>{{ book.bookISBN }}</p>
+        <p class="lead">
+            <b>Авторы: </b><br>
+
+            <ul>
+                {% for author in book.authors %}
+                    <li>{{ author.authorFirstName }} {{ author.authorLastName }}</li>
+                {% endfor %}
+            </ul>
+        </p>
+
+        <p class="lead">
+            <b>Жанры: </b><br>
+
+            <ul>
+                {% for genre in book.genres %}
+                    <li>{{ genre.genreTitle }}</li>
+                {% endfor %}
+            </ul>
+        </p>
+
+        <p class="lead">
+        <a href="/BookShopMVC/public/admin/comments/{{ book.bookID }}"> <b>Комментарии (</b> {{ commentAmount.amount }}<b> )</b> </a>
+        </p>
 
     </div>
 
