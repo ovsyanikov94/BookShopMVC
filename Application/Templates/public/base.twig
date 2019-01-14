@@ -55,8 +55,23 @@
                         <img src="/BookShopMVC/public/images/cart/Korzina.png" style="width: 35px" class="rounded float-left" alt="...">
                     </div>
                     <div class="col-4">
-                        <p id="Order" style="color: white; font-size: 22px">({{ amountBookInCart }})</p>
+                        <p id="Order" style="color: white; font-size: 22px"></p>
                     </div>
+
+                    <script>
+
+                        let cart = $.cookie('cart');
+
+                        if(!cart){
+                            cart = 0;
+                        }//
+                        else{
+                            cart = cart.length;
+                        }//else
+
+                        $('#Order').text(`(${cart})`);
+
+                    </script>
 
         </div></a>
         <form class="form-inline my-2 my-lg-0">
