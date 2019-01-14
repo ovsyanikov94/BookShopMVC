@@ -60,10 +60,6 @@ namespace Application\Controllers;
 use Bramus\Router\Router;
 use Application\Utils\MySQL;
 
-
-//use Application\Models\Path;
-//use Application\Models\Routing;
-
 class ApplicationController extends BaseController {
 
     public function Start(  ){

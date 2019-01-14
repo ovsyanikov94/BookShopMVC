@@ -134,6 +134,7 @@ class PersonalPageController extends BaseController {
 
             //получаем данные о пользователе
             $user = $personalPageService->GetUserData( [ 'userID' => $userStorage['userID'] ] );
+            $user->userID = $userStorage['userID'];
 
             echo $template->render( array( 'userStorage' => $userStorage, 'user' => $user ) );
 
@@ -176,7 +177,7 @@ class PersonalPageController extends BaseController {
 
             $this->json( $result['code'],
                 array(
-                'result' => $result['code']
+                'code' => $result['code']
             ) );
 
         }//try

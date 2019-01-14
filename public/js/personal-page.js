@@ -110,8 +110,8 @@
             }//if
 
             //проводим проверку на правильность воода новых персональных данных
-           // if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
-            if(!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(newEmail)){
+           if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
+            //if(!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(newEmail)){
 
                 $('#exampleModalCenter').modal('hide');
                 $('#errorMessage').text('Поле Email содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
@@ -121,6 +121,7 @@
             }//if
 
             let url = `${window.paths.AjaxServerUrl}${window.paths.SaveNewPersonalData}`;
+
 
             $.ajax({
 
@@ -139,6 +140,9 @@
                    }//if
 
                 },//success
+                'error': ()=>{
+                    console.log('FAIL!!!');
+                },
                 'statusCode':{
                    '301': ()=>{
 
