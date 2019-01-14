@@ -16,8 +16,6 @@ use Bcrypt\Bcrypt;
 
 class UserController extends BaseController{
 
-
-
     public function registration(){
         try{
             $template = $this->twig->load( 'User/registration.twig');
@@ -40,20 +38,45 @@ class UserController extends BaseController{
         $pattern = new patternConst();
 
         $userLogin = $this->request->GetPostValue('userLogin');
-
         if(!preg_match($pattern->LoginPattern,$userLogin)){
             $this->json(400,array(
-                'res'=> 'неверный логин'
+                'res' => 'неверный логин'
             ));
             return;
         }//if
-        $userEmail= $this->request->GetPostValue('userEmail');
+
+        $userEmail = $this->request->GetPostValue('userEmail');
         if(!preg_match($pattern->EmailPattern,$userEmail)){
             $this->json(400,array(
-                'res'=> 'неверный Email'
+                'res' => 'неверный Email'
             ));
             return;
         }//if
+
+        $userFirstName = $this->request->GetPostValue('firstName');
+        if(!preg_match($pattern->NamesPattern, $userFirstName)){
+            $this->json(400,array(
+                'res' => 'Не корректное Имя'
+            ));
+            return;
+        }//if
+
+        $userLastName = $this->request->GetPostValue('lastName');
+        if(!preg_match($pattern->NamesPattern, $userLastName)){
+            $this->json(400,array(
+                'res' => 'Не корректная Фамилия'
+            ));
+            return;
+        }//if
+
+        $userMiddleName = $this->request->GetPostValue('middleName');
+        if(!preg_match($pattern->NamesPattern, $userMiddleName)){
+            $this->json(400,array(
+                'res' => 'Не корректное Отчество'
+            ));
+            return;
+        }//if
+
         $usrPassword = $this->request->GetPostValue('userPassword');
         if(!preg_match($pattern->PasswordPattern,$usrPassword)){
             $this->json(400,array(
@@ -68,11 +91,9 @@ class UserController extends BaseController{
 
         $userService = new UserService();
 
-        $result = $userService->addUser($userLogin,$usrPassword,$userEmail, $heshToken);
+        $result = $userService->addUser( $userLogin, $usrPassword, $userEmail, $userFirstName, $userLastName, $userMiddleName, $heshToken );
 
-        if($result !==null){
-
-
+        if($result !== null){
 
             $message = new messageConst();
 
@@ -139,4 +160,5 @@ class UserController extends BaseController{
 
 
     }//verificationUser
+
 }//UserController
