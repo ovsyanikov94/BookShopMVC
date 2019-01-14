@@ -1,5 +1,19 @@
 $(document).ready( function (  ) {
 
+    if($.cookie('cart').length === 0){
+        $('#formOrder').css('display', 'none');
+        $('#formTotalOrder').css('display', 'none');
+        $('#cartTable').css('opacity', '0');
+        $('#cartEmpty').css('display', 'block');
+    }//if
+    else{
+        $('#formOrder').css('display', 'block');
+        $('#formTotalOrder').css('display', 'block');
+        $('#cartTable').css('opacity', '1');
+        $('#cartEmpty').css('display', 'none');
+    }//else
+
+
     $('.count').change( function (  ){
 
         let bookId = $(this).data('book-id');
@@ -92,6 +106,12 @@ $(document).ready( function (  ) {
 
         $('#Order')[0].innerText = '(' + count + ')';
 
+        if(count==0){
+            $('#formOrder').css('display', 'none');
+            $('#cartTable').css('opacity', '0');
+            $('#formTotalOrder').css('display', 'none');
+            $('#cartEmpty').css('display', 'block');
+        }//if
     });
 
 });

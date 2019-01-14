@@ -9,9 +9,35 @@
         {% endif %}
 
         <h1 class="display-4">{{ book.bookTitle }}</h1>
+
+
         <p>
-            <span data-book-id="{{ book.bookID }}" class="btn btn-primary add-to-cart">Добавить в корзину</span>
+            <span data-book-id="{{ book.bookID }}" style="width: 200px" id="but" class="btn btn-primary add-to-cart">Добавить в корзину</span>
         </p>
+        <script>
+            let cartIn = $.cookie('cart');
+            let id = $('#but').data('book-id');
+            console.log($.cookie('cart'));
+
+
+            let isInCart = false;
+            console.log(id);
+            for(let i=0; i<cartIn.length; i++){
+                if(cartIn[i].bookID === +id ){
+                    isInCart = true;
+                    break;
+                }//if
+
+            }//for
+console.log(isInCart);
+            if(isInCart){
+                $('#but').css('display', 'none');
+            }//if
+
+
+
+
+        </script>
         <p class="lead">{{ book.bookDescription }}</p>
         <hr class="my-4">
         <p class="lead"><b>Цена: </b>{{ book.bookPrice }} ₽</p>
