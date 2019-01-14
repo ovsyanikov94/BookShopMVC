@@ -24,12 +24,11 @@ class OrderService{
 
     }//GetOrders
 
-    public function AddOrder( $time , $userID, $orderStatus ){
+    public function AddOrder( $userID, $orderStatus ){
 
-        $stm = MySQL::$db->prepare("INSERT INTO orders(userID, orderDatetime, orderStatus) VALUES(  :userID , :timeOrder, :orderStatusID)");
+        $stm = MySQL::$db->prepare("INSERT INTO orders(userID, orderDatetime, orderStatus) VALUES(  :userID , NOW(), :orderStatusID)");
         $stm->bindParam(':userID' , $userID , \PDO::PARAM_INT);
         $stm->bindParam(':orderStatusID' , $orderStatus , \PDO::PARAM_INT);
-        $stm->bindParam(':timeOrder' , $time , \PDO::PARAM_INT);
         $stm->execute();
 
         return  MySQL::$db->lastInsertId();
