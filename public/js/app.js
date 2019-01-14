@@ -229,13 +229,16 @@ $( document ).ready( ()=>{
                 $.cookie('cart' , cart , {expires: 7 , path: '/'});
 
             }//if
+            let count = $.cookie('cart').length;
 
+            $('#Order')[0].innerText = '(' + count + ')';
+            console.log($('#Order')[0].innerText);
         }//else
         
         console.log('CART:' , cart);
 
         $(this).fadeOut(500);
-        
+
     } );
 
 } );
@@ -278,8 +281,10 @@ window.paths = {
     AddBook: 'new-book',
     EditBook: 'edit-book/:bookID',
     DeleteBook: 'delete-book/:bookID',
-    GetBooks: 'get-books'
+    GetBooks: 'get-books',
 
+    //ORDER
+    AddOrder: 'addOrder'
 };
 
 window.StatusConsts = {

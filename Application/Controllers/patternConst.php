@@ -17,4 +17,5 @@ class patternConst{
     public $EmailPattern = '/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i';
     public $PasswordPattern = '/^[a-z0-9_?!^%()\d]{6,30}$/i';
 
+    public $statusOrderInProsess = 1;
 }//patternConst
