@@ -254,7 +254,6 @@ class PersonalPageController extends BaseController {
 
         if( !$user ){
 
-
             $this->json( 401 ,
                 array(
                     'code' => 401
