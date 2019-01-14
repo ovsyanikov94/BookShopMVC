@@ -47,7 +47,7 @@
  *      userId
  *      orderDate
  *
- * OrderDetails
+ * Order
  *      id
  *      orderId
  *      bookId

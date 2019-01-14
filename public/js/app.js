@@ -161,7 +161,7 @@ $( document ).ready( ()=>{
         console.log('CART:' , cart);
 
         $(this).fadeOut(500);
-        
+
     } );
 
 } );
@@ -204,8 +204,10 @@ window.paths = {
     AddBook: 'new-book',
     EditBook: 'edit-book/:bookID',
     DeleteBook: 'delete-book/:bookID',
-    GetBooks: 'get-books'
+    GetBooks: 'get-books',
 
+    //ORDER
+    AddOrder: 'addOrder'
 };
 
 window.StatusConsts = {
