@@ -22,9 +22,22 @@ class OrderService{
 
         $result = $orders->fetchAll(\PDO::FETCH_OBJ);
 
+
+
+
         if($result){
-            return $result;
-        }
+
+            for($i=0;$i<count($result);$i++){
+                $id = $result[$i]->orderStatus;
+                $statueTitle =  $orders = MySQL::$db->prepare("SELECT statusTitle FROM `orderstatus` WHERE statusID =$id ");
+                $statueTitle->execute();
+                $statueTitleResult = $orders->fetch(\PDO::FETCH_OBJ);
+                $result[$i]->orderStatus = $statueTitleResult;
+            }//for
+
+        return $result;
+
+        }//if
        return null;
 
     }//UserDealInfoById
