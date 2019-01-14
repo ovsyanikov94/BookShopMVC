@@ -2,14 +2,57 @@
 
 $(document).ready(()=>{
 
-    let limit = 10;
-    let offset =0;
+    let limitOrders = 10;
+    let offsetOrders =0;
+
+    let limitOrdersDetail = 10;
+    let offsetOrdersDetail =0;
 
     $('#deal-yet').click(async function(){
 
         try{
             let response = await $.ajax({
-                url: `${window.paths.AjaxServerUserUrl}/ordersByUser`,
+                url: `${window.paths.AjaxServerUserUrl}/ordersByUser/${limitOrders}/${offsetOrders}`,
+                method: 'GET'
+            });
+
+
+            $.each(response.orders, function (index , order) {
+
+
+                $('.table').append(`
+                     <tr>
+
+                    <td>{{ order.orderId }}</td>
+                    <td>{{ order.date }}</td>
+                    <td>{{ order.AdressOrder }}</td>
+                    <td>{{order.orderStatus}}</td>
+                    <td>
+                        <a href="orders.twig/${order.orderId}/10/0" class="btn btn-primary"> подробнее </a>
+                    </td>
+
+                </tr>
+
+                `);
+
+            });
+
+        }
+        catch (e) {
+            console.log('error');
+        }
+
+        offsetOrders+=limitOrders;
+
+
+    })
+    $('#deal-yet-detail').click(async function(){
+
+
+        let id = $('[data-detailId]').val();
+        try{
+            let response = await $.ajax({
+                url: `${window.paths.AjaxServerUserUrl}/ordersUserDetailsOffset/${id}/${limitOrdersDetail}/${offsetOrdersDetail}`,
                 method: 'GET',
                 data:{
                     offset:offset,
@@ -18,31 +61,31 @@ $(document).ready(()=>{
             });
 
 
-            $.each(response.orders, function (index , order) {
+            $.each(response.orderDetail, function (index , order) {
 
 
-                 let stringAuthors='';
+                let stringAuthors='';
 
-                 $.each(order.bookInfo.authors, function (index, author) {
+                $.each(orderDetail.authors, function (index, author) {
 
-                     stringAuthors += author
+                    stringAuthors += author
 
-                     if(order.bookInfo.authors.length<index-1){
-                         stringAuthors+=','
-                     }
-                 } )
+                    if(orderDetail.authors.length<index-1){
+                        stringAuthors+=','
+                    }
+                } )
 
                 $('.table').append(`
                      <tr>
 
                         <th scope="row">
-                            <img src="${ order.bookInfo.bookImagePath }" style="float: left; width: 50px"  alt="Cinque Terre">
+                            <img src="${ orderDetail.bookImagePath }" style="float: left; width: 50px"  alt="Cinque Terre">
                         </th>
-                        <td>${ order.bookInfo.bookTitle }</td>
+                        <td>${ orderDetail.bookTitle }</td>
                         <td>${ stringAuthors  }</td>
-                        <td>${ order.detail.bookPrice } руб.</td>
-                        <td>${ order.detail.bookAmount }</td>
-                        <td>${ order.date }</td>
+                        <td>${ orderDetail.bookPrice } руб.</td>
+                        <td>${ orderDetail.bookAmount }</td>
+                        <td>${ orderDetail.date }</td>
 
 
                      </tr>
@@ -56,9 +99,8 @@ $(document).ready(()=>{
             console.log('error');
         }
 
-        offset+=limit;
+        offsetOrdersDetail+=limitOrdersDetail;
 
 
     })
-
 })

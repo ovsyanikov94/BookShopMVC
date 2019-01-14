@@ -13,87 +13,88 @@ use Application\Services\UserService;
 
 class OrdersController extends BaseController{
 
-    public function UserDealInfoByIdAction(   ){
+    public function UserDealInfoByIdAction(  ){
 
         $OrdersService = new OrderService();
-        $BookService=new BookService();
-        $orders = $OrdersService->UserDealInfoById(10, $limit=10, $offset=0);
+        $userService = new UserService();
+        $userId = $userService->getCurrentUser();
+
+        $orders = $OrdersService->UserDealInfoById($userId['userID'], $limit=10, $offset=0);
+        $template = $this->twig->load('public/OrderAndCart/ordersInfo.twig');
+
+
+        if($offset!==null){
+            echo $template->render( array(
+                'orders' => $orders
+            ) );
+        }//if
+        else{
+            echo $template->render( array(
+                'orders' => []
+            ) );
+        }//else
+
+    }//UserDealInfoByIdAction
+
+    public function UserDealInfoById($limit, $offset){
+
+        $OrdersService = new OrderService();
+        $userService = new UserService();
+        $userId = $userService->getCurrentUser();
+
+        $orders = $OrdersService->UserDealInfoById($userId['userID'], $limit, $offset);
+
+        if($orders !==null){
+            $this->json( 200 , array(
+                'code' => 200,
+                'orders' => $orders
+            ) );
+        }//if
+        else{
+            $this->json( 200 , array(
+                'code' => 200,
+                'orders' => []
+            ) );
+        }//if
+    }//UserDealInfoById
+
+    public function userOrderDetailAction($orderId){
+
         $template = $this->twig->load('public/OrderAndCart/orders.twig');
+        $BookService = new BookService();
+        $OrdersService = new OrderService();
+        $orderDetail = $OrdersService->getDealDetail($orderId,$limit=10,$offset=0);
 
-        $detailArray=[];
 
-        for ($i=0; $i< count($orders);$i++){
+        for($i=0; $i<count($orderDetail);$i++){
 
-            $ans = $OrdersService->getDealDetail($orders[$i]->orderID);
-            $booksInfo = $BookService->GetBookById($ans->bookID);
-            $detailArray[$i]=[
-                'detail'=> $ans,
-                'bookInfo'=> $booksInfo,
-                'date'=>$orders[$i]->orderDatetime,
-            ];
+            $book = $BookService->GetBookById($orderDetail[$i]->bookID);
+
+            $orderDetail[$i]->book = $book;
         }//for
 
         echo $template->render( array(
-            'orders' => $detailArray
+            'orderDetail' => $orderDetail
         ) );
-    }//UserDealInfoByIdAction
-
-    public function UserDealInfoById(){
-
+    }//userOrderDetail
+    public function userOrderDetail($orderId, $limit, $offset){
+        $BookService = new BookService();
         $OrdersService = new OrderService();
-        $BookService=new BookService();
-        $orders = $OrdersService->UserDealInfoById(10, $limit=2, $offset=0);
-        $detailArray=[];
+        $orderDetail = $OrdersService->getDealDetail($orderId,$limit,$offset);
 
-        for ($i=0; $i< count($orders);$i++){
 
-            $ans = $OrdersService->getDealDetail($orders[$i]->orderID);
-            $booksInfo = $BookService->GetBookById($ans->bookID);
-            $detailArray[$i]=[
-                'detail'=> $ans,
-                'bookInfo'=> $booksInfo,
-                'date'=>$orders[$i]->orderDatetime,
-            ];
+        for($i=0; $i<count($orderDetail);$i++){
+
+            $book = $BookService->GetBookById($orderDetail[$i]->bookID);
+
+            $orderDetail[$i]->book = $book;
         }//for
 
         $this->json( 200 , array(
             'code' => 200,
-            'orders' => $detailArray
+            'orderDetail' => $orderDetail
         ) );
-    }//UserDealInfoById
 
+    }//userOrderDetail
 
-    public function DealInfoByLoginOrEmail($string, $limit, $offset){
-
-        $userService = new UserService();
-
-        $userId = $userService->getSingleUser($string);
-
-        $OrdersService = new OrderService();
-        $BookService=new BookService();
-        $orders = $OrdersService->UserDealInfoById($userId->userID, $limit, $offset);
-        $template = $this->twig->load('public/OrderAndCart/orders.twig');
-
-        $detailArray=[];
-
-        for ($i=0; $i< count($orders);$i++){
-
-            $ans = $OrdersService->getDealDetail($orders[$i]->orderID);
-            $booksInfo = $BookService->GetBookById($ans->bookID);
-            $detailArray[$i]=[
-                'detail'=> $ans,
-                'bookInfo'=> $booksInfo,
-                'date'=>$orders[$i]->orderDatetime,
-            ];
-        }//for
-
-        echo $template->render( array(
-            'orders' => $detailArray
-        ) );
-    }//UserDealInfoByLoginOrEmail
-
-
-    public function DealInfoByDate($date, $limit, $offset){
-
-    }//DealInfoDate
 }

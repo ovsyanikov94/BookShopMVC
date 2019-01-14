@@ -18,7 +18,9 @@ return array(
         '/person' => 'PersonController@getPersonAction',
         '/book/(\d+)' => 'BookController@getPublicBookAction',
         '/ordersUser' => 'OrdersController@UserDealInfoByIdAction',
-        '/ordersByUser'=> 'OrdersController@UserDealInfoById'
+        '/ordersByUser/(\+d)/(\+d)'=> 'OrdersController@UserDealInfoById',
+        '/ordersUserDetails/(\+d)' => 'OrdersController@userOrderDetailAction',
+        '/ordersUserDetailsOffset/(\+d)/(\+d)/(\+d)' => 'OrdersController@userOrderDetail',
     ],
     'post' => [
         '/addUser'=>'UserController@addUser',
