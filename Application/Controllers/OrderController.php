@@ -42,9 +42,10 @@ class OrderController extends BaseController {
 
         $userService = new UserService();
 
+
         $odService  = new OrderDetailsService();
 
-        $dateStr = date("d-m-Y H:i:s", $order->orderDatetime);
+        $dateStr = $order->orderDatetime;
 
         $countBook = $odService->GetCountBookInOrderByID($order->orderID);
 
@@ -60,8 +61,6 @@ class OrderController extends BaseController {
     public function addOrder(){
 
         $cart = json_decode($this->request->GetPostValue('cart'));
-
-        $time = time();
 
         $userService = new UserService();
 
@@ -80,7 +79,7 @@ class OrderController extends BaseController {
         $orderService  = new OrderService();
 
         try{
-            $orderID = $orderService->AddOrder($time, $user['userID'], $orderStatus);
+            $orderID = $orderService->AddOrder($user['userID'], $orderStatus);
 
             $bookService = new BookService();
             $orderDetailsService = new OrderDetailsService();
