@@ -2,6 +2,12 @@
 
 {% block content %}
 
+    <script defer src="/BookShopMVC/public/js/order.js" ></script>
+
+    {% if  orders.length == 0%}
+       <h3>Заказов нет!!!!!</h3>
+    {% endif %}
+
     <table class="table">
         <thead>
         <tr>
@@ -13,7 +19,7 @@
             <th scope="col">Подробнее</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="ordersTable">
 
         {% for od in orders %}
             <tr>
@@ -31,5 +37,7 @@
         </tbody>
     </table>
 
-    <div class="btn btn-primary col-12">Еще</div>
+    {% if  orders.length > 0%}
+    <div id="moreOrders" class="btn btn-primary col-12">Еще</div>
+    {% endif %}
 {% endblock %}
