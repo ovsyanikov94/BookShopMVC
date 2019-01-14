@@ -2,15 +2,19 @@
 
 {% block content %}
 
+    <script defer src="js/cart.js" ></script>
+
     <script defer src="js/order.js" ></script>
 
     <div class="container-fluid">
+
         <div class="row justify-content">
+
             <div class="col text-left">
                 <h3>Корзина:</h3>
             </div>
 
-            <table class="table table-striped">
+            <table id="cartTable" class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">Фото</th>
@@ -22,10 +26,10 @@
                 </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="body">
 
                 {% for book in cart %}
-                    <tr>
+                    <tr data-book-id="{{ book.bookID }}">
                         <th scope="row">
                             <img src="{{ book.bookImagePath }}" style="float: left; width: 50px"  alt="Cinque Terre">
                         </th>
@@ -41,26 +45,29 @@
 
                         </td>
                         <td>
-                            <div class="row justify-content text-дуае" >
-                                <h6 style="margin-top: 20px" >{{ book.bookPrice }} руб.</h6>
+                            <div class="row justify-content text-left" >
+                                <h6  style="margin-top: 20px" >{{ book.bookPrice }} руб.</h6>
                             </div>
                         </td>
                         <td>
-                            <select style="margin-top: 10px" class="form-control" id="exampleFormControlSelect1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select id="supervisor" data-book-id="{{ book.bookID }}" data-book-price="{{ book.bookPrice }}" style="margin-top: 10px" class="form-control count" >
+                                {% for item in counts %}
+                                    {% if item == book.amount %}
+                                        <option selected>{{ item }}</option>
+                                    {% else %}
+                                        <option>{{ item }}</option>
+                                    {% endif %}
+                                {% endfor %}
                             </select>
+
                         </td>
-                        <td>
-                            <div class="row justify-content text-дуае" >
-                                <h6 style="margin-top: 20px" >{{ book.totalPrice }} руб.</h6>
+                        <td id="totalPrice">
+                            <div class="row justify-content text-left" >
+                                <h6 id="valueTotalPrice" style="margin-top: 20px" >{{ book.totalPrice }} руб.</h6>
                             </div>
                         </td>
                         <td>
-                            <div style="margin-top: 10px" class="btn btn-danger">Удалить</div>
+                            <div data-title="{{ book.bookTitle }}"  data-book-id="{{ book.bookID }}"  style="margin-top: 10px" class="btn btn-danger">Удалить</div>
                         </td>
                     </tr>
                 {% endfor %}
@@ -78,8 +85,8 @@
             <div class="col-md-7 text-left">
                 <div id="addOrder" class="btn btn-primary">ОФОРМИТЬ ЗАКАЗ</div>
             </div>
-            <div class="col-md-5 text-right">
-                <h4 style="text-align: right">Итого: {{ cartTotal }} руб.</h4>
+            <div class="col-md-5 text-right" >
+                <h4 id="totalSum" style="text-align: right">Итого: {{ cartTotal }} руб.</h4>
             </div>
         </div>
 

@@ -91,7 +91,7 @@
 
             $('#hiddenAvatarBlock').hide();
 
-        });//#savePhoto
+        });//#saveNewAvatar
 
         //подтверждение изменений личной информации
         $('#ConfirmChangesModalButton').click(function () {
@@ -110,8 +110,8 @@
             }//if
 
             //проводим проверку на правильность воода новых персональных данных
-           // if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
-            if(!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(newEmail)){
+           if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
+            //if(!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(newEmail)){
 
                 $('#exampleModalCenter').modal('hide');
                 $('#errorMessage').text('Поле Email содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
@@ -122,9 +122,10 @@
 
             let url = `${window.paths.AjaxServerUrl}${window.paths.SaveNewPersonalData}`;
 
+
             $.ajax({
 
-               'url': url,
+                'url': url,
                 'method': 'PUT',
                 'data':{
                    newEmail: newEmail
@@ -132,11 +133,16 @@
                 'success': (data)=>{
 
                    if(+data.code === 200){
+
                        $('#exampleModalCenter').modal('hide');
                        $('#successMessage').text('Данные успешно обновлены!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
                    }//if
 
                 },//success
+                'error': ()=>{
+                    console.log('FAIL!!!');
+                },
                 'statusCode':{
                    '301': ()=>{
 
@@ -250,7 +256,7 @@
                },
                'success': (data)=>{
 
-                   if(data.code === 200){
+                   if(+data.code === 200){
 
                        $('#successMessage').text('Пароль успешно изменён!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
                        $('#exampleModalCenter').modal('hide');

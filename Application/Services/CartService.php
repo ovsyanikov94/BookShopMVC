@@ -26,19 +26,23 @@ class CartService {
 
         $cart = $this->getCart();
 
-        foreach ($cart as $cartItem) {
+        if($cart){
 
-            foreach ($books as &$book) {
+            foreach ($cart as $cartItem) {
 
-                if( (int)$cartItem->bookID ===  (int)$book->bookID){
-                    $book->isInCart = true;
-                    break;
-                }//if
+                foreach ($books as &$book) {
+
+                    if( (int)$cartItem->bookID ===  (int)$book->bookID){
+                        $book->isInCart = true;
+                        break;
+                    }//if
+
+                }//foreach
+
 
             }//foreach
+        }//if
 
-
-        }//foreach
 
     }//prepareBookArray
 

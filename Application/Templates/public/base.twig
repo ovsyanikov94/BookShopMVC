@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/BookShopMVC/public/css/app.css">
 
     <script src="/BookShopMVC/public/js/app.js"></script>
+    <script src="/BookShopMVC/public/js/validators.js"></script>
 
 
     <title>Title</title>
@@ -43,10 +44,36 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="/BookShopMVC/public/person">Личный кабинет</a>
-                    <a class="dropdown-item" href="#">Выйти</a>
+                    <a class="dropdown-item" id="signOut" href="">Выйти</a>
                 </div>
             </li>
         </ul>
+
+        <a href="/BookShopMVC/public/cart"> <div class="row" style="margin-right: 20px">
+
+                    <div class="col-4" >
+                        <img src="/BookShopMVC/public/images/cart/Korzina.png" style="width: 35px" class="rounded float-left" alt="...">
+                    </div>
+                    <div class="col-4">
+                        <p id="Order" style="color: white; font-size: 22px"></p>
+                    </div>
+
+                    <script>
+
+                        let cart = $.cookie('cart');
+
+                        if(!cart){
+                            cart = 0;
+                        }//
+                        else{
+                            cart = cart.length;
+                        }//else
+
+                        $('#Order').text(`(${cart})`);
+
+                    </script>
+
+        </div></a>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -81,7 +108,7 @@
             <div id="ModalBody" class="modal-body"></div>
             <div class="modal-footer">
                 <button id="CancelButton"  type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                <button id="ConfirmButton" type="button" class="btn btn-primary" data-dismiss="modal">Ок</button>
+                <button id="OkButton" type="button" class="btn btn-primary" data-dismiss="modal">Ок</button>
             </div>
         </div>
     </div>

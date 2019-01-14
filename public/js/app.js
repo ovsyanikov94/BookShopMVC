@@ -115,7 +115,7 @@ $( document ).ready( ()=>{
             'type': 'POST',
             'success': () =>{
 
-                location.href = `${window.paths.AjaxServerUrl}authorize`;
+                location.href = `${window.paths.AjaxServerUserUrl}authorize`;
 
             }//success
         });
@@ -152,30 +152,17 @@ $( document ).ready( ()=>{
                 $.cookie('cart' , cart , {expires: 7 , path: '/'});
 
             }//if
+            let count = $.cookie('cart').length;
 
+            $('#Order')[0].innerText = '(' + count + ')';
+            console.log($('#Order')[0].innerText);
         }//else
-
+        
         console.log('CART:' , cart);
 
         $(this).fadeOut(500);
 
-
     } );
-
-
-    // $('.removeOD').click(function () {
-    //
-    //     let odID = $(this).data('od-id');
-    //
-    //     $.ajax({
-    //         'url': `/BookShopMVC/public/delete-order-details/${odID}`,
-    //         'type': 'DELETE',
-    //         'success': ( a , b) => {
-    //             location.reload();
-    //         }
-    //     }); // Ajax
-    //
-    // });
 
 } );
 
@@ -232,3 +219,4 @@ window.StatusConsts = {
 };
 
 $.cookie.json = true;
+
