@@ -210,6 +210,8 @@ window.paths = {
     AddOrder: 'addOrder',
     UpdateStatusOrder: 'update-order-status',
     GetMoreOrders: 'orderdetails-more',
+
+
 };
 
 window.StatusConsts = {

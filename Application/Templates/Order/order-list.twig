@@ -4,7 +4,7 @@
 
     <script defer src="/BookShopMVC/public/js/order.js" ></script>
 
-    {% if  orders.length == 0%}
+    {% if  not orders%}
        <h3>Заказов нет!!!!!</h3>
     {% endif %}
 

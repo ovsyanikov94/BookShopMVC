@@ -20,7 +20,18 @@
 
             let orderData = new FormData();
 
+            let adressOrder = $('#orderAdress').val();
+
+            console.log('adressOrder', adressOrder);
+
+            if(!adressOrder){
+                $('#errorMessage').text("Введите адресс");
+                $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                return;
+            }//if
+
             orderData.append('cart' , JSON.stringify(cart) );
+            orderData.append('adressOrder' , adressOrder );
 
             try{
 
@@ -51,7 +62,7 @@
 
             }//try
             catch( ex ){
-
+                $('#errorMessage').text("ошибка сервера");
                 $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
                 console.log(ex);

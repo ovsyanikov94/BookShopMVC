@@ -7,10 +7,16 @@
     <h3>Заказ {{ order.order.orderID }}</h3>
 
     <div>
-        <span style="font-size: 18px"><strong>Пользователь: </strong></span> <span style="font-size: 15px">{{ order.user.userLogin }}</span>
+        <span style="font-size: 18px"><strong>Пользователь: </strong></span> <span style="font-size: 15px">{{ order.user.lastName }} {{ order.user.firstName }} {{ order.user.middleName }}</span>
+    </div>
+    <div>
+        <span style="font-size: 18px"><strong>Логин пользователя: </strong></span> <span style="font-size: 15px">{{ order.user.userLogin }}</span>
     </div>
     <div>
         <span style="font-size: 18px"><strong>Дата заказа: </strong></span> <span style="font-size: 15px">{{ order.date }}</span>
+    </div>
+    <div>
+        <span style="font-size: 18px"><strong>Адресс доставки: </strong></span> <span style="font-size: 15px">{{ order.order.adressOrder }}</span>
     </div>
     <div>
         <span style="font-size: 18px"><strong>Статус заказа</strong></span>

@@ -24,11 +24,13 @@ class OrderService{
 
     }//GetOrders
 
-    public function AddOrder( $userID, $orderStatus ){
+    public function AddOrder( $userID, $orderStatus, $adress ){
 
-        $stm = MySQL::$db->prepare("INSERT INTO orders(userID, orderDatetime, orderStatus) VALUES(  :userID , NOW(), :orderStatusID)");
+        $stm = MySQL::$db->prepare("INSERT INTO orders(userID, orderDatetime, orderStatus, adressOrder) 
+                                    VALUES(  :userID , NOW(), :orderStatusID, :adress)");
         $stm->bindParam(':userID' , $userID , \PDO::PARAM_INT);
         $stm->bindParam(':orderStatusID' , $orderStatus , \PDO::PARAM_INT);
+        $stm->bindParam(':adress' , $adress , \PDO::PARAM_STR);
         $stm->execute();
 
         return  MySQL::$db->lastInsertId();
@@ -58,7 +60,7 @@ class OrderService{
 
     public function GetOrderByID( $id ){
 
-        $stm = MySQL::$db->prepare("SELECT orderID, userID, orderDatetime, orderStatus 
+        $stm = MySQL::$db->prepare("SELECT orderID, userID, orderDatetime, orderStatus, adressOrder 
                                     FROM orders WHERE orderID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
