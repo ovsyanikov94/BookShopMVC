@@ -115,7 +115,7 @@ $( document ).ready( ()=>{
             'type': 'POST',
             'success': () =>{
 
-                location.href = `${window.paths.AjaxServerUrl}authorize`;
+                location.href = `${window.paths.AjaxServerUserUrl}authorize`;
 
             }//success
         });
@@ -158,7 +158,6 @@ $( document ).ready( ()=>{
         console.log('CART:' , cart);
 
         $(this).fadeOut(500);
-
         
     } );
 
