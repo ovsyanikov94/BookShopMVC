@@ -152,7 +152,10 @@ $( document ).ready( ()=>{
                 $.cookie('cart' , cart , {expires: 7 , path: '/'});
 
             }//if
+            let count = $.cookie('cart').length;
 
+            $('#Order')[0].innerText = '(' + count + ')';
+            console.log($('#Order')[0].innerText);
         }//else
         
         console.log('CART:' , cart);
