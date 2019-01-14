@@ -157,29 +157,51 @@ class PersonalPageService  {
     }//ChangeUserAvatar
 
     //обновление персональной информации пользователя
-    public function  UpdateUserPersonalData( $params = [] ){
+    public function UpdateUserPersonalData( $params = [] ){
 
         //получаем новые персональные данные
         $userID = +$params['userID'];
         $userEmail = $params['userEmail'];
+        $userPhoneNumber = $params['userPhone'];
+        $userLastName = $params['userLastName'];
+        $userFirstName = $params['userFirstName'];
+        $userMiddleName = $params['userMiddleName'];
 
         //проверяем входящие данные с уже имеющемися
         $checkUserStm = MySQL::$db->prepare("SELECT userEmail FROM users WHERE userEmail = :userEmail");
-
         $checkUserStm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
-
         $checkUserStm->execute();
 
         $checkUserResult = $checkUserStm->fetch(\PDO::FETCH_OBJ);
 
+        if($checkUserResult){
+            //если пользователь с таким email уже есть
+            return array( 'code' => 701 );
+        }//if
+
+        $checkUserPhoneNumberStm = MySQL::$db->prepare("SELECT phoneNumber FROM users WHERE phoneNumber = :phoneNumber");
+        $checkUserPhoneNumberStm->bindParam('phoneNumber', $userPhoneNumber, \PDO::PARAM_STR);
+        $checkUserPhoneNumberStm->execute();
+
+        $checkUserPhoneResult = $checkUserPhoneNumberStm->fetch(\PDO::FETCH_OBJ);
+
+        if($checkUserPhoneResult){
+            //если пользователь с таким телефоном уже есть
+            return array( 'code' => 702 );
+        }//if
+
         //если совпадений нет - обновляем
-        if(!$checkUserResult){
+        if(!$checkUserResult && !$checkUserPhoneResult){
 
             //обновляем запись в базе данных
-            $stm = MySQL::$db->prepare("UPDATE users SET userEmail = :userEmail WHERE userID = :userID");
-
+            $stm = MySQL::$db->prepare("UPDATE users SET userEmail = :userEmail, firstName = :userFirstName, lastName = :userLastName, middleName = :userMiddleName, phoneNumber = :userPhoneNumber WHERE userID = :userID");
             $stm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
+            $stm->bindParam('userFirstName', $userFirstName, \PDO::PARAM_STR);
+            $stm->bindParam('userLastName', $userLastName, \PDO::PARAM_STR);
+            $stm->bindParam('userMiddleName', $userMiddleName, \PDO::PARAM_STR);
+            $stm->bindParam('userPhoneNumber', $userPhoneNumber, \PDO::PARAM_STR);
             $stm->bindParam('userID', $userID, \PDO::PARAM_INT);
+
             $result = $stm->execute();
 
             if($result){
@@ -190,12 +212,6 @@ class PersonalPageService  {
             }//else
 
         }//if
-        else{
-
-            //если пользователь с таким email уже есть
-            return array( 'code' => 301 );
-
-        }//else
 
     }//UpdateUserPersonalData
 

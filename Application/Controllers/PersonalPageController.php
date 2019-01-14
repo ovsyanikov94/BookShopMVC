@@ -167,13 +167,24 @@ class PersonalPageController extends BaseController {
         }//else
 
         $userID = $userStorage['userID'];
-        $userEmail= $this->request->GetPutValue('newEmail');
+        $userEmail = $this->request->GetPutValue('newEmail');
+        $userPhone = $this->request->GetPutValue('newPhoneNumber');
+        $userLastName = $this->request->GetPutValue('newLastName');
+        $userFirstName = $this->request->GetPutValue('newFirstName');
+        $userMiddleName = $this->request->GetPutValue('newMiddleName');
 
         $personalPageService = new PersonalPageService();
 
         try{
 
-           $result = $personalPageService->UpdateUserPersonalData( [ 'userID' => $userID , 'userEmail' => $userEmail ]);
+           $result = $personalPageService->UpdateUserPersonalData(
+               [   'userID' => $userID ,
+                   'userEmail' => $userEmail,
+                   'userPhone' => $userPhone,
+                   'userLastName' => $userLastName,
+                   'userFirstName' => $userFirstName,
+                   'userMiddleName' => $userMiddleName
+               ]);
 
             $this->json( $result['code'],
                 array(
