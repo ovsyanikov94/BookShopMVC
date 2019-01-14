@@ -26,6 +26,7 @@ $( document ).ready( ()=>{
 
     });
 
+    //Регистрация пользователя
     $('#checkIn').click(function () {
 
         let login = $('#login').val();
@@ -91,6 +92,19 @@ $( document ).ready( ()=>{
             $('#middleNameError').addClass("red ");
         }//if
 
+        //номер телефона пользователя
+        let phoneNumber = $('#phoneNumberInput').val();
+
+        if(phoneNumber.length === 0){
+            $('#phoneNumberError').text('Поле не может быть пустым!').addClass("red ");
+            return;
+        }//if
+
+        let isTruePhoneNumber = ValidatorConst.USER_PHONE_VALIDATOR.test(phoneNumber);
+        if(!isTruePhoneNumber){
+            $('#middleNameError').addClass("red ");
+        }//if
+
         //Пароль пользователя
         let password = $('#password').val();
         let confirmPassword = $('#confirmPassword').val();
@@ -126,6 +140,7 @@ $( document ).ready( ()=>{
             isTrueFirstName&&
             isTrueLastName&&
             isTrueMiddleName&&
+            isTruePhoneNumber&&
             (password === confirmPassword)
         ){
 
@@ -140,20 +155,27 @@ $( document ).ready( ()=>{
                     'firstName': firstName,
                     'lastName': lastName,
                     'middleName': middleName,
+                    'phoneNumber': phoneNumber,
                     'userPassword': password
 
                 }
-            }).done((data)=>{
+            }).done( (data)=>{
+
+                if( +data.code === 200){
+
+                    location.href = `${window.paths.AjaxServerUserUrl}authorize`;
+
+                }//if
 
                 if(data !== null){
-                    console.log(data);
+                    //console.log('!null', data);
                 }//if
                 else {
                     console.log('такой пользователь уже есть ');
                 }//else
 
             }).fail((data)=>{
-                console.log(data);
+                //console.log("fail :",data);
             });//ajax
 
         }//if

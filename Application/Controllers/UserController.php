@@ -77,6 +77,14 @@ class UserController extends BaseController{
             return;
         }//if
 
+        $userPhoneNumber = $this->request->GetPostValue('phoneNumber');
+        if(!preg_match($pattern->PhoneNumberPattern, $userPhoneNumber)){
+            $this->json(400,array(
+                'res' => 'Не корректный номер телефона'
+            ));
+            return;
+        }//if
+
         $usrPassword = $this->request->GetPostValue('userPassword');
         if(!preg_match($pattern->PasswordPattern,$usrPassword)){
             $this->json(400,array(
@@ -91,7 +99,7 @@ class UserController extends BaseController{
 
         $userService = new UserService();
 
-        $result = $userService->addUser( $userLogin, $usrPassword, $userEmail, $userFirstName, $userLastName, $userMiddleName, $heshToken );
+        $result = $userService->addUser( $userLogin, $usrPassword, $userEmail, $userFirstName, $userLastName, $userMiddleName, $userPhoneNumber, $heshToken );
 
         if($result !== null){
 
@@ -100,7 +108,8 @@ class UserController extends BaseController{
             $message->tuneTemplate($userLogin,$heshToken);
             $mailres = mail($userEmail , $message->verificationSubject,$message->verificationTemplate,$message->header);
 
-            $this->json(200,array(
+            $this->json(200, array(
+                'code' => 200,
                 'verification'=> false,
                 'addUser'=> $result,
                 'res'=>$mailres
@@ -111,7 +120,9 @@ class UserController extends BaseController{
 
         $this->json(200,array(
             'addUser'=> $result
+
         ));
+
      }//addUser
 
     public function getUsers (){

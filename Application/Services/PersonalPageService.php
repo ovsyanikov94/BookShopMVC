@@ -22,7 +22,7 @@ class PersonalPageService  {
         $userID = +$params['userID'];
 
         //получаем персональные данные о текущем пользователе
-        $userStm = MySQL::$db->prepare("SELECT userLogin, userEmail FROM users WHERE userID = :userID");
+        $userStm = MySQL::$db->prepare("SELECT userLogin, userEmail, firstName, lastName, middleName, phoneNumber FROM users WHERE userID = :userID");
         $userStm->bindParam('userID', $userID, \PDO::PARAM_INT);
         $userStm->execute();
 
@@ -38,7 +38,11 @@ class PersonalPageService  {
         $user = array(
 
             'userLogin' => $userData->userLogin,
-            'userEmail' => $userData->userEmail
+            'userEmail' => $userData->userEmail,
+            'userFirstName' => $userData->firstName,
+            'userLastName' => $userData->lastName,
+            'userMiddleName' => $userData->middleName,
+            'userPhoneNumber' => $userData->phoneNumber
 
         );
 
