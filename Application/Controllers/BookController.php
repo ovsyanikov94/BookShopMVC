@@ -311,8 +311,8 @@ class BookController extends BaseController{
         $amount = $commentService->GetAmountCommentsByBookId($id);
 
         $template = $this->twig->load( 'public/Book/book.twig');
-
-        $bookForInfo->comments = $commentService->GetCommentsByBookId($id);
+        $limit = 3;
+        $bookForInfo->comments = $commentService->GetCommentsByBookId($id, $limit);
 
         echo $template->render(array(
             'book' => $bookForInfo,

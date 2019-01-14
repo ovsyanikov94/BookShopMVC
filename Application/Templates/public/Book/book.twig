@@ -2,6 +2,8 @@
 
 {% block content%}
 
+    <script defer src="/BookShopMVC/public/js/comments.js" ></script>
+
     <div class="jumbotron pt-3 pb-1">
 
         {% if ( book.bookImagePath )%}
@@ -38,8 +40,14 @@
         </p>
 
         <p class="lead">
-            <a href="/BookShopMVC/public/admin/comments/{{ book.bookID }}"> <b>Комментарии (</b> {{ commentAmount.amount }}<b> )</b> </a>
+            <a href="/BookShopMVC/public/comments/{{ book.bookID }}"> <b>Комментарии (</b> {{ commentAmount.amount }}<b> )</b> </a>
         </p>
+
+        <div class="form">
+            <div class="form-group">
+                <a href="/BookShopMVC/public/comments-new/{{ book.bookID }}" class="btn btn-primary">Добавить новый комментарий</a>
+            </div>
+        </div>
 
         <div id="CommentsList">
 

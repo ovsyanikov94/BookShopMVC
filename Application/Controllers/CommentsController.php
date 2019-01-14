@@ -21,6 +21,12 @@ class CommentsController extends BaseController{
         else if ( isset($_SESSION['session_user']) ){
             $CookieUser = unserialize($_SESSION['session_user']);
         }//else if
+        if( isset($_COOKIE["admin"])){
+            $CookieUser = unserialize($_COOKIE["admin"]);
+        }//if
+        else if ( isset($_SESSION['admin']) ){
+            $CookieUser = unserialize($_SESSION['admin']);
+        }//else if
         else {
             $CookieUser = null;
         }//else
@@ -66,6 +72,73 @@ class CommentsController extends BaseController{
 
         echo $template->render(array(
                 'comments' => $commentWithUser,
+                'book' => $book,
+                'currentUser' => $currentUser
+            )
+        );
+    }//commentListAction
+    public function commentListPublicByBookAction($id){
+
+        $commentService = new CommentsService();
+        $bookService = new BookService();
+
+        if( isset($_COOKIE["cookie_user"])){
+            $CookieUser = unserialize($_COOKIE["cookie_user"]);
+        }//if
+        else if ( isset($_SESSION['session_user']) ){
+            $CookieUser = unserialize($_SESSION['session_user']);
+        }//else if
+        if( isset($_COOKIE["admin"])){
+            $CookieUser = unserialize($_COOKIE["admin"]);
+        }//if
+        else if ( isset($_SESSION['admin']) ){
+            $CookieUser = unserialize($_SESSION['admin']);
+        }//else if
+        else {
+            $CookieUser = null;
+        }//else
+
+        if(!$CookieUser){
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+            echo $template->render();
+            return;
+
+        }//if
+
+        $currentUser = $CookieUser['userID'];
+
+
+        $book = $bookService->GetBookById($id);
+
+        if(!$book){
+
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+            echo $template->render();
+            return;
+
+        }//if
+
+        $comments = $commentService->GetCommentsByBookId($id);
+
+        $template = $this->twig->load('public/Comments/comment-list.twig');
+//
+//        $commentWithUser = [];
+//
+//        for($i=0;$i < count($comments); $i++ ){
+//
+//            //$dateStr = date("d-m-Y H:i:s", (int)$comments[$i]->created);
+//            $commentWithUser[$i] = [
+//                'comment' => $comments[$i],
+//                'user' => $commentService->GetUser($comments[$i]->userID),
+//                //'date' => $dateStr
+//            ];
+//
+//        }//for
+
+        echo $template->render(array(
+                'comments' => $comments,
                 'book' => $book,
                 'currentUser' => $currentUser
             )
@@ -228,7 +301,57 @@ class CommentsController extends BaseController{
         ) );
         
     }
-    
+
+    public function publicAddCommentPageAction( $id ){
+
+        $bookService = new BookService();
+
+        if( isset($_COOKIE["cookie_user"])){
+            $CookieUser = unserialize($_COOKIE["cookie_user"]);
+        }//if
+        else if ( isset($_SESSION['session_user']) ){
+            $CookieUser = unserialize($_SESSION['session_user']);
+        }//else if
+        if( isset($_COOKIE["admin"])){
+            $CookieUser = unserialize($_COOKIE["admin"]);
+        }//if
+        else if ( isset($_SESSION['admin']) ){
+            $CookieUser = unserialize($_SESSION['admin']);
+        }//else if
+        else {
+            $CookieUser = null;
+        }//else
+
+        if(!$CookieUser){
+
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+            echo $template->render();
+            return;
+
+        }//if
+
+        $currentUser = $CookieUser['userID'];
+
+        $book = $bookService->GetBookById($id);
+
+        if(!$book){
+
+            $template = $this->twig->load('ErrorPages/404-not-found.twig');
+
+            echo $template->render();
+            return;
+
+        }//if
+
+        $template = $this->twig->load('public/Comments/add-comment.twig');
+        echo $template->render( array(
+            'userID' => $currentUser,
+            'bookID' => $id,
+        ) );
+
+    }
+
     public function addCommentAction(){
 
         $text = $this->request->GetPostValue('text');

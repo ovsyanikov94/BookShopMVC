@@ -18,11 +18,14 @@ return array(
         '/person' => 'PersonController@getPersonAction',
         '/book/(\d+)' => 'BookController@getPublicBookAction',
         '/edit-person-data' => 'PersonController@EditPersonDataAction',
-        '/change-person-password' => 'PersonController@ChangePasswordAction'
+        '/change-person-password' => 'PersonController@ChangePasswordAction',
+        '/comments-new/(\d+)' => 'CommentsController@publicAddCommentPageAction',
+        '/comments/(\d+)' => 'CommentsController@commentListPublicByBookAction'
     ],
     'post' => [
         '/addUser'=>'UserController@addUser',
         '/login' => 'AuthorizeController@LoginAction',
+        '/add_comment' => 'CommentsController@addCommentAction',
     ],
     'put' => [
 

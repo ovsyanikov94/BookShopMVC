@@ -22,10 +22,10 @@ $(document).ready( function (  ){
 
             let userId = $(this).data('user-id');
 
-
+            let url = `${window.paths.AjaxServerUserUrl}${window.paths.AddComment}`;
 
             $.ajax({
-                'url': `${window.paths.AjaxServerUrl}${window.paths.AddComment}`,
+                'url': url,
                 'type': 'POST',
                 'data': {
                     'text': text,
@@ -44,7 +44,7 @@ $(document).ready( function (  ){
                         $('#errorMessage').fadeOut(1000);
                         $('#successMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
                         //console.log('comment :', comment);
-                        location.href = `${window.paths.AjaxServerUrl}comments/${comment.bookID}`;
+                        location.href = `${window.paths.AjaxServerUserUrl}book/${comment.bookID}`;
                         // $('#CommentsList').prepend(`
                         //                            <div data-comment-id="${ comment.commentID }" class="card w-100">
                         //                                 <div class="card-body">
