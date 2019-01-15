@@ -18,7 +18,8 @@ return array(
         '/person' => 'PersonController@getPersonAction',
         '/book/(\d+)' => 'BookController@getPublicBookAction',
         '/edit-person-data' => 'PersonController@EditPersonDataAction',
-        '/change-person-password' => 'PersonController@ChangePasswordAction'
+        '/change-person-password' => 'PersonController@ChangePasswordAction',
+        '/placeOrder' => 'OrderController@PlaceOrderAction',
     ],
     'post' => [
         '/addUser'=>'UserController@addUser',

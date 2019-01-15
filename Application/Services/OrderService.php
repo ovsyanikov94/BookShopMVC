@@ -24,16 +24,19 @@ class OrderService{
 
     }//GetOrders
 
-    public function AddOrder( $userID, $orderStatus ){
+    public function AddOrder( $userID, $orderStatus, $adress ){
 
-        $stm = MySQL::$db->prepare("INSERT INTO orders(userID, orderDatetime, orderStatus) VALUES(  :userID , NOW(), :orderStatusID)");
+        $stm = MySQL::$db->prepare("INSERT INTO orders(userID, orderDatetime, orderStatus, adressOrder) 
+                                    VALUES(  :userID , NOW(), :orderStatusID, :adress)");
         $stm->bindParam(':userID' , $userID , \PDO::PARAM_INT);
         $stm->bindParam(':orderStatusID' , $orderStatus , \PDO::PARAM_INT);
+        $stm->bindParam(':adress' , $adress , \PDO::PARAM_STR);
         $stm->execute();
 
         return  MySQL::$db->lastInsertId();
 
     }//AddOrder
+
 
     public function GetTitleStatusOrderByID($statusId){
 
@@ -46,9 +49,19 @@ class OrderService{
     }//GetTitleStatusByID
 
 
+    public function GetOrderStatuses(){
+
+        $stm = MySQL::$db->prepare("SELECT statusID, statusTitle
+                                 FROM orderstatus");
+        $stm->execute();
+
+        return $stm->fetchAll(\PDO::FETCH_OBJ);
+
+    }//GetOrderStatuses
+
     public function GetOrderByID( $id ){
 
-        $stm = MySQL::$db->prepare("SELECT orderID, userID, orderDatetime, orderStatus 
+        $stm = MySQL::$db->prepare("SELECT orderID, userID, orderDatetime, orderStatus, adressOrder 
                                     FROM orders WHERE orderID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
@@ -58,5 +71,54 @@ class OrderService{
     }//GetOrderByID
 
 
+    public function AddOrdersDetails( $orderID , $bookID, $bookPrice, $bookAmount){
+
+        $stm = MySQL::$db->prepare("INSERT INTO orderdetails (orderID, bookID, bookPrice, bookAmount) 
+                                    VALUES( :orderID , :bookID, :bookPrice, :bookAmount)");
+        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_INT);
+        $stm->bindParam(':bookID' , $bookID , \PDO::PARAM_INT);
+        $stm->bindParam(':bookPrice' , $bookPrice , \PDO::PARAM_STR);
+        $stm->bindParam(':bookAmount' , $bookAmount , \PDO::PARAM_INT);
+        $stm->execute();
+
+        return  MySQL::$db->lastInsertId();
+
+    }//AddOrdersDetails
+
+    public function GetCountBookInOrderByID($orderID){
+
+        $stm = MySQL::$db->prepare("SELECT COUNT(orderID) FROM orderdetails WHERE orderID = :orderID");
+        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_INT);
+
+        $stm->execute();
+
+        return $stm->fetch();
+
+    }//GetCountBookInOrderByID
+
+
+    public function GetOrdersDetailsByOrderId( $orderID){
+
+        $stm = MySQL::$db->prepare("SELECT bookID,  bookPrice, bookAmount 
+                                    FROM orderdetails 
+                                    WHERE orderID = :orderID");
+        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_INT);
+        $stm->execute();
+
+        return $stm->fetchAll(\PDO::FETCH_OBJ);
+
+    }//GetOrdersDetails
+
+    public function UpdateStatusOrder($orderID, $statusID){
+
+        $stm = MySQL::$db->prepare("UPDATE orders
+                                    SET orderStatus = :statusID
+                                    WHERE orderID = :orderID;");
+        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_INT);
+        $stm->bindParam(':statusID' , $statusID , \PDO::PARAM_INT);
+        $stm->execute();
+
+        return $stm->fetch(\PDO::FETCH_OBJ);
+    }//UpdateStatusOrder
 
 }//OrderService
