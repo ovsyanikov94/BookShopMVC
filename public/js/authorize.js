@@ -10,11 +10,6 @@ window.ValidatorConst = {
 
     $('document').ready(function () {
 
-        // setInterval(5000 , ()=>{
-        //
-        //     //$.ajax(...)
-        //
-        // });
 
         //кнопка "Войти" на странице авторизации
         $('#Login').click( function() {

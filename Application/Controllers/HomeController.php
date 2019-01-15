@@ -22,7 +22,6 @@ class HomeController extends BaseController{
         $cartService = new CartService();
 
         $cart = $cartService->getCart();
-
         $user = $userService->getCurrentUser();
 
         $template = $this->twig->load('public/home.twig');
@@ -35,7 +34,7 @@ class HomeController extends BaseController{
 
         echo $template->render( [
             'user' => $user,
-            'books' => $books
+            'books' => $books,
         ] );
 
     }//indexAction

@@ -47,7 +47,7 @@
  *      userId
  *      orderDate
  *
- * OrderDetails
+ * Order
  *      id
  *      orderId
  *      bookId
@@ -59,10 +59,6 @@
 namespace Application\Controllers;
 use Bramus\Router\Router;
 use Application\Utils\MySQL;
-
-
-//use Application\Models\Path;
-//use Application\Models\Routing;
 
 class ApplicationController extends BaseController {
 
@@ -146,12 +142,24 @@ class ApplicationController extends BaseController {
 
         }//if
 
+        if(isset($_SESSION['admin'])){
+
+            $_SESSION = array();
+
+        }//if
+
         //чистим cookie
         if( isset( $_COOKIE['cookie_user']) ){
 
             unset($_COOKIE['cookie_user']);
             setcookie("cookie_user", "", 1);
 
+        }//if
+
+        if( isset( $_COOKIE['admin']) ) {
+
+            unset($_COOKIE['admin']);
+            setcookie("admin", "", 1);
         }//if
 
         $this->json(200, array());

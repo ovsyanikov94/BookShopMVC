@@ -21,6 +21,9 @@ return array(
         '/ordersByUser/(\+d)/(\+d)'=> 'OrdersController@UserDealInfoById',
         '/ordersUserDetails/(\+d)' => 'OrdersController@userOrderDetailAction',
         '/ordersUserDetailsOffset/(\+d)/(\+d)/(\+d)' => 'OrdersController@userOrderDetail',
+        '/edit-person-data' => 'PersonController@EditPersonDataAction',
+        '/change-person-password' => 'PersonController@ChangePasswordAction',
+        '/placeOrder' => 'OrderController@PlaceOrderAction',
     ],
     'post' => [
         '/addUser'=>'UserController@addUser',

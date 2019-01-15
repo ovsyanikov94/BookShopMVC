@@ -24,7 +24,6 @@ class CartController extends BaseController{
         $books = [];
 
         $cartTotal = 0;
-
         foreach ($cart as $cartItem) {
 
             $book = $bookService->GetBookById( $cartItem->bookID );
@@ -39,7 +38,8 @@ class CartController extends BaseController{
 
         echo $template->render( array(
             'cart' => $books,
-            'cartTotal' => $cartTotal
+            'cartTotal' => $cartTotal,
+            'counts' => array(1,2,3,4,5),
         ) );
 
 

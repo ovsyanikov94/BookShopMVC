@@ -23,7 +23,11 @@ return array(
         '/admin/comments/new/(\d+)' => 'CommentsController@addCommentPageAction',
         '/admin/personal-page' => 'PersonalPageController@personalPageAction',
         '/admin/edit-personal-data' => 'PersonalPageController@EditPersonalDataAction',
-        '/admin/change-password' => 'PersonalPageController@ChangePasswordAction'
+        '/admin/change-password' => 'PersonalPageController@ChangePasswordAction',
+        '/admin/order' => 'OrderController@getOrderAction',
+        '/admin/orderdetails/(\d+)' => 'OrderController@orderDetailsListAction',
+        '/admin/orderdetails-more' => 'OrderController@GetOrdersMore',
+
 
     ],
     'post' => [
@@ -35,6 +39,7 @@ return array(
         '/admin/genre' => 'GenresController@updateGenreAction',
         '/admin/edit-book/(\d+)' => 'BookController@acceptEditBookAction',
         '/admin/add_comment' => 'CommentsController@addCommentAction',
+        '/admin/addOrder' => 'OrderController@addOrder',
     ],
     'delete' => [
         '/admin/author/(\d+)' => 'AuthorController@deleteAuthorAction',
@@ -48,6 +53,7 @@ return array(
         '/admin/comment-status' => 'CommentsController@updateCommentStatusAction',
         '/admin/save-new-personal-data' => 'PersonalPageController@SaveNewPersonalData',
         '/admin/update-user-password' => 'PersonalPageController@ChangePassword',
+        '/admin/update-order-status' => 'OrderController@UpdateOrderStatuses',
     ]
 
 );

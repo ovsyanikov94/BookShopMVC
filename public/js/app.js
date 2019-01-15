@@ -20,85 +20,160 @@ $( document ).ready( ()=>{
 
     }  );
 
-    $('#moreUser').click(function () {
-
-
-
-    });
-
+    //Регистрация пользователя
     $('#checkIn').click(function () {
 
         let login = $('#login').val();
+        let email = $('#email').val();
 
-        let isTrueLogin = /^[a-zA-ZА-Яа-я\d]{4,16}$/i.test(login);
+        //проверка на пустое поле
+        if(login.length === 0){
 
+            $('#loginError').text('Поле не может быть пустым!').addClass("red ");
+            return;
 
+        }//if
+        if(email.length === 0){
+
+            $('#emailError').text('Поле не может быть пустым!').addClass("red ");
+            return;
+
+        }//if
+
+        //Проверка на корректность введённых данных
+        let isTrueLogin = ValidatorConst.USER_LOGIN_VALIDATOR.test(login);
         if(!isTrueLogin){
             $('#loginError').addClass("red ");
         }//if
 
-        let email =$('#email').val();
-        let isTrueEmail = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(email);
-
+        let isTrueEmail = ValidatorConst.USER_EMAIL_VALIDATOR.test(email);
         if(!isTrueEmail){
             $('#emailError').addClass("red ");
         }//if
 
+        //ФИО пользователя
+        let firstName = $('#firstNameInput').val();
+        let lastName = $('#lastNameInput').val();
+        let middleName = $('#middleNameInput').val();
+
+        //проверка на пустое поле
+        if(lastName.length === 0){
+            $('#firstNameError').text('Поле не может быть пустым!').addClass("red ");
+            return;
+        }//if
+        if(firstName.length === 0){
+            $('#lastNameError').text('Поле не может быть пустым!').addClass("red ");
+            return;
+        }//if
+        if(middleName.length === 0){
+            $('#middleName').text('Поле не может быть пустым!').addClass("red ");
+            return;
+        }//if
+
+        //проверка ФИО пользователя
+        let isTrueFirstName = ValidatorConst.USER_NAMES_VALIDATOR.test(firstName);
+        if( !isTrueFirstName ){
+            $('#firstNameError').addClass("red ");
+        }//if
+
+        let isTrueLastName = ValidatorConst.USER_NAMES_VALIDATOR.test(lastName);
+        if( !isTrueLastName ){
+            $('#lastNameError').addClass("red ");
+        }//if
+
+        let isTrueMiddleName = ValidatorConst.USER_NAMES_VALIDATOR.test(middleName);
+        if( !isTrueMiddleName ){
+            $('#middleNameError').addClass("red ");
+        }//if
+
+        //номер телефона пользователя
+        let phoneNumber = $('#phoneNumberInput').val();
+
+        if(phoneNumber.length === 0){
+            $('#phoneNumberError').text('Поле не может быть пустым!').addClass("red ");
+            return;
+        }//if
+
+        let isTruePhoneNumber = ValidatorConst.USER_PHONE_VALIDATOR.test(phoneNumber);
+        if(!isTruePhoneNumber){
+            $('#middleNameError').addClass("red ");
+        }//if
+
+        //Пароль пользователя
         let password = $('#password').val();
         let confirmPassword = $('#confirmPassword').val();
-        let isTruePassword = /^[a-z0-9_?!^%()\d]{6,30}$/i.test(password);
 
-        if(!isTruePassword || password!==confirmPassword) {
+        //проверка на пустое поле
+        if(password.length === 0){
+
+            $('#passwordError').text('Поле не может быть пустым!').addClass("red ");
+            return;
+
+        }//if
+        if(confirmPassword.length === 0){
+
+            $('#confirmPasswordError').text('Поле не может быть пустым!').addClass("red ");
+            return;
+
+        }//if
+
+        //проверка пароля
+        let isTruePassword = ValidatorConst.USER_PASSWORD_VALIDATOR.test(password);
+        if(!isTruePassword || password !== confirmPassword) {
+
            let test = $('#confirmPasswordError');
 
             test.removeClass("none");
             test.addClass("red block");
+
         }//if
 
-
-        if(isTrueLogin&&
+        if( isTrueLogin&&
             isTrueEmail&&
             isTruePassword&&
-            (password===confirmPassword)
+            isTrueFirstName&&
+            isTrueLastName&&
+            isTrueMiddleName&&
+            isTruePhoneNumber&&
+            (password === confirmPassword)
         ){
-            console.log('start ajax');
 
-            // $.ajax({
-            //     'url': `/BookShopMVC/public/addUser`,
-            //     'type': 'POST',
-            //     'data': {
-            //         'userLogin':login,
-            //         'userEmail':email,
-            //         'userPassword':password
-            //     },
-            //     'success': (data) => {
-            //         console.log(data);
-            //         console.log('наверное тут редирект на авторизацию');
-            //     },//success
-            // })//ajax
+            $.ajax({
 
-            let respone =   $.ajax({
                 'url': `/BookShopMVC/public/addUser`,
                 'type': 'POST',
                 'data': {
-                    'userLogin':login,
-                    'userEmail':email,
-                    'userPassword':password
+
+                    'userLogin': login,
+                    'userEmail': email,
+                    'firstName': firstName,
+                    'lastName': lastName,
+                    'middleName': middleName,
+                    'phoneNumber': phoneNumber,
+                    'userPassword': password
+
                 }
-            }).done((data)=>{
+            }).done( (data)=>{
 
-               // let test = JSON.parse(dara);
-                console.log(data);
+                if( +data.code === 200){
 
-                if(data!==null){
-                    console.log(data);
+                    location.href = `${window.paths.AjaxServerUserUrl}authorize`;
+
                 }//if
-                else {
-                    console.log('такой пользователь уже есть ');
+                else{
+
+                    $('#ModalTitle').text( 'Ошибка' );
+                    $('#ModalBody').text( data.message );
+                    $('#Modal').modal();
+
                 }//else
 
             }).fail((data)=>{
-                console.log(data);
+
+                $('#ModalTitle').text( 'Ошибка' );
+                $('#ModalBody').text( data.responseJSON.message );
+                $('#Modal').modal();
+
             });//ajax
 
         }//if
@@ -115,7 +190,7 @@ $( document ).ready( ()=>{
             'type': 'POST',
             'success': () =>{
 
-                location.href = `${window.paths.AjaxServerUrl}authorize`;
+                location.href = `${window.paths.AjaxServerUserUrl}authorize`;
 
             }//success
         });
@@ -153,13 +228,16 @@ $( document ).ready( ()=>{
 
             }//if
 
+
+
         }//else
-        
-        console.log('CART:' , cart);
+
+        let count = $.cookie('cart').length;
+
+        $('#Order').text(`(${count})`);
 
         $(this).fadeOut(500);
 
-        
     } );
 
 } );
@@ -206,7 +284,13 @@ window.paths = {
     AddBook: 'new-book',
     EditBook: 'edit-book/:bookID',
     DeleteBook: 'delete-book/:bookID',
-    GetBooks: 'get-books'
+    GetBooks: 'get-books',
+
+    //ORDER
+    AddOrder: 'addOrder',
+    UpdateStatusOrder: 'update-order-status',
+    GetMoreOrders: 'orderdetails-more',
+
 
 };
 

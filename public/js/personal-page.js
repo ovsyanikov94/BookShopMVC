@@ -91,13 +91,17 @@
 
             $('#hiddenAvatarBlock').hide();
 
-        });//#savePhoto
+        });//#saveNewAvatar
 
         //подтверждение изменений личной информации
-        $('#ConfirmChangesModalButton').click(function () {
+        $('#ConfirmChangesModalButton').click( async function () {
 
             //получаем новые значения персональных данных
             let newEmail = $('#newEmailInput').val();
+            let newPhoneNumber = $('#newPhoneNumberInput').val();
+            let newLastName = $('#newLastNameInput').val();
+            let newFirstName = $('#newFirstNameInput').val();
+            let newMiddleName = $('#newMiddleNameInput').val();
 
             //Проводим проверку полей на пустое значение
             if(newEmail.length === 0){
@@ -109,9 +113,44 @@
 
             }//if
 
+            if(newPhoneNumber.length === 0){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле телефона не должно быть пустым.').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+                return;
+
+            }//if
+
+            if(newLastName.length === 0){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле фамилии не должно быть пустым.').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+                return;
+
+            }//if
+
+            if(newFirstName.length === 0){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле имени не должно быть пустым.').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+                return;
+
+            }//if
+
+            if(newMiddleName.length === 0){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле отчества не должно быть пустым.').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+                return;
+
+            }//if
+
             //проводим проверку на правильность воода новых персональных данных
-           // if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
-            if(!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(newEmail)){
+            if(!window.ValidatorConst.USER_EMAIL_VALIDATOR.test(newEmail)){
 
                 $('#exampleModalCenter').modal('hide');
                 $('#errorMessage').text('Поле Email содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
@@ -120,49 +159,94 @@
 
             }//if
 
+            if(!window.ValidatorConst.USER_PHONE_VALIDATOR .test(newPhoneNumber)){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле телефона содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+                return;
+
+            }//if
+
+            if(!window.ValidatorConst.USER_NAMES_VALIDATOR .test(newLastName)){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле фамилии содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+                return;
+
+            }//if
+
+            if(!window.ValidatorConst.USER_NAMES_VALIDATOR .test(newFirstName)){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле имени содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+                return;
+
+            }//if
+
+            if(!window.ValidatorConst.USER_NAMES_VALIDATOR .test(newMiddleName)){
+
+                $('#exampleModalCenter').modal('hide');
+                $('#errorMessage').text('Поле отчества содержит не корректные символы!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+                return;
+
+            }//if
+
             let url = `${window.paths.AjaxServerUrl}${window.paths.SaveNewPersonalData}`;
 
-            $.ajax({
+            try{
 
-               'url': url,
-                'method': 'PUT',
-                'data':{
-                   newEmail: newEmail
-                },
-                'success': (data)=>{
+                let response = await $.ajax({
 
-                   if(+data.code === 200){
-                       $('#exampleModalCenter').modal('hide');
-                       $('#successMessage').text('Данные успешно обновлены!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
-                   }//if
+                    'url': url,
+                    'method': 'PUT',
+                    'data':{
+                        newEmail: newEmail,
+                        newPhoneNumber: newPhoneNumber,
+                        newLastName: newLastName,
+                        newFirstName: newFirstName,
+                        newMiddleName:newMiddleName
+                    },
 
-                },//success
-                'statusCode':{
-                   '301': ()=>{
+                });
 
-                       $('#errorInput')
-                           .text("Пользователь с такими данными уже есть.")
-                           .fadeIn(750)
-                           .delay(2500)
-                           .fadeOut(750);
+                console.log('data: ', response);
 
-                       $('#exampleModalCenter').modal('hide');
+                if(+response.code === 200){
 
-                   },
-                   '500': ()=>{
+                    $('#exampleModalCenter').modal('hide');
+                    $('#successMessage').text('Данные успешно обновлены!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                    return;
 
-                       $('#errorInput')
-                           .text("Ошибка загрузки данных")
-                           .fadeIn(750)
-                           .delay(2500)
-                           .fadeOut(750);
-                       $('#exampleModalCenter').modal('hide');
+                }//if
 
-                   }
+                $('#errorMessage')
+                    .text("Пользователь с такими Email или телефоном уже есть!")
+                    .fadeIn(750)
+                    .delay(2500)
+                    .fadeOut(750);
 
-                }//statusCode
 
-            });
+            }//try
+            catch( ex ){
+
+                console.log('Exception: ', ex);
+                $('#exampleModalCenter').modal('hide');
+
+                $('#errorMessage')
+                    .text(ex.responseJSON.message)
+                    .fadeIn(750)
+                    .delay(2500)
+                    .fadeOut(750);
+
+
+
+            }//catch
+
+
 
         });//ConfirmChangesModalButton
 
@@ -250,7 +334,7 @@
                },
                'success': (data)=>{
 
-                   if(data.code === 200){
+                   if(+data.code === 200){
 
                        $('#successMessage').text('Пароль успешно изменён!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
                        $('#exampleModalCenter').modal('hide');
