@@ -20,12 +20,6 @@ $( document ).ready( ()=>{
 
     }  );
 
-    $('#moreUser').click(function () {
-
-
-
-    });
-
     //Регистрация пользователя
     $('#checkIn').click(function () {
 
@@ -233,13 +227,14 @@ $( document ).ready( ()=>{
                 $.cookie('cart' , cart , {expires: 7 , path: '/'});
 
             }//if
-            let count = $.cookie('cart').length;
 
-            $('#Order')[0].innerText = '(' + count + ')';
-            console.log($('#Order')[0].innerText);
+
+
         }//else
-        
-        console.log('CART:' , cart);
+
+        let count = $.cookie('cart').length;
+
+        $('#Order').text(`(${count})`);
 
         $(this).fadeOut(500);
 
