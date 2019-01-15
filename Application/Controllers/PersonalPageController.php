@@ -188,7 +188,10 @@ class PersonalPageController extends BaseController {
 
             $this->json( $result['code'],
                 array(
-                'code' => $result['code']
+                'code' => $result['code'],
+                'message' =>
+                    $result['code'] === 200 ? 'Данные успешно обновлены!'
+                                            : 'Пользователь с такими данными уже есть!'
             ) );
 
         }//try

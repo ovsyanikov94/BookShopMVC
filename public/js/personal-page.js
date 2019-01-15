@@ -94,7 +94,7 @@
         });//#saveNewAvatar
 
         //подтверждение изменений личной информации
-        $('#ConfirmChangesModalButton').click(function () {
+        $('#ConfirmChangesModalButton').click( async function () {
 
             //получаем новые значения персональных данных
             let newEmail = $('#newEmailInput').val();
@@ -197,66 +197,56 @@
 
             let url = `${window.paths.AjaxServerUrl}${window.paths.SaveNewPersonalData}`;
 
-            $.ajax({
+            try{
 
-                'url': url,
-                'method': 'PUT',
-                'data':{
-                   newEmail: newEmail,
-                   newPhoneNumber: newPhoneNumber,
-                   newLastName: newLastName,
-                   newFirstName: newFirstName,
-                   newMiddleName:newMiddleName
-                },
-                'success': (data)=>{
+                let response = await $.ajax({
 
-                    console.log('data.code for change datas : ', +data.code);
+                    'url': url,
+                    'method': 'PUT',
+                    'data':{
+                        newEmail: newEmail,
+                        newPhoneNumber: newPhoneNumber,
+                        newLastName: newLastName,
+                        newFirstName: newFirstName,
+                        newMiddleName:newMiddleName
+                    },
 
-                   if(+data.code === 200){
+                });
 
-                       $('#exampleModalCenter').modal('hide');
-                       $('#successMessage').text('Данные успешно обновлены!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                console.log('data: ', response);
 
-                   }//if
+                if(+response.code === 200){
 
-                    if(+data.code === 701){
+                    $('#exampleModalCenter').modal('hide');
+                    $('#successMessage').text('Данные успешно обновлены!').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                    return;
 
-                        $('#errorInput')
-                            .text("Пользователь с такими Email уже есть.")
-                            .fadeIn(750)
-                            .delay(2500)
-                            .fadeOut(750);
+                }//if
 
-                        $('#exampleModalCenter').modal('hide');
+                $('#errorMessage')
+                    .text("Пользователь с такими Email или телефоном уже есть!")
+                    .fadeIn(750)
+                    .delay(2500)
+                    .fadeOut(750);
 
-                    }//if
 
-                    if(+data.code === 702){
+            }//try
+            catch( ex ){
 
-                        $('#errorInput')
-                            .text("Пользователь с такими номером телефона уже есть.")
-                            .fadeIn(750)
-                            .delay(2500)
-                            .fadeOut(750);
+                console.log('Exception: ', ex);
+                $('#exampleModalCenter').modal('hide');
 
-                        $('#exampleModalCenter').modal('hide');
+                $('#errorMessage')
+                    .text(ex.responseJSON.message)
+                    .fadeIn(750)
+                    .delay(2500)
+                    .fadeOut(750);
 
-                    }//if
 
-                    if(+data.code === 500){
 
-                        $('#errorInput')
-                            .text("Ошибка загрузки данных")
-                            .fadeIn(750)
-                            .delay(2500)
-                            .fadeOut(750);
-                        $('#exampleModalCenter').modal('hide');
+            }//catch
 
-                    }//if
 
-                },//success
-
-            });
 
         });//ConfirmChangesModalButton
 

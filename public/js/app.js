@@ -166,16 +166,20 @@ $( document ).ready( ()=>{
                     location.href = `${window.paths.AjaxServerUserUrl}authorize`;
 
                 }//if
+                else{
 
-                if(data !== null){
-                    //console.log('!null', data);
-                }//if
-                else {
-                    console.log('такой пользователь уже есть ');
+                    $('#ModalTitle').text( 'Ошибка' );
+                    $('#ModalBody').text( data.message );
+                    $('#Modal').modal();
+
                 }//else
 
             }).fail((data)=>{
-                //console.log("fail :",data);
+
+                $('#ModalTitle').text( 'Ошибка' );
+                $('#ModalBody').text( data.responseJSON.message );
+                $('#Modal').modal();
+
             });//ajax
 
         }//if

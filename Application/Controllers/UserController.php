@@ -40,7 +40,8 @@ class UserController extends BaseController{
         $userLogin = $this->request->GetPostValue('userLogin');
         if(!preg_match($pattern->LoginPattern,$userLogin)){
             $this->json(400,array(
-                'res' => 'неверный логин'
+                'code'=> 400,
+                'message' => 'неверный логин'
             ));
             return;
         }//if
@@ -48,7 +49,8 @@ class UserController extends BaseController{
         $userEmail = $this->request->GetPostValue('userEmail');
         if(!preg_match($pattern->EmailPattern,$userEmail)){
             $this->json(400,array(
-                'res' => 'неверный Email'
+                'code'=> 400,
+                'message' => 'неверный Email'
             ));
             return;
         }//if
@@ -56,7 +58,8 @@ class UserController extends BaseController{
         $userFirstName = $this->request->GetPostValue('firstName');
         if(!preg_match($pattern->NamesPattern, $userFirstName)){
             $this->json(400,array(
-                'res' => 'Не корректное Имя'
+                'code'=> 400,
+                'message' => 'Не корректное Имя'
             ));
             return;
         }//if
@@ -64,7 +67,8 @@ class UserController extends BaseController{
         $userLastName = $this->request->GetPostValue('lastName');
         if(!preg_match($pattern->NamesPattern, $userLastName)){
             $this->json(400,array(
-                'res' => 'Не корректная Фамилия'
+                'code'=> 400,
+                'message' => 'Не корректная Фамилия'
             ));
             return;
         }//if
@@ -72,7 +76,8 @@ class UserController extends BaseController{
         $userMiddleName = $this->request->GetPostValue('middleName');
         if(!preg_match($pattern->NamesPattern, $userMiddleName)){
             $this->json(400,array(
-                'res' => 'Не корректное Отчество'
+                'code'=> 400,
+                'message' => 'Не корректное Отчество'
             ));
             return;
         }//if
@@ -80,7 +85,8 @@ class UserController extends BaseController{
         $userPhoneNumber = $this->request->GetPostValue('phoneNumber');
         if(!preg_match($pattern->PhoneNumberPattern, $userPhoneNumber)){
             $this->json(400,array(
-                'res' => 'Не корректный номер телефона'
+                'code'=> 400,
+                'message' => 'Не корректный номер телефона'
             ));
             return;
         }//if
@@ -88,7 +94,8 @@ class UserController extends BaseController{
         $usrPassword = $this->request->GetPostValue('userPassword');
         if(!preg_match($pattern->PasswordPattern,$usrPassword)){
             $this->json(400,array(
-                'res'=> 'неверный пароль'
+                'code'=> 400,
+                'message'=> 'неверный пароль'
             ));
             return;
         }//if
@@ -109,19 +116,20 @@ class UserController extends BaseController{
             $mailres = mail($userEmail , $message->verificationSubject,$message->verificationTemplate,$message->header);
 
             $this->json(200, array(
-                'code' => 200,
-                'verification'=> false,
-                'addUser'=> $result,
-                'res'=>$mailres
+                'code' => 200
             ));
 
             //https://www.w3schools.com/php/php_ref_mail.asp
         }//if
+        else{
 
-        $this->json(200,array(
-            'addUser'=> $result
+            $this->json(403,array(
+                'code'=> 403,
+                'message' => 'Пользователь с такими данными уже есть!'
+            ));
 
-        ));
+        }//else
+
 
      }//addUser
 
