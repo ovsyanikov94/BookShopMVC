@@ -106,11 +106,12 @@ $(document).ready( function (  ) {
 
         $('#Order')[0].innerText = '(' + count + ')';
 
-        if(count==0){
-            $('#formOrder').css('display', 'none');
-            $('#cartTable').css('opacity', '0');
-            $('#formTotalOrder').css('display', 'none');
-            $('#cartEmpty').css('display', 'block');
+        if(count === 0){
+
+            $('#BlockTotal').css('display', 'none');
+            $('#cartTable').css('display', 'none');
+            $('#CartTableSection').append(` <div id="cartEmpty" class="col-6 alert alert-info">Корзина пуста!</div>`);
+
         }//if
     });
 
