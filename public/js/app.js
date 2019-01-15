@@ -288,7 +288,11 @@ window.paths = {
     GetBooks: 'get-books',
 
     //ORDER
-    AddOrder: 'addOrder'
+    AddOrder: 'addOrder',
+    UpdateStatusOrder: 'update-order-status',
+    GetMoreOrders: 'orderdetails-more',
+
+
 };
 
 window.StatusConsts = {

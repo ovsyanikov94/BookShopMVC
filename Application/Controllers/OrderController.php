@@ -5,6 +5,7 @@ namespace Application\Controllers;
 
 
 use Application\Services\BookService;
+use Application\Services\CartService;
 use Application\Services\OrderDetailsService;
 use Application\Services\OrderService;
 use Application\Services\UserService;
@@ -16,15 +17,12 @@ class OrderController extends BaseController {
         $orderService = new OrderService();
         $orders = $orderService->GetOrders();
 
-        $userService = new UserService();
-
-        $odService  = new OrderDetailsService();
-
         $ordersWithUser = [];
 
         for($i=0;$i < count($orders); $i++ ){
 
             $ordersWithUser[$i] = $this->GetFullOrder($orders[$i]);
+
 
         }//for
 
@@ -42,12 +40,9 @@ class OrderController extends BaseController {
 
         $userService = new UserService();
 
-
-        $odService  = new OrderDetailsService();
-
         $dateStr = $order->orderDatetime;
 
-        $countBook = $odService->GetCountBookInOrderByID($order->orderID);
+        $countBook = $orderService->GetCountBookInOrderByID($order->orderID);
 
         return [
             'order' => $order,
@@ -57,10 +52,21 @@ class OrderController extends BaseController {
             'statusTitle' => $orderService->GetTitleStatusOrderByID($order->orderStatus),
 
         ];
-    }
+    }//GetFullOrder
+
     public function addOrder(){
 
         $cart = json_decode($this->request->GetPostValue('cart'));
+        $adressOrder = $this->request->GetPostValue('adressOrder');
+
+        if(!$adressOrder){
+
+            $this->json( 400 , array(
+                'adress_err' => $adressOrder
+            ) );
+
+            return;
+        }//if
 
         $userService = new UserService();
 
@@ -74,15 +80,14 @@ class OrderController extends BaseController {
         }
         $const = new patternConst();
 
-        $orderStatus = $const->statusOrderInProsess;
+        $orderStatus = $const->statusOrderNew;
 
         $orderService  = new OrderService();
 
         try{
-            $orderID = $orderService->AddOrder($user['userID'], $orderStatus);
+            $orderID = $orderService->AddOrder($user['userID'], $orderStatus, $adressOrder);
 
             $bookService = new BookService();
-            $orderDetailsService = new OrderDetailsService();
 
             $bookByID= null;
 
@@ -90,7 +95,7 @@ class OrderController extends BaseController {
 
                 $bookByID = $bookService->GetBookById($book->bookID);
 
-                $orderDetailsService->AddOrdersDetails($orderID, $book->bookID, $bookByID->bookPrice, $book->amount );
+                $orderService->AddOrdersDetails($orderID, $book->bookID, $bookByID->bookPrice, $book->amount );
 
             }//foreach
 
@@ -108,4 +113,144 @@ class OrderController extends BaseController {
         }//catch
 
     }//addOrder
+
+    public function orderDetailsListAction( $orderID ){
+
+        $orderService = new OrderService();
+        $orderDetails = $orderService->GetOrdersDetailsByOrderId($orderID);
+
+        $orderController = new OrderController();
+
+        $order = $orderService->GetOrderByID($orderID);
+
+        $orderFull = $orderController->GetFullOrder($order);
+
+        $bookService = new BookService();
+
+        $ODFull = [];
+
+        $totalSum = 0;
+
+        for($i=0;$i < count($orderDetails); $i++ ){
+
+            $totalSum += $orderDetails[$i]->bookPrice * $orderDetails[$i]->bookAmount;
+
+            $ODFull[$i] = [
+                'od'=>$orderDetails[$i],
+                'book'=>$bookService->GetBookById($orderDetails[$i]->bookID),
+            ];
+
+        }//for
+
+        $template = $this->twig->load('Order/orderDetails.twig');
+
+        $statuses = $orderService->GetOrderStatuses();
+
+        foreach ( $statuses as $status ){
+
+            if($status->statusID === $order->orderStatus){
+                $status->isSelected = 1;
+            }//if
+            else{
+                $status->isSelected = 0;
+            }//else
+        }//foreach
+
+        echo $template->render( array(
+            'orderdetails' => $ODFull,
+            'order'=>$orderFull,
+            'statuses'=>$statuses,
+            'total'=>$totalSum
+        ) );
+
+    }//orderDetailsListAction
+
+    public function UpdateOrderStatuses(){
+
+        $orderID = $this->request->GetPutValue('orderID');
+        $statusID = $this->request->GetPutValue('statusID');
+
+
+        $orderService = new OrderService();
+
+        try{
+
+            $orderService->UpdateStatusOrder($orderID, $statusID);
+
+            $this->json( 200 , array(
+                'code' => 200,
+                '$orderID' => $orderID,
+            ) );
+
+        }//try
+        catch (\Exception $ex){
+            $this->json( 500 , array(
+                'code' => 500,
+                'message' => $ex,
+                 '$orderID' => $orderID,
+            ) );
+        }//catch
+
+    }//UpdateOrderStatuses
+
+    public function GetOrdersMore(){
+
+        $limit = $this->request->GetGetValue('limit');
+        $offset = $this->request->GetGetValue('offset');
+
+        $orderService = new OrderService();
+        $orders = $orderService->GetOrders($limit, $offset);
+
+        $ordersWithUser = [];
+
+        for($i=0;$i < count($orders); $i++ ){
+
+            $ordersWithUser[$i] = $this->GetFullOrder($orders[$i]);
+
+        }//for
+
+        $this->json( 200 , array(
+            'code' => 200,
+            'orders' => $ordersWithUser,
+        ) );
+    }//GetOrdersMore
+
+    public function PlaceOrderAction(){
+
+       $cartService = new CartService();
+       $bookService = new BookService();
+
+       $cart = $cartService->getCart();
+
+       $cartFull = [];
+
+       $total = 0;
+
+        foreach ( $cart as $item ){
+
+            $book = $bookService->GetBookById($item->bookID);
+
+            $total+= $book->bookPrice * $item->amount;
+
+            $cartFull[] = [
+                'cart'=>$item,
+                'book'=>$book
+            ];
+        }//foreach
+
+        $userService = new UserService();
+
+        $userID = $userService->getCurrentUser();
+
+        $user = $userService->getSingleUser($userID['userID']);
+
+        $template = $this->twig->load('public/OrderAndCart/orderPlace.twig');
+
+        echo $template->render( array(
+            'user' => $user,
+            'cart'=>$cartFull,
+            'total'=>$total
+        ) );
+
+    }//PlaceOrderAction
 }//OrderController

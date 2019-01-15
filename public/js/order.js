@@ -1,5 +1,8 @@
 (function () {
 
+    let limit = 10;
+    let offset = 10;
+
     $('#addOrder').click( async function (  ){
 
         let cart = $.cookie('cart');
@@ -17,7 +20,18 @@
 
             let orderData = new FormData();
 
+            let adressOrder = $('#orderAdress').val();
+
+            console.log('adressOrder', adressOrder);
+
+            if(!adressOrder){
+                $('#errorMessage').text("Введите адресс");
+                $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+                return;
+            }//if
+
             orderData.append('cart' , JSON.stringify(cart) );
+            orderData.append('adressOrder' , adressOrder );
 
             try{
 
@@ -48,7 +62,7 @@
 
             }//try
             catch( ex ){
-
+                $('#errorMessage').text("ошибка сервера");
                 $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
 
                 console.log(ex);
@@ -56,57 +70,105 @@
             }//catch
         }//else
 
-        // let nameAuthor = $('#nameAuthor').val();
-        // let lastNameAuthor = $('#lastNameAuthor').val();
-        //
-        //
-        // if(!/^[a-zа-я]{2,50}$/i.test(nameAuthor) || !/^[a-zа-я]{2,50}$/i.test(lastNameAuthor)){
-        //
-        //     $('#successMessage').fadeOut(1000);
-        //     $('#errorMessage').fadeOut(500);
-        //     $('#errorInput').fadeIn(500).delay( 5000 ).fadeOut( 500 );
-        //
-        // }//if
-        // else{
-        //     $.post(
-        //         `${window.paths.AjaxServerUrl}${window.paths.AddAuthor}`,
-        //         {
-        //             'authorLastname': lastNameAuthor,
-        //             'authorFirstname': nameAuthor
-        //         },
-        //         function ( response ){
-        //
-        //             $('#successMessage').fadeIn(1000);
-        //             $('#errorMessage').fadeOut(500);
-        //             $('#errorInput').fadeOut(500);
-        //
-        //             console.log('response:' , response);
-        //
-        //             $('#authorTable').append(`
-        //             <tr data-author-id = "${response.authorID}">
-        //                 <td>${response.authorID}</td>
-        //                 <td>${nameAuthor}</td>
-        //                 <td>${lastNameAuthor}</td>
-        //                 <td>
-        //                     <button data-author-id="${response.authorID}" class="btn btn-danger" >Удалить</button>
-        //                 </td>
-        //                 <td>
-        //                     <a href="${window.paths.AjaxServerUrl}author/${response.authorID}" class="btn btn-primary" >Обновить</a>
-        //                 </td>
-        //             </tr>`
-        //             );
-        //
-        //
-        //
-        //         }//fn
-        //     );
-        //
-        // }//else
-
 
 
     }  );
 
+    $('#orderStatus').change( async function(){
+
+        let status = [].map.call( $('#orderStatus option:selected') ,
+                            ( opt )=>{ return $(opt).data('status-id') } );
+
+       let orderID = $('#orderStatus').data('order-id');
+       let statusID = status[0];
+
+        try{
+
+            let response = await $.ajax({
+                url: `${window.paths.AjaxServerUrl}${window.paths.UpdateStatusOrder}`,
+                method: 'PUT',
+                data:{
+                    orderID: orderID,
+                    statusID: statusID
+                },
+            });
+
+            if( +response.code === 200 ){
+
+                $('#successMessage').text("Статус изменен");
+                $('#successMessage').fadeIn(200).delay(5000).fadeOut(1500);
+
+            }//if
+            else{
+                $('#errorMessage').text("Произошла ошибка при изменении статуса");
+                $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+            }//else
+
+        }//try
+        catch( ex ){
+            $('#errorMessage').text(ex.message);
+            $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+            console.log(ex);
+
+        }//catch
+
+    })
+
+    $('#moreOrders').click(async function(){
+
+        try{
+
+            let response = await $.ajax({
+                url: `${window.paths.AjaxServerUrl}${window.paths.GetMoreOrders}`,
+                method: 'GET',
+                data: {
+                    limit: limit,
+                    offset: offset
+                }
+            });
+
+            if( +response.code === 200 ){
+
+                offset += limit;
+
+                if(offset > response.orders.length){
+                    $('#moreOrders').fadeOut(500);
+                }//if
+
+                response.orders.forEach(function(od){
+                    $('#ordersTable').append(`
+                    <tr>
+                <td>${od.order.orderID}</td>
+                <td>${od.user.userLogin}</td>
+                <td>${ od.date }</td>
+                <td>${ od.statusTitle.statusTitle }</td>
+                <td>${ od.count[0]}</td>
+                <td>
+                    <a href="/BookShopMVC/public/admin/orderdetails/${od.order.orderID }" class="btn btn-primary" >Подробнее</a>
+                </td>
+            </tr>`
+                    );
+                });
+
+            }//if
+            else{
+                $('#errorMessage').text("Произошла ошибка при загрузке заказов");
+                $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+            }//else
+
+
+        }//try
+        catch( ex ){
+
+            $('#errorMessage').fadeIn(500).delay( 5000 ).fadeOut( 500 );
+
+            console.log(ex);
+
+        }//catch
+    })
 
 })();
 

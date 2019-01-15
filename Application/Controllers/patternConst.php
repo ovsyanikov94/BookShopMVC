@@ -18,4 +18,6 @@ class patternConst{
     public $PasswordPattern = '/^[a-z0-9_?!^%()\d]{6,30}$/i';
 
     public $statusOrderInProsess = 1;
+    public $statusOrderNew = 2;
+
 }//patternConst
