@@ -167,17 +167,31 @@ class PersonalPageController extends BaseController {
         }//else
 
         $userID = $userStorage['userID'];
-        $userEmail= $this->request->GetPutValue('newEmail');
+        $userEmail = $this->request->GetPutValue('newEmail');
+        $userPhone = $this->request->GetPutValue('newPhoneNumber');
+        $userLastName = $this->request->GetPutValue('newLastName');
+        $userFirstName = $this->request->GetPutValue('newFirstName');
+        $userMiddleName = $this->request->GetPutValue('newMiddleName');
 
         $personalPageService = new PersonalPageService();
 
         try{
 
-           $result = $personalPageService->UpdateUserPersonalData( [ 'userID' => $userID , 'userEmail' => $userEmail ]);
+           $result = $personalPageService->UpdateUserPersonalData(
+               [   'userID' => $userID ,
+                   'userEmail' => $userEmail,
+                   'userPhone' => $userPhone,
+                   'userLastName' => $userLastName,
+                   'userFirstName' => $userFirstName,
+                   'userMiddleName' => $userMiddleName
+               ]);
 
             $this->json( $result['code'],
                 array(
-                'code' => $result['code']
+                'code' => $result['code'],
+                'message' =>
+                    $result['code'] === 200 ? 'Данные успешно обновлены!'
+                                            : 'Пользователь с такими данными уже есть!'
             ) );
 
         }//try
@@ -242,7 +256,6 @@ class PersonalPageController extends BaseController {
         }//else
 
         if( !$user ){
-
 
             $this->json( 401 ,
                 array(

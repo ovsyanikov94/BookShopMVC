@@ -13,7 +13,7 @@ use Bcrypt\Bcrypt;
 
 class UserService
 {
-    public function addUser($login, $password, $email, $hesh){
+    public function addUser($login, $password, $email, $userFirstName, $userLastName, $userMiddleName, $userPhoneNumber, $hesh){
 
         $isUser = MySQL::$db->prepare("SELECT * FROM users WHERE userLogin = :userLogin OR userEmail=:userEmail");
         $isUser->bindParam(':userLogin', $login,\PDO::PARAM_STR);
@@ -21,27 +21,29 @@ class UserService
         $isUser->execute();
 
         $result = $isUser->fetchAll(\PDO::FETCH_OBJ);
+
         if(!$result){
+
             $bcrypt = new Bcrypt();
             $bcrypt_version = '2y';
             $heshPassword = $bcrypt->encrypt($password,$bcrypt_version);
 
-            $stm = MySQL::$db->prepare("INSERT INTO users VALUES( DEFAULT, :login, :email , NULL ,:password, false, :hash )");
+            $stm = MySQL::$db->prepare("INSERT INTO users VALUES( DEFAULT, :login, :email , :firstName , :lastName , :middleName , :phoneNumber , NULL , :password , false , :hash )");
             $stm->bindParam(':login' , $login , \PDO::PARAM_STR);
             $stm->bindParam(':email' , $email , \PDO::PARAM_STR);
+            $stm->bindParam(':firstName', $userFirstName, \PDO::PARAM_STR);
+            $stm->bindParam(':lastName', $userLastName, \PDO::PARAM_STR);
+            $stm->bindParam(':middleName', $userMiddleName, \PDO::PARAM_STR);
+            $stm->bindParam(':phoneNumber', $userPhoneNumber, \PDO::PARAM_STR);
             $stm->bindParam(':hash' , $hesh , \PDO::PARAM_STR);
             $stm->bindParam(':password' , $heshPassword , \PDO::PARAM_STR);
             $stm->execute();
 
             return  MySQL::$db->lastInsertId();
+
         }//if
 
         return null;
-//        // Проверка открытого текста и зашифрованного текста
-//        if ( $ bcrypt -> verify ( $ не зашифрованый пароль  , $ пароль из бд  )) {
-//            print_r ( " \ n Пароль подтвержден! " ); }
-//        else { print_r ( " \ n Пароль не совпадает! " ); }
-
 
     }//addUser
 
