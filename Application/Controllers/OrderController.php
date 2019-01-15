@@ -80,7 +80,7 @@ class OrderController extends BaseController {
         }
         $const = new patternConst();
 
-        $orderStatus = $const->statusOrderInProsess;
+        $orderStatus = $const->statusOrderNew;
 
         $orderService  = new OrderService();
 

@@ -65,6 +65,12 @@ class PersonalPageService  {
             //удаление старого файла аватара(фотографии пользователя)
             $userAvatarDirectory = "images/avatars/{$userID}/*";
 
+            if(!file_exists("images/avatars/{$userID}")){
+
+                mkdir("images/avatars/{$userID}");
+
+            }//if
+
             $files = glob($userAvatarDirectory); // получение всех файлов в папке пользователя
 
             foreach($files as $file){ // итерируем файлы
