@@ -1,7 +1,5 @@
 "use strict";
 
-
-
 $( document ).ready( ()=>{
 
     $('#removeAuthor').click( function (  ){
@@ -163,6 +161,29 @@ $( document ).ready( ()=>{
         $(this).fadeOut(500);
 
     } );
+
+    // AJAX Поиск
+    $("#searchInput").keyup(function(){
+
+        let searchData = $("#searchInput").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "SearchController.php",
+            data: {
+                "search": searchData
+            },
+            cache: false,
+            success: function(response){
+                console.log(response);
+            }
+
+        });
+
+        return false;
+
+    });
 
 } );
 

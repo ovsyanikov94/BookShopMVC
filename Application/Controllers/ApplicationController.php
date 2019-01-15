@@ -73,8 +73,8 @@ class ApplicationController extends BaseController {
 
         MySQL::$db = new \PDO(
             "mysql:dbname=booksdb;host=127.0.0.1;charset=utf8",
-            "books-admin",
-            "123456"
+            "root",
+            ""
         );
 
         $router = new Router();

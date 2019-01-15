@@ -18,11 +18,12 @@ return array(
         '/person' => 'PersonController@getPersonAction',
         '/book/(\d+)' => 'BookController@getPublicBookAction',
         '/edit-person-data' => 'PersonController@EditPersonDataAction',
-        '/change-person-password' => 'PersonController@ChangePasswordAction'
+        '/change-person-password' => 'PersonController@ChangePasswordAction',
     ],
     'post' => [
         '/addUser'=>'UserController@addUser',
         '/login' => 'AuthorizeController@LoginAction',
+        '/search' => 'SearchController@LoadSearchPage'
     ],
     'put' => [
 

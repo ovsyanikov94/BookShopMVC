@@ -48,7 +48,6 @@ class BookService{
 
     public function GetBookById( $id ){
 
-
         $stm = MySQL::$db->prepare("SELECT * FROM books WHERE bookID = :id");
         $stm->bindParam(':id' , $id , \PDO::PARAM_INT);
         $stm->execute();
@@ -252,5 +251,26 @@ class BookService{
 
 
     }
+
+    public function SearchBook($search){
+
+        $stm = MySQL::$db->prepare("SELECT * FROM books WHERE bookTitle = :search");
+        $stm->bindParam(':search' , $search , \PDO::PARAM_STR);
+        $stm->execute();
+
+        $book = $stm->fetchAll(\PDO::FETCH_OBJ);
+
+        if(!$book){
+
+            return false;
+
+        }//if
+
+//        $book->authors = $this->GetBookAuthors( $book->bookID );
+//        $book->genres = $this->GetBookGenres( $book->bookID );
+
+        return $book;
+
+    } // SearchBook
 
 }//BookService
