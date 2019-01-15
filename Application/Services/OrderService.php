@@ -17,39 +17,37 @@ class OrderService{
 
         $result = $orders->fetchAll(\PDO::FETCH_OBJ);
 
-
-
-
         if($result){
 
             for($i=0;$i<count($result);$i++){
+
                 $id = $result[$i]->orderStatus;
                 $statueTitle =  $orders = MySQL::$db->prepare("SELECT statusTitle FROM `orderstatus` WHERE statusID =$id ");
                 $statueTitle->execute();
                 $statueTitleResult = $orders->fetch(\PDO::FETCH_OBJ);
                 $result[$i]->orderStatus = $statueTitleResult;
+
             }//for
 
-        return $result;
+            return $result;
 
         }//if
-       return null;
+        return null;
 
     }//UserDealInfoById
 
     public function getDealDetail($id, $limit, $offset){
+
         $detail = MySQL::$db->prepare("SELECT * FROM orderdetails WHERE orderID = :orderID LIMIT :offset,:limit");
         $detail->bindParam(':orderID', $id,\PDO::PARAM_INT);
         $detail->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $detail->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $detail->execute();
 
-        $result = $detail->fetch(\PDO::FETCH_OBJ);
+        $result = $detail->fetchAll(\PDO::FETCH_OBJ);
 
         return $result;
     }//getDealDetail
-
-}//OrderService
 
     public function GetOrders( $limit = 10 , $offset = 0 ){
 
@@ -76,7 +74,6 @@ class OrderService{
 
     }//AddOrder
 
-
     public function GetTitleStatusOrderByID($statusId){
 
         $stm = MySQL::$db->prepare("SELECT  statusTitle
@@ -86,7 +83,6 @@ class OrderService{
 
         return $stm->fetch(\PDO::FETCH_OBJ);
     }//GetTitleStatusByID
-
 
     public function GetOrderStatuses(){
 
@@ -108,7 +104,6 @@ class OrderService{
         return $stm->fetch(\PDO::FETCH_OBJ);
 
     }//GetOrderByID
-
 
     public function AddOrdersDetails( $orderID , $bookID, $bookPrice, $bookAmount){
 
@@ -135,7 +130,6 @@ class OrderService{
 
     }//GetCountBookInOrderByID
 
-
     public function GetOrdersDetailsByOrderId( $orderID){
 
         $stm = MySQL::$db->prepare("SELECT bookID,  bookPrice, bookAmount 
@@ -159,49 +153,5 @@ class OrderService{
 
         return $stm->fetch(\PDO::FETCH_OBJ);
     }//UpdateStatusOrder
-
-public function UserDealInfoById($userId,$limit, $offset){
-
-
-    $orders = MySQL::$db->prepare("SELECT * FROM orders WHERE userID = :userId LIMIT :offset,:limit");
-    $orders->bindParam(':userId', $userId,\PDO::PARAM_INT);
-    $orders->bindParam(':offset' , $offset , \PDO::PARAM_INT);
-    $orders->bindParam(':limit' , $limit , \PDO::PARAM_INT);
-    $orders->execute();
-
-    $result = $orders->fetchAll(\PDO::FETCH_OBJ);
-
-
-
-
-    if($result){
-
-        for($i=0;$i<count($result);$i++){
-            $id = $result[$i]->orderStatus;
-            $statueTitle =  $orders = MySQL::$db->prepare("SELECT statusTitle FROM `orderstatus` WHERE statusID =$id ");
-            $statueTitle->execute();
-            $statueTitleResult = $orders->fetch(\PDO::FETCH_OBJ);
-            $result[$i]->orderStatus = $statueTitleResult;
-        }//for
-
-        return $result;
-
-    }//if
-    return null;
-
-}//UserDealInfoById
-
-public function getDealDetail($id, $limit, $offset){
-    $detail = MySQL::$db->prepare("SELECT * FROM orderdetails WHERE orderID = :orderID LIMIT :offset,:limit");
-    $detail->bindParam(':orderID', $id,\PDO::PARAM_INT);
-    $detail->bindParam(':offset' , $offset , \PDO::PARAM_INT);
-    $detail->bindParam(':limit' , $limit , \PDO::PARAM_INT);
-    $detail->execute();
-
-    $result = $detail->fetch(\PDO::FETCH_OBJ);
-
-    return $result;
-}//getDealDetail
-
 
 }//OrderService

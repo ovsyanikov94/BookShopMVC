@@ -26,12 +26,12 @@
         <tr >
 
             <th scope="row">
-                <img src="{{ singleDetail.book.bookImagePath }}" style="float: left; width: 50px"  alt="Cinque Terre">
+                <img src="../{{ singleDetail.book.bookImagePath }}" style="float: left; width: 50px"  alt="Cinque Terre">
             </th>
             <td>{{ singleDetail.book.bookTitle }}</td>
             <td>
-                {% for  singleDetail.book.authors  in author %}
-                    <span> {{ author.authorFerstName }} {{ author.authorLastName}}</span>
+                {% for author in singleDetail.book.authors   %}
+                    <span> {{ author.authorFirstName }} {{ author.authorLastName}}</span>
                     {% if loop.length<loop.index %}
                         <span>,</span>
                     {% endif %}
@@ -47,7 +47,7 @@
     </table>
     <div class="container-fluid">
         <div class="row justify-content-center ">
-            <div  id="deal-yet" data-detailId="{{ orderDetail}}" class=" col-4 btn btn-primary">еще</div>
+            <div  id="deal-yet" data-detailId="{{ orderDetail.orderID }}" class=" col-4 btn btn-primary">еще</div>
         </div>
 
         </div>

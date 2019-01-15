@@ -27,10 +27,10 @@
 
                     <td >{{ singleDetail.orderID }}</td>
                     <td>{{ singleDetail.orderDatetime }}</td>
-                    <td>{{ singleDetail.AdressOrder }}</td>
+                    <td>{{ singleDetail.adressOrder }}</td>
                     <td>{{ singleDetail.orderStatus.statusTitle }}</td>
                     <td>
-                        <a href="ordersUserDetailsOffset/{{ singleDetail.orderID }}" class="btn btn-primary"> подробнее </a>
+                        <a href="order/{{ singleDetail.orderID }}" class="btn btn-primary"> подробнее </a>
                     </td>
 
                 </tr>
@@ -39,7 +39,7 @@
         </table>
         <div class="container-fluid">
             <div class="row justify-content-center ">
-                <div  id="deal-yet-detail"  class=" col-4 btn btn-primary">еще</div>
+                <div  id="deal-yet-detail" class=" col-4 btn btn-primary">еще</div>
             </div>
 
         </div>

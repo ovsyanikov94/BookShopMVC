@@ -2,6 +2,9 @@
 
 $(document).ready(()=>{
 
+    let limit = 10;
+    let offset = 10;
+
     let limitOrders = 10;
     let offsetOrders =0;
 
@@ -49,15 +52,11 @@ $(document).ready(()=>{
     $('#deal-yet-detail').click(async function(){
 
 
-        let id = $('[data-detailId]').val();
+        let id = $(this).data('id');
         try{
             let response = await $.ajax({
                 url: `${window.paths.AjaxServerUserUrl}/ordersUserDetailsOffset/${id}/${limitOrdersDetail}/${offsetOrdersDetail}`,
-                method: 'GET',
-                data:{
-                    offset:offset,
-                    limit:limit
-                }//ajax
+                method: 'GET'
             });
 
 
@@ -102,5 +101,6 @@ $(document).ready(()=>{
         offsetOrdersDetail+=limitOrdersDetail;
 
 
-    })
-})
+    });
+
+});
