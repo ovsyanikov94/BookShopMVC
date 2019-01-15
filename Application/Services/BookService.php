@@ -264,7 +264,7 @@ class BookService{
 
             return false;
 
-        }//if
+        } // if
 
 //        $book->authors = $this->GetBookAuthors( $book->bookID );
 //        $book->genres = $this->GetBookGenres( $book->bookID );
