@@ -9,7 +9,7 @@
         
         console.log("cart", cart);
 
-        if(!cart){
+        if(!cart || cart.length === 0){
 
             $('#successMessage').fadeOut(1000);
             $('#errorMessage').text("Корзина пустая");
@@ -44,6 +44,10 @@
                 });
 
                 if( +response.code === 200 ){
+
+                    $.cookie('cart' , [] , { path: '/'});
+                    $('#Order').text('(0)');
+                    $(this).fadeOut(200);
 
                     $('#successMessage').text("Ваш заказ принят в обработку");
                     $('#successMessage').fadeIn(200).delay(5000).fadeOut(1500);
