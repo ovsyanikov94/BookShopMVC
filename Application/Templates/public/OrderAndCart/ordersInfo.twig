@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <script src="/BookShopMVC/public/js/orders.js"></script>
+    <script defer src="/BookShopMVC/public/js/orders.js"></script>
 
     <div class="tab-pane" id="history" role="tabpanel">
         <div class="row justify-content">
@@ -37,9 +37,9 @@
             {% endfor %}
             </tbody>
         </table>
-        <div class="container-fluid">
+        <div id="btn-yet" style="display: none" class="container-fluid">
             <div class="row justify-content-center ">
-                <div  id="deal-yet-detail" class=" col-4 btn btn-primary">еще</div>
+                <div  id="deal-yet"  class=" col-4 btn btn-primary">еще</div>
             </div>
 
         </div>
