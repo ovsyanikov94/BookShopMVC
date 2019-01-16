@@ -206,8 +206,7 @@ $(document).ready( function (  ){
 
         let URL = `${window.paths.AjaxServerUrl}${window.paths.MoreComments}`;
         URL = URL.replace(':bookId' , bookId);
-        console.log('limit', limit);
-        console.log('offset', offset);
+
 
         $.ajax({
             'url': URL,
