@@ -70,12 +70,12 @@ $(document).ready(()=>{
     $('#deal-yet-detail').click(async function(){
 
 
-        let id = $(this).data('data-OrderId');
+        let id = $('[data-orderId]').data('orderid');
 
         console.log('работает', id);
         try{
             let response = await $.ajax({
-                url: `${window.paths.AjaxServerUserUrl}/ordersUserDetailsOffset/3/${limitOrdersDetail}/${offsetOrdersDetail}`,
+                url: `${window.paths.AjaxServerUserUrl}/ordersUserDetailsOffset/${id}/${limitOrdersDetail}/${offsetOrdersDetail}`,
                 method: 'GET'
             });
             console.log('length',response.orderDetail.length);
