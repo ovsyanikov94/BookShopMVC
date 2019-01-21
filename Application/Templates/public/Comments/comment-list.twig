@@ -1,4 +1,4 @@
-{% extends 'base.twig' %}
+{% extends 'public/base.twig' %}
 
 {% block content %}
 
@@ -26,21 +26,16 @@
 
     </div>
 
-    <div id="CommentsList">
+    <div id="CommentsList" data-current-user-id="{{ currentUser }}">
 
         {% for comment in comments %}
             <div data-comment-id="{{ comment.commentID }}" class="card w-100">
                 <div class="card-body">
-                    <h5 class="card-title">{{ comment.userLogin }} Дата: {{ comment.created }}</h5>
+                    <h5 class="card-title">{{ comment.author.userLogin }}</h5>
+                    <b><i>{{ comment.created }}</i></b>
                     <div data-comment-for-update-id="{{ comment.commentID }}" class="card-text">{{ comment.commentText }}</div>
                     <a href="#" >
-
-                        <i id="EditButton"
-                           data-status-id="{{ comment.statusID }}"
-                           data-comment-id="{{ comment.commentID }}"
-                           class="far fa-edit fa-2x">
-                        </i>
-
+                        <i id="EditButton" data-user-id="{{ comment.userID }}" data-comment-id="{{ comment.commentID }}" class="far fa-edit fa-2x"></i>
                     </a>
                     <a href="#" ><i id="DeleteButton" data-book-id="{{ comment.bookID }}" data-user-id="{{ comment.userID }}" data-comment-id="{{ comment.commentID }}" class="btn-danger far fa-trash-alt fa-2x"></i></a>
 
@@ -73,15 +68,6 @@
                         <textarea type="text" class="form-control" id="UpdateCommentInput" ></textarea>
                         <div class="form-group">
                             <div id="errorInput" style=" display: none;" class="message alert alert-danger">Текст комментария не может быть меньше 4-х символов!</div>
-                        </div>
-                        <div class="form-group">
-
-                            <select class="form-control" id="commentsComboBox">
-                                {% for status in statuses %}
-                                    <option data-status-id="{{ status.statusID }}">{{ status.statusTitle }}</option>
-                                {% endfor %}
-                            </select>
-
                         </div>
                     </div>
                 </div>

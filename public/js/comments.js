@@ -4,75 +4,47 @@ $(document).ready( function (  ){
     let limit = 2;
     let offset = 2;
     let commentID = -1;
+    let statusID = -1;
     let userId = -1;
     let deleteURL = null;
 
-    $('body').on('click', '#AddCommentButton', function () {
+    $('body').on('click', '#AddCommentButton', async function () {
 
         let text = $('#AddCommentInput').val();
 
         if (text.length <= 4) {
             $('#errorInput').css("display", "block");
+            return;
 
         }//if
-        else{
-            $('#errorInput').css("display", "none");
 
-            let bookId = $(this).data('book-id');
+        $('#errorInput').css("display", "none");
 
-            let userId = $(this).data('user-id');
+        let bookId = $(this).data('book-id');
 
+        let url = `${window.paths.AjaxServerUserUrl}${window.paths.AddComment}`;
 
+        try{
 
-            $.ajax({
-                'url': `${window.paths.AjaxServerUrl}${window.paths.AddComment}`,
+            let response = await $.ajax({
+                'url': url,
                 'type': 'POST',
                 'data': {
                     'text': text,
-                    'bookId': bookId,
-                    'userId': userId,
-                },
-                'success': (data) =>{
-
-                    let user = data.user;
-                    let status = +data .status;
-                    let comment = data .comment;
-                    let time = data.date;
-
-                    if( status === 200 && comment){
-
-                        $('#errorMessage').fadeOut(1000);
-                        $('#successMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
-                        //console.log('comment :', comment);
-                        location.href = `${window.paths.AjaxServerUrl}comments/${comment.bookID}`;
-                        // $('#CommentsList').prepend(`
-                        //                            <div data-comment-id="${ comment.commentID }" class="card w-100">
-                        //                                 <div class="card-body">
-                        //                                     <h5 class="card-title">${ user.userLogin } Дата: ${ time }</h5>
-                        //                                     <div data-comment-for-update-id="${ comment.commentID }" class="card-text">${ comment.commentText }</div>
-                        //                                     <a href="#" >
-                        //                                         <i id="EditButton" data-user-id="${ comment.userID }" data-comment-id="${ comment.commentID }" class="far fa-edit fa-2x"></i>
-                        //                                     </a>
-                        //                                     <a href="#" ><i id="DeleteButton" data-user-id="${ comment.userID }" data-comment-id="${ comment.commentID }" class="btn-danger far fa-trash-alt fa-2x"></i>
-                        //                                     </a>
-                        //
-                        //                                 </div>
-                        //                            </div>`
-                        // );
-                    }//if
-                    else{
-                        $('#successMessage').fadeOut(1000);
-
-
-                        $('#errorMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
-                    }//else
-
-
-
-                }//success
+                    'bookId': bookId
+                }
             });
-        }//else
 
+            $('#errorMessage').fadeOut(1000);
+            $('#successMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
+
+        }//try
+        catch( ex ){
+
+            $('#successMessage').fadeOut(1000);
+            $('#errorMessage').fadeIn(1000).delay( 5000 ).fadeOut( 500 );
+
+        }//catch
 
     }  );
 
@@ -114,13 +86,17 @@ $(document).ready( function (  ){
 
             $('#errorInput').css("display", "none");
 
+            let option = $(`#ModalUpdate option:selected`);
+            statusID = +$(option).data('status-id');
+
+
             $.ajax({
                 'url': `${window.paths.AjaxServerUrl}${window.paths.UpdateComment}`,
                 'type': 'PUT',
                 'data': {
                     'text': newText,
                     'commentID': commentID,
-                    'userId': userId
+                    'statusID': statusID
 
                 },
                 'success': (data) =>{
@@ -153,24 +129,18 @@ $(document).ready( function (  ){
         commentID = $(this).data('comment-id');
         let commentText = $(`div[data-comment-for-update-id=${commentID}]`).text();
 
-        userId = +$(this).data('user-id');
-        let currentUserId = +$('#CommentsList').data('current-user-id');
+        statusID = +$(this).data('status-id');
+        $('#UpdateCommentInput').val( commentText );
 
-        if(currentUserId === userId){
+        let option = $(`#ModalUpdate option[data-status-id="${statusID}"]`);
 
-            $('#UpdateCommentInput').val( commentText );
+        if(option){
 
-            $('#ModalUpdate').modal();
+            option.selected = true;
 
         }//if
-        else{
-            $('#Modal').modal();
-            $('#ModalTitle').html('<h5> Редактирование комментария</h5>');
-            $('#ModalBody').html('<h5> Вы можете редактировать только свои сообщения!</h5>');
-            $('#ConfirmButton').hide();
-        }
-
-
+        
+        $('#ModalUpdate').modal();
 
     }  );
 
@@ -206,8 +176,7 @@ $(document).ready( function (  ){
 
         let URL = `${window.paths.AjaxServerUrl}${window.paths.MoreComments}`;
         URL = URL.replace(':bookId' , bookId);
-        console.log('limit', limit);
-        console.log('offset', offset);
+
 
         $.ajax({
             'url': URL,

@@ -15,7 +15,9 @@ return array(
 //            'action' => 'HomeController@indexAction',
 //            'protected' => true
 //        ],
-
+        '/comments-new/(\d+)' => 'CommentsController@publicAddCommentPageAction',
+//        '/comments-new/(\d+)' => 'HomeController@indexAction',
+        '/comments/(\d+)' => 'CommentsController@commentListPublicByBookAction',
         '/' => 'HomeController@indexAction',
         '/home' => 'HomeController@indexAction',
         '/cart' => 'CartController@cartAction',
@@ -34,6 +36,7 @@ return array(
     'post' => [
         '/addUser'=>'UserController@addUser',
         '/login' => 'AuthorizeController@LoginAction',
+        '/add_comment' => 'CommentsController@addCommentAction',
         '/search' => 'SearchController@LoadSearchPage'
     ],
     'put' => [
