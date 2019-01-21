@@ -15,18 +15,29 @@
        {% else %}
 
             <div class="row">
+
            <div class="col-6">
-               <div class="input-group mb-3">
-                   <input readonly type="text" class="form-control" placeholder=" Введите адресс" value="{{ user.lastName}} {{ user.firstName}} {{ user.middleName}}">
-               </div>
-               <div class="input-group mb-3">
-                   <input id="orderAdress" type="text" class="form-control" placeholder=" Введите адресс">
-               </div>
 
-               <div id="successMessage"  style=" display: none;"  class="alert alert-success"></div>
-               <div id="errorMessage" style=" display: none;" class="alert alert-danger"></div>
+               {% if not user %}
+                   <div class="alert alert-info">
+                       Вы не можете оформить заказ! <a href="/BookShopMVC/public/authorize">Авторизируйтесь!</a>
+                   </div>
+               {% else %}
 
-               <div id="addOrder" class="btn btn-primary col-12">ОФОРМИТЬ ЗАКАЗ</div>
+                   <div class="input-group mb-3">
+                       <input readonly type="text" class="form-control" placeholder=" Введите адресс" value="{{ user.lastName}} {{ user.firstName}} {{ user.middleName}}">
+                   </div>
+                   <div class="input-group mb-3">
+                       <input id="orderAdress" type="text" class="form-control" placeholder=" Введите адресс">
+                   </div>
+
+                   <div id="successMessage"  style=" display: none;"  class="alert alert-success"></div>
+                   <div id="errorMessage" style=" display: none;" class="alert alert-danger"></div>
+
+
+                   <div id="addOrder" class="btn btn-primary col-12">ОФОРМИТЬ ЗАКАЗ</div>
+               {% endif %}
+
 
 
            </div>
@@ -60,6 +71,7 @@
                    <div class="col-4" ><span style="font-size: 18px"><strong>Итого:</strong> {{ total }} руб.</span> </div>
                </div>
            </div>
+
        </div>
 
        {% endif %}
