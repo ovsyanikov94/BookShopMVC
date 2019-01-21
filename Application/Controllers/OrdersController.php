@@ -13,7 +13,7 @@ use Application\Services\UserService;
 
 class OrdersController extends BaseController{
 
-    public function UserDealInfoByIdAction(  ){
+    public function UserDealInfoByIdAction(){
 
         $OrdersService = new OrderService();
         $userService = new UserService();
@@ -69,11 +69,14 @@ class OrdersController extends BaseController{
 
     public function userOrderDetailAction($orderId){
 
+
         $template = $this->twig->load('public/OrderAndCart/orders.twig');
+
         $BookService = new BookService();
         $OrdersService = new OrderService();
-        $orderDetail = $OrdersService->getDealDetail($orderId,$limit=10,$offset=0);
 
+        $orderDetail = $OrdersService->getDealDetail($orderId,$limit=10,$offset=0);
+        $order = $OrdersService->GetOrderByID($orderId);
 
         for($i=0; $i<count($orderDetail);$i++){
 
@@ -82,11 +85,23 @@ class OrdersController extends BaseController{
             $orderDetail[$i]->book = $book;
         }//for
 
+        $total = $OrdersService->getTotalSumByDealId($orderId);
         echo $template->render( array(
-            'orderDetail' => $orderDetail
+
+            'orderDetail' => $orderDetail,
+            'orderID' => $orderId,
+            'total' => $total->total,
+            'order' => $order
+
         ) );
+
     }//userOrderDetail
-    public function userOrderDetail($orderId, $limit, $offset){
+
+    public function userOrderDetail($orderId, $limit, $offset){//my
+
+        $limit = intval($limit);
+        $offset = intval($offset);
+
         $BookService = new BookService();
         $OrdersService = new OrderService();
         $orderDetail = $OrdersService->getDealDetail($orderId,$limit,$offset);
@@ -101,7 +116,7 @@ class OrdersController extends BaseController{
 
         $this->json( 200 , array(
             'code' => 200,
-            'orderDetail' => $orderDetail
+            'orderDetail' => $orderDetail,
         ) );
 
     }//userOrderDetail

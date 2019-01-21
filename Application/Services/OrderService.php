@@ -6,7 +6,7 @@ use Application\Utils\MySQL;
 
 class OrderService{
 
-    public function UserDealInfoById($userId,$limit, $offset){
+    public function UserDealInfoById($userId,$limit, $offset){//my
 
 
         $orders = MySQL::$db->prepare("
@@ -45,7 +45,7 @@ class OrderService{
 
     }//UserDealInfoById
 
-    public function getDealDetail($id, $limit, $offset){
+    public function getDealDetail($id, $limit, $offset){//My
 
         $detail = MySQL::$db->prepare("SELECT * FROM orderdetails WHERE orderID = :orderID LIMIT :offset,:limit");
         $detail->bindParam(':orderID', $id,\PDO::PARAM_INT);
@@ -58,6 +58,16 @@ class OrderService{
         return $result;
 
     }//getDealDetail
+
+    public function getTotalSumByDealId($orderID){
+
+        $stm = MySQL::$db->prepare("SELECT SUM(bookPrice * bookAmount) as `total` FROM orderdetails WHERE orderID = :orderID");
+        $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_INT);
+
+        $stm->execute();
+
+        return $stm->fetch(\PDO::FETCH_OBJ);
+    }//getTotalSumByDealId
 
     public function GetOrders( $limit = 10 , $offset = 0 ){
 
