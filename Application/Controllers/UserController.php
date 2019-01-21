@@ -16,8 +16,6 @@ use Bcrypt\Bcrypt;
 
 class UserController extends BaseController{
 
-
-
     public function registration(){
         try{
             $template = $this->twig->load( 'User/registration.twig');
@@ -40,24 +38,64 @@ class UserController extends BaseController{
         $pattern = new patternConst();
 
         $userLogin = $this->request->GetPostValue('userLogin');
-
         if(!preg_match($pattern->LoginPattern,$userLogin)){
             $this->json(400,array(
-                'res'=> 'неверный логин'
+                'code'=> 400,
+                'message' => 'неверный логин'
             ));
             return;
         }//if
-        $userEmail= $this->request->GetPostValue('userEmail');
+
+        $userEmail = $this->request->GetPostValue('userEmail');
         if(!preg_match($pattern->EmailPattern,$userEmail)){
             $this->json(400,array(
-                'res'=> 'неверный Email'
+                'code'=> 400,
+                'message' => 'неверный Email'
             ));
             return;
         }//if
+
+        $userFirstName = $this->request->GetPostValue('firstName');
+        if(!preg_match($pattern->NamesPattern, $userFirstName)){
+            $this->json(400,array(
+                'code'=> 400,
+                'message' => 'Не корректное Имя'
+            ));
+            return;
+        }//if
+
+        $userLastName = $this->request->GetPostValue('lastName');
+        if(!preg_match($pattern->NamesPattern, $userLastName)){
+            $this->json(400,array(
+                'code'=> 400,
+                'message' => 'Не корректная Фамилия'
+            ));
+            return;
+        }//if
+
+        $userMiddleName = $this->request->GetPostValue('middleName');
+        if(!preg_match($pattern->NamesPattern, $userMiddleName)){
+            $this->json(400,array(
+                'code'=> 400,
+                'message' => 'Не корректное Отчество'
+            ));
+            return;
+        }//if
+
+        $userPhoneNumber = $this->request->GetPostValue('phoneNumber');
+        if(!preg_match($pattern->PhoneNumberPattern, $userPhoneNumber)){
+            $this->json(400,array(
+                'code'=> 400,
+                'message' => 'Не корректный номер телефона'
+            ));
+            return;
+        }//if
+
         $usrPassword = $this->request->GetPostValue('userPassword');
         if(!preg_match($pattern->PasswordPattern,$usrPassword)){
             $this->json(400,array(
-                'res'=> 'неверный пароль'
+                'code'=> 400,
+                'message'=> 'неверный пароль'
             ));
             return;
         }//if
@@ -68,29 +106,31 @@ class UserController extends BaseController{
 
         $userService = new UserService();
 
-        $result = $userService->addUser($userLogin,$usrPassword,$userEmail, $heshToken);
+        $result = $userService->addUser( $userLogin, $usrPassword, $userEmail, $userFirstName, $userLastName, $userMiddleName, $userPhoneNumber, $heshToken );
 
-        if($result !==null){
-
-
+        if($result !== null){
 
             $message = new messageConst();
 
             $message->tuneTemplate($userLogin,$heshToken);
             $mailres = mail($userEmail , $message->verificationSubject,$message->verificationTemplate,$message->header);
 
-            $this->json(200,array(
-                'verification'=> false,
-                'addUser'=> $result,
-                'res'=>$mailres
+            $this->json(200, array(
+                'code' => 200
             ));
 
             //https://www.w3schools.com/php/php_ref_mail.asp
         }//if
+        else{
 
-        $this->json(200,array(
-            'addUser'=> $result
-        ));
+            $this->json(403,array(
+                'code'=> 403,
+                'message' => 'Пользователь с такими данными уже есть!'
+            ));
+
+        }//else
+
+
      }//addUser
 
     public function getUsers (){
@@ -139,4 +179,5 @@ class UserController extends BaseController{
 
 
     }//verificationUser
+
 }//UserController

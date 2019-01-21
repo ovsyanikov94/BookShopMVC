@@ -22,7 +22,7 @@ class PersonalPageService  {
         $userID = +$params['userID'];
 
         //получаем персональные данные о текущем пользователе
-        $userStm = MySQL::$db->prepare("SELECT userLogin, userEmail FROM users WHERE userID = :userID");
+        $userStm = MySQL::$db->prepare("SELECT userLogin, userEmail, firstName, lastName, middleName, phoneNumber FROM users WHERE userID = :userID");
         $userStm->bindParam('userID', $userID, \PDO::PARAM_INT);
         $userStm->execute();
 
@@ -38,7 +38,11 @@ class PersonalPageService  {
         $user = array(
 
             'userLogin' => $userData->userLogin,
-            'userEmail' => $userData->userEmail
+            'userEmail' => $userData->userEmail,
+            'userFirstName' => $userData->firstName,
+            'userLastName' => $userData->lastName,
+            'userMiddleName' => $userData->middleName,
+            'userPhoneNumber' => $userData->phoneNumber
 
         );
 
@@ -60,6 +64,12 @@ class PersonalPageService  {
 
             //удаление старого файла аватара(фотографии пользователя)
             $userAvatarDirectory = "images/avatars/{$userID}/*";
+
+            if(!file_exists("images/avatars/{$userID}")){
+
+                mkdir("images/avatars/{$userID}");
+
+            }//if
 
             $files = glob($userAvatarDirectory); // получение всех файлов в папке пользователя
 
@@ -153,44 +163,32 @@ class PersonalPageService  {
     }//ChangeUserAvatar
 
     //обновление персональной информации пользователя
-    public function  UpdateUserPersonalData( $params = [] ){
+    public function UpdateUserPersonalData( $params = [] ){
 
         //получаем новые персональные данные
         $userID = +$params['userID'];
         $userEmail = $params['userEmail'];
+        $userPhoneNumber = $params['userPhone'];
+        $userLastName = $params['userLastName'];
+        $userFirstName = $params['userFirstName'];
+        $userMiddleName = $params['userMiddleName'];
 
-        //проверяем входящие данные с уже имеющемися
-        $checkUserStm = MySQL::$db->prepare("SELECT userEmail FROM users WHERE userEmail = :userEmail");
+        //обновляем запись в базе данных
+        $stm = MySQL::$db->prepare("UPDATE users SET userEmail = :userEmail, firstName = :userFirstName, lastName = :userLastName, middleName = :userMiddleName, phoneNumber = :userPhoneNumber WHERE userID = :userID");
+        $stm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
+        $stm->bindParam('userFirstName', $userFirstName, \PDO::PARAM_STR);
+        $stm->bindParam('userLastName', $userLastName, \PDO::PARAM_STR);
+        $stm->bindParam('userMiddleName', $userMiddleName, \PDO::PARAM_STR);
+        $stm->bindParam('userPhoneNumber', $userPhoneNumber, \PDO::PARAM_STR);
+        $stm->bindParam('userID', $userID, \PDO::PARAM_INT);
 
-        $checkUserStm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
+        $result = $stm->execute();
 
-        $checkUserStm->execute();
-
-        $checkUserResult = $checkUserStm->fetch(\PDO::FETCH_OBJ);
-
-        //если совпадений нет - обновляем
-        if(!$checkUserResult){
-
-            //обновляем запись в базе данных
-            $stm = MySQL::$db->prepare("UPDATE users SET userEmail = :userEmail WHERE userID = :userID");
-
-            $stm->bindParam('userEmail', $userEmail, \PDO::PARAM_STR);
-            $stm->bindParam('userID', $userID, \PDO::PARAM_INT);
-            $result = $stm->execute();
-
-            if($result){
-                return array( 'code' => 200 );
-            }//if
-            else {
-                return array( 'code' => 500 );
-            }//else
-
+        if($result){
+            return array( 'code' => 200 );
         }//if
-        else{
-
-            //если пользователь с таким email уже есть
-            return array( 'code' => 301 );
-
+        else {
+            return array( 'code' => 400 );
         }//else
 
     }//UpdateUserPersonalData

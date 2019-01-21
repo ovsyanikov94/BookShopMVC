@@ -8,6 +8,7 @@
 
 namespace Application\Controllers;
 
+use Application\Services\UserService;
 use Application\Utils\Request;
 use Application\Utils\Storage;
 
@@ -23,13 +24,21 @@ abstract class BaseController{
     protected $loader;
     protected $twig;
 
+    protected $currentUser;
+
     public function __construct(){
+
+        $userService = new UserService();
+
+        $this->currentUser = $userService->getCurrentUser();
 
         $this->request = new Request();
         $this->storage = new Storage();
 
         $this->loader = new Twig_Loader_Filesystem('../Application/Templates');
         $this->twig = new Twig_Environment($this->loader);
+
+
 
     }//__construct
 

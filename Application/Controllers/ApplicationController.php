@@ -97,6 +97,13 @@ class ApplicationController extends BaseController {
 
         });
 
+//        $router->before('GET|POST|DELETE|PUT' , 'public/admin/.*' , function() {
+//
+//            if ( !isset($_SESSION['admin']) && !isset($_COOKIE['admin']) ){
+//                header('location: /BookShopMVC/public/home');
+//            }//if
+//
+//        });
 
         foreach ($routes as $key => $path ){
 

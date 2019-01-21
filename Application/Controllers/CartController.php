@@ -24,7 +24,6 @@ class CartController extends BaseController{
         $books = [];
 
         $cartTotal = 0;
-        $amount = count($cart);
         foreach ($cart as $cartItem) {
 
             $book = $bookService->GetBookById( $cartItem->bookID );
@@ -41,7 +40,6 @@ class CartController extends BaseController{
             'cart' => $books,
             'cartTotal' => $cartTotal,
             'counts' => array(1,2,3,4,5),
-            'amountBookInCart' => $amount,
         ) );
 
 

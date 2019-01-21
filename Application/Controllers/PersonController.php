@@ -18,24 +18,27 @@ class PersonController extends BaseController{
 
         try {
 
-            //данные о пользователе из cookie или сессии
-            if (isset($_COOKIE["cookie_user"])) {
-
-                $userStorage = unserialize($_COOKIE["cookie_user"]);
-
-            }//if
-            else {
-
-                $userStorage = unserialize($_SESSION["session_user"]);
-
-            }//else
-
             $personalPageService = new PersonalPageService();
 
-            //получаем данные о пользователе
-            $user = $personalPageService->GetUserData(['userID' => $userStorage['userID']]);
 
-            echo $template->render(array('userStorage' => $userStorage, 'user' => $user));
+            if($this->currentUser !== null){
+                //получаем данные о пользователе
+                $user = $personalPageService->GetUserData(
+                    [
+                        'userID' => $this->currentUser['userID']
+                    ]
+                );
+            }//if
+            else{
+                $user = null;
+            }//else
+
+            echo $template->render(
+                array(
+                    'userStorage' => $this->currentUser ? $this->currentUser['userID'] : null,
+                    'user' => $user
+                )
+            );
 
         }//try
         catch (\Exception $ex){

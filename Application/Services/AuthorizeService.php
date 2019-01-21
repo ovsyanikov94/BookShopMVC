@@ -13,7 +13,7 @@ class AuthorizeService{
         $rememberMe = filter_var($rememberMe , FILTER_VALIDATE_BOOLEAN);
 
         //ищем пользователя
-        $stm = MySQL::$db->prepare( "SELECT userID,isAdmin,userLogin,userEmail,userPassword,verification FROM users WHERE userLogin = :login OR userEmail = :login" );
+        $stm = MySQL::$db->prepare( "SELECT userID, isAdmin, userLogin, userEmail, userPassword, verification FROM users WHERE userLogin = :login OR userEmail = :login" );
         $stm->bindParam(':login', $login, \PDO::PARAM_STR);
         $stm->execute();
 
@@ -95,7 +95,7 @@ class AuthorizeService{
                     setcookie(
                         'cookie_user' ,
                         $userSerializeResultForCookie ,
-                        time()+60*60*24*30
+                        time()+60*60*24*60
                     );
 
                 }//if
