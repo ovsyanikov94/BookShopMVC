@@ -123,6 +123,7 @@ class ApplicationController extends BaseController {
 
         }//foreach
 
+
         $routes = include_once '../Application/Models/PublicRoutes.php';
 
         foreach ($routes as $key => $path ){
