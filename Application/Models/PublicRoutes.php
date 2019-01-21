@@ -9,6 +9,13 @@
 return array(
 
     'get' => [
+
+//        [
+//            'path' => '/' ,
+//            'action' => 'HomeController@indexAction',
+//            'protected' => true
+//        ],
+
         '/' => 'HomeController@indexAction',
         '/home' => 'HomeController@indexAction',
         '/cart' => 'CartController@cartAction',

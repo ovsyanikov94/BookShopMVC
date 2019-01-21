@@ -240,9 +240,12 @@ class OrderController extends BaseController {
 
         $userService = new UserService();
 
-        $userID = $userService->getCurrentUser();
-
-        $user = $userService->getSingleUser($userID['userID']);
+        if($this->currentUser !== null){
+            $user = $userService->getSingleUser($this->currentUser['userID']);
+        }//if
+        else{
+            $user = null;
+        }//else
 
         $template = $this->twig->load('public/OrderAndCart/orderPlace.twig');
 
