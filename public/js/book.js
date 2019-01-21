@@ -224,8 +224,9 @@ $(document).ready( function (  ){
         $('#ModalTitle').html('<h3>Удаление книги</h3>');
         $('#ModalBody').html('<h5> Вы действительно хотите удалить книгу "' + bookTitle + '"?</h5>');
 
+       $('#ConfirmButton').unbind('click');
 
-        $('#ConfirmButton').click(function () {
+        $("#ConfirmButton").click(function  () {
 
             $.ajax({
 

@@ -25,7 +25,8 @@ return array(
         '/admin/edit-personal-data' => 'PersonalPageController@EditPersonalDataAction',
         '/admin/change-password' => 'PersonalPageController@ChangePasswordAction',
         '/admin/order' => 'OrderController@getOrderAction',
-        '/admin/orderdetails/(\d+)' => 'OrderDetailsController@orderDetailsListAction',
+        '/admin/orderdetails/(\d+)' => 'OrderController@orderDetailsListAction',
+        '/admin/orderdetails-more' => 'OrderController@GetOrdersMore',
 
 
     ],
@@ -52,6 +53,7 @@ return array(
         '/admin/comment-status' => 'CommentsController@updateCommentStatusAction',
         '/admin/save-new-personal-data' => 'PersonalPageController@SaveNewPersonalData',
         '/admin/update-user-password' => 'PersonalPageController@ChangePassword',
+        '/admin/update-order-status' => 'OrderController@UpdateOrderStatuses',
     ]
 
 );

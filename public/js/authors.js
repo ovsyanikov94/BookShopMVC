@@ -6,9 +6,6 @@
 
         let nameAuthor = $('#nameAuthor').val();
         let lastNameAuthor = $('#lastNameAuthor').val();
-        console.log('nameAuthor:' , nameAuthor);
-        console.log('lastNameAuthor:' , lastNameAuthor);
-        console.log('lastNameAuthor:' , lastNameAuthor);
 
         if(!/^[a-zа-я]{2,50}$/i.test(nameAuthor) || !/^[a-zа-я]{2,50}$/i.test(lastNameAuthor)){
 

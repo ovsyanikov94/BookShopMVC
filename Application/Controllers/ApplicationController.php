@@ -73,8 +73,8 @@ class ApplicationController extends BaseController {
 
         MySQL::$db = new \PDO(
             "mysql:dbname=booksdb;host=127.0.0.1;charset=utf8",
-            "books-admin",
-            "123456"
+            "root",
+            ""
         );
 
         $router = new Router();
@@ -97,6 +97,13 @@ class ApplicationController extends BaseController {
 
         });
 
+//        $router->before('GET|POST|DELETE|PUT' , 'public/admin/.*' , function() {
+//
+//            if ( !isset($_SESSION['admin']) && !isset($_COOKIE['admin']) ){
+//                header('location: /BookShopMVC/public/home');
+//            }//if
+//
+//        });
 
         foreach ($routes as $key => $path ){
 
@@ -115,6 +122,7 @@ class ApplicationController extends BaseController {
             }//foreach
 
         }//foreach
+
 
         $routes = include_once '../Application/Models/PublicRoutes.php';
 

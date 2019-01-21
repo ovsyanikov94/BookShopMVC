@@ -2,17 +2,41 @@
 
 {% block content %}
 
+    <script defer src="/BookShopMVC/public/js/order.js" ></script>
+
     <h3>Заказ {{ order.order.orderID }}</h3>
 
     <div>
-        <span style="font-size: 18px"><strong>Пользователь: </strong></span> <span style="font-size: 15px">{{ order.user.userLogin }}</span>
+        <span style="font-size: 18px"><strong>Пользователь: </strong></span> <span style="font-size: 15px">{{ order.user.lastName }} {{ order.user.firstName }} {{ order.user.middleName }}</span>
+    </div>
+    <div>
+        <span style="font-size: 18px"><strong>Логин пользователя: </strong></span> <span style="font-size: 15px">{{ order.user.userLogin }}</span>
     </div>
     <div>
         <span style="font-size: 18px"><strong>Дата заказа: </strong></span> <span style="font-size: 15px">{{ order.date }}</span>
     </div>
     <div>
-        <span style="font-size: 18px"><strong>Статус заказа: </strong></span> <span style="font-size: 15px">{{ order.statusTitle.statusTitle }}</span>
+        <span style="font-size: 18px"><strong>Адресс доставки: </strong></span> <span style="font-size: 15px">{{ order.order.adressOrder }}</span>
     </div>
+    <div>
+        <span style="font-size: 18px"><strong>Статус заказа</strong></span>
+    </div>
+
+    <div class="input-group mb-3">
+
+        <select data-order-id ="{{ order.order.orderID }}" class="custom-select" id="orderStatus">
+            {% for status in statuses %}
+
+                {% if status.isSelected == 1 %}
+                    <option data-status-id="{{ status.statusID }}" selected="selected">{{status.statusTitle}}</option>
+                {% else %}
+                    <option data-status-id="{{ status.statusID }}" >{{status.statusTitle}}</option>
+                {% endif %}
+
+            {% endfor %}
+        </select>
+    </div>
+
 
     <table class="table table-striped">
         <thead>
@@ -31,15 +55,19 @@
                     <img src="../../{{od.book.bookImagePath}}" style="float: left; width: 50px"  alt="Cinque Terre">
                 </th>
                 <td>{{od.book.bookTitle}}</td>
-                <td>{{od.od.bookPrice}}</td>
+                <td>{{od.od.bookPrice}} руб.</td>
                 <td>{{od.od.bookAmount}}</td>
             </tr>
             {%endfor  %}
         </tbody>
     </table>
 
-    <div class="col-12">
-        <div class="btn btn-primary"> Подтвердить заказ</div>
-        <div class="btn btn-danger "> Отклонить заказ</div>
+    <div class="row justify-content-end">
+        <div class="col-4" ><span style="font-size: 18px"><strong>Итого:</strong> {{ total }} руб.</span> </div>
     </div>
+
+
+    <div id="successMessage"  style=" display: none;"  class="alert alert-success"></div>
+    <div id="errorMessage" style=" display: none;" class="alert alert-danger"></div>
+
 {% endblock %}
