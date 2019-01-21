@@ -39,8 +39,6 @@ class OrdersController extends BaseController{
     public function UserDealInfoById($limit, $offset){
 
         $OrdersService = new OrderService();
-        $userService = new UserService();
-        $userId = $userService->getCurrentUser();
 
         $orders = $OrdersService->UserDealInfoById($userId['userID'], $limit, $offset);
 

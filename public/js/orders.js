@@ -14,15 +14,14 @@ $(document).ready(()=>{
     let countOrdersDetail =0;
     let countOrders = 0;
 
-    let count =  $('.table').find('tr').length;
+    let count =  +$('tr').length;
 
-    if(count >= limitOrdersDetail){
+    if(count < limitOrdersDetail){
+
         $('#btn-yet-detail').css({
-            'display': 'block'
+            'display': 'none'
         });
-        $('#btn-yet').css({
-            'display': 'block'
-        });
+
     }//if
 
     $('#deal-yet').click(async function(){
@@ -66,7 +65,8 @@ $(document).ready(()=>{
         offsetOrders+=limitOrders;
 
 
-    })
+    });
+
     $('#deal-yet-detail').click(async function(){
 
 

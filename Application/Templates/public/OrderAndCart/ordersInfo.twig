@@ -28,7 +28,7 @@
                     <td >{{ singleDetail.orderID }}</td>
                     <td>{{ singleDetail.orderDatetime }}</td>
                     <td>{{ singleDetail.adressOrder }}</td>
-                    <td>{{ singleDetail.orderStatus.statusTitle }}</td>
+                    <td>{{ singleDetail.statusTitle }}</td>
                     <td>
                         <a href="order/{{ singleDetail.orderID }}" class="btn btn-primary"> подробнее </a>
                     </td>
@@ -37,7 +37,8 @@
             {% endfor %}
             </tbody>
         </table>
-        <div id="btn-yet" style="display: none" class="container-fluid">
+
+        <div id="btn-yet" class="container-fluid">
             <div class="row justify-content-center ">
                 <div  id="deal-yet"  class=" col-4 btn btn-primary">еще</div>
             </div>

@@ -9,7 +9,16 @@ class OrderService{
     public function UserDealInfoById($userId,$limit, $offset){
 
 
-        $orders = MySQL::$db->prepare("SELECT * FROM orders WHERE userID = :userId LIMIT :offset,:limit");
+        $orders = MySQL::$db->prepare("
+                SELECT o.*,os.* FROM orders o
+                INNER JOIN orderstatus os
+                  ON o.orderStatus = os.statusID 
+                  
+                WHERE userID = :userId 
+                ORDER BY orderDatetime DESC 
+                LIMIT :offset,:limit
+        ");
+
         $orders->bindParam(':userId', $userId,\PDO::PARAM_INT);
         $orders->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $orders->bindParam(':limit' , $limit , \PDO::PARAM_INT);
@@ -19,15 +28,15 @@ class OrderService{
 
         if($result){
 
-            for($i=0;$i<count($result);$i++){
-
-                $id = $result[$i]->orderStatus;
-                $statueTitle =  $orders = MySQL::$db->prepare("SELECT statusTitle FROM `orderstatus` WHERE statusID =$id ");
-                $statueTitle->execute();
-                $statueTitleResult = $orders->fetch(\PDO::FETCH_OBJ);
-                $result[$i]->orderStatus = $statueTitleResult;
-
-            }//for
+//            for($i=0;$i<count($result);$i++){
+//
+//                $id = $result[$i]->orderStatus;
+//                $statueTitle =  $orders = MySQL::$db->prepare("SELECT statusTitle FROM `orderstatus` WHERE statusID =$id ");
+//                $statueTitle->execute();
+//                $statueTitleResult = $orders->fetch(\PDO::FETCH_OBJ);
+//                $result[$i]->orderStatus = $statueTitleResult;
+//
+//            }//for
 
             return $result;
 
@@ -47,12 +56,14 @@ class OrderService{
         $result = $detail->fetchAll(\PDO::FETCH_OBJ);
 
         return $result;
+
     }//getDealDetail
 
     public function GetOrders( $limit = 10 , $offset = 0 ){
 
         $stm = MySQL::$db->prepare("SELECT orderID, userID, orderDatetime, orderStatus
-                                   FROM orders LIMIT :offset, :limit");
+                                   FROM orders ORDER BY orderDatetime DESC LIMIT :offset, :limit");
+
         $stm->bindParam(':offset' , $offset , \PDO::PARAM_INT);
         $stm->bindParam(':limit' , $limit , \PDO::PARAM_INT);
         $stm->execute();
