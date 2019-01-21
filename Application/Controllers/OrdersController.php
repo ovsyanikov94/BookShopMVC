@@ -38,22 +38,33 @@ class OrdersController extends BaseController{
 
     public function UserDealInfoById($limit, $offset){
 
-        $OrdersService = new OrderService();
+        $limit = intval($limit);
+        $offset = intval($offset);
 
-        $orders = $OrdersService->UserDealInfoById($userId['userID'], $limit, $offset);
+        if($this->currentUser !== null){
 
-        if($orders !==null){
+            $OrdersService = new OrderService();
+
+            $orders = $OrdersService->UserDealInfoById(
+                $this->currentUser['userID'],
+                $limit,
+                $offset
+            );
+
             $this->json( 200 , array(
                 'code' => 200,
-                'orders' => $orders
+                'orders' => $orders,
             ) );
+
         }//if
         else{
-            $this->json( 200 , array(
-                'code' => 200,
-                'orders' => []
+
+            $this->json( 401 , array(
+                'code' => 401,
             ) );
-        }//if
+
+        }//else
+
     }//UserDealInfoById
 
     public function userOrderDetailAction($orderId){

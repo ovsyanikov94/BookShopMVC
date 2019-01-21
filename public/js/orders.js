@@ -31,7 +31,7 @@ $(document).ready(()=>{
                 url: `${window.paths.AjaxServerUserUrl}/ordersByUser/${limitOrders}/${offsetOrders}`,
                 method: 'GET'
             });
-            if(response.orders.length===0  ){
+            if(response.orders === null  ){
                 $('#btn-yet').css({
                     'display': 'none'
                 });
@@ -43,12 +43,12 @@ $(document).ready(()=>{
                 $('.table').append(`
                      <tr>
 
-                    <td>${ order.orderId }</td>
-                    <td>${ order.date }</td>
-                    <td>${ order.AdressOrder }</td>
-                    <td>${order.orderStatus}</td>
+                    <td>${ order.orderID }</td>
+                    <td>${ order.orderDatetime }</td>
+                    <td>${ order.adressOrder }</td>
+                    <td>${order.statusTitle}</td>
                     <td>
-                        <a href="orders.twig/${order.orderId}/10/0" class="btn btn-primary"> подробнее </a>
+                        <a href="orders.twig/${order.orderID}/10/0" class="btn btn-primary"> подробнее </a>
                     </td>
 
                 </tr>
