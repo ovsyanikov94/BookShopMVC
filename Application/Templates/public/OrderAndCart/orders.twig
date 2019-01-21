@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <script src="/BookShopMVC/public/js/orders.js"></script>
+    <script defer src="/BookShopMVC/public/js/orders.js"></script>
 
 <div class="tab-pane" id="history" role="tabpanel">
     <div class="row justify-content">
@@ -30,7 +30,7 @@
             </th>
             <td>{{ singleDetail.book.bookTitle }}</td>
             <td>
-                {% for author in singleDetail.book.authors   %}
+                {% for author in singleDetail.book.authors  %}
                     <span> {{ author.authorFirstName }} {{ author.authorLastName}}</span>
                     {% if loop.length<loop.index %}
                         <span>,</span>
@@ -45,9 +45,9 @@
         {% endfor %}
         </tbody>
     </table>
-    <div class="container-fluid">
+    <div id="btn-yet-detail" style="display: none" class="container-fluid">
         <div class="row justify-content-center ">
-            <div  id="deal-yet" data-detailId="{{ orderDetail.orderID }}" class=" col-4 btn btn-primary">еще</div>
+            <div data-orderId="{{orderDetail[0].orderID}}" id="deal-yet-detail"  class=" col-4 btn btn-primary">еще</div>
         </div>
 
         </div>

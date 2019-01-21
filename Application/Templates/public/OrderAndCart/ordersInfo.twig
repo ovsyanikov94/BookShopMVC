@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <script src="/BookShopMVC/public/js/orders.js"></script>
+    <script defer src="/BookShopMVC/public/js/orders.js"></script>
 
     <div class="tab-pane" id="history" role="tabpanel">
         <div class="row justify-content">
@@ -28,7 +28,7 @@
                     <td >{{ singleDetail.orderID }}</td>
                     <td>{{ singleDetail.orderDatetime }}</td>
                     <td>{{ singleDetail.adressOrder }}</td>
-                    <td>{{ singleDetail.orderStatus.statusTitle }}</td>
+                    <td>{{ singleDetail.statusTitle }}</td>
                     <td>
                         <a href="order/{{ singleDetail.orderID }}" class="btn btn-primary"> подробнее </a>
                     </td>
@@ -37,9 +37,10 @@
             {% endfor %}
             </tbody>
         </table>
-        <div class="container-fluid">
+
+        <div id="btn-yet" class="container-fluid">
             <div class="row justify-content-center ">
-                <div  id="deal-yet-detail" class=" col-4 btn btn-primary">еще</div>
+                <div  id="deal-yet"  class=" col-4 btn btn-primary">еще</div>
             </div>
 
         </div>

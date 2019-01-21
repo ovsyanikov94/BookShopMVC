@@ -6,10 +6,23 @@ $(document).ready(()=>{
     let offset = 10;
 
     let limitOrders = 10;
-    let offsetOrders =0;
+    let offsetOrders =10;
 
     let limitOrdersDetail = 10;
-    let offsetOrdersDetail =0;
+    let offsetOrdersDetail =10;
+
+    let countOrdersDetail =0;
+    let countOrders = 0;
+
+    let count =  +$('tr').length;
+
+    if(count < limitOrdersDetail){
+
+        $('#btn-yet-detail').css({
+            'display': 'none'
+        });
+
+    }//if
 
     $('#deal-yet').click(async function(){
 
@@ -18,20 +31,24 @@ $(document).ready(()=>{
                 url: `${window.paths.AjaxServerUserUrl}/ordersByUser/${limitOrders}/${offsetOrders}`,
                 method: 'GET'
             });
-
-
+            if(response.orders === null  ){
+                $('#btn-yet').css({
+                    'display': 'none'
+                });
+                return;
+            }//if;
             $.each(response.orders, function (index , order) {
 
 
                 $('.table').append(`
                      <tr>
 
-                    <td>{{ order.orderId }}</td>
-                    <td>{{ order.date }}</td>
-                    <td>{{ order.AdressOrder }}</td>
-                    <td>{{order.orderStatus}}</td>
+                    <td>${ order.orderID }</td>
+                    <td>${ order.orderDatetime }</td>
+                    <td>${ order.adressOrder }</td>
+                    <td>${order.statusTitle}</td>
                     <td>
-                        <a href="orders.twig/${order.orderId}/10/0" class="btn btn-primary"> подробнее </a>
+                        <a href="orders.twig/${order.orderID}/10/0" class="btn btn-primary"> подробнее </a>
                     </td>
 
                 </tr>
@@ -48,28 +65,36 @@ $(document).ready(()=>{
         offsetOrders+=limitOrders;
 
 
-    })
+    });
+
     $('#deal-yet-detail').click(async function(){
 
 
-        let id = $(this).data('id');
+        let id = $('[data-orderId]').data('orderid');
+
+        console.log('работает', id);
         try{
             let response = await $.ajax({
                 url: `${window.paths.AjaxServerUserUrl}/ordersUserDetailsOffset/${id}/${limitOrdersDetail}/${offsetOrdersDetail}`,
                 method: 'GET'
             });
-
-
+            console.log('length',response.orderDetail.length);
+            if(response.orderDetail.length===0  ){
+                $('#btn-yet-detail').css({
+                    'display': 'none'
+                });
+                return;
+            }//if;
             $.each(response.orderDetail, function (index , order) {
 
 
                 let stringAuthors='';
 
-                $.each(orderDetail.authors, function (index, author) {
+                $.each(order.authors, function (index, author) {
 
-                    stringAuthors += author
+                    stringAuthors += author.authorFirstName
 
-                    if(orderDetail.authors.length<index-1){
+                    if(order.authors.length<index-1){
                         stringAuthors+=','
                     }
                 } )
@@ -78,15 +103,13 @@ $(document).ready(()=>{
                      <tr>
 
                         <th scope="row">
-                            <img src="${ orderDetail.bookImagePath }" style="float: left; width: 50px"  alt="Cinque Terre">
+                            <img src="${ order.book.bookImagePath }" style="float: left; width: 50px"  alt="Cinque Terre">
                         </th>
-                        <td>${ orderDetail.bookTitle }</td>
+                        <td>${ order.book.bookTitle }</td>
                         <td>${ stringAuthors  }</td>
-                        <td>${ orderDetail.bookPrice } руб.</td>
-                        <td>${ orderDetail.bookAmount }</td>
-                        <td>${ orderDetail.date }</td>
-
-
+                        <td>${ order.bookPrice } руб.</td>
+                        <td>${ order.bookAmount }</td>
+                     
                      </tr>
 
                 `);
@@ -95,9 +118,8 @@ $(document).ready(()=>{
 
         }
         catch (e) {
-            console.log('error');
+            console.log('error',e);
         }
-
         offsetOrdersDetail+=limitOrdersDetail;
 
 
