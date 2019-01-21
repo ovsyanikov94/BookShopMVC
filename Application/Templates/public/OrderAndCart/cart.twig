@@ -41,7 +41,19 @@
 
                                 </div>
                                 <div class="row justify-content text-left" >
-                                    <h7 class="text-muted">Толстой Л.Н.</h7>
+                                    {% if not book.authors %}
+                                        <span>Не указаны...</span>
+                                    {% endif %}
+
+                                    {% for author in book.authors %}
+                                        <span>{{ author.authorFirstName }} {{ author.authorLastName }} </span>
+
+                                        {% if loop.index < loop.length %}
+                                            <span>,</span>
+                                        {% endif %}
+
+                                    {% endfor %}
+
                                 </div>
 
                             </td>
