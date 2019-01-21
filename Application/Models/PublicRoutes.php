@@ -34,6 +34,7 @@ return array(
     'post' => [
         '/addUser'=>'UserController@addUser',
         '/login' => 'AuthorizeController@LoginAction',
+        '/search' => 'SearchController@LoadSearchPage'
     ],
     'put' => [
 
