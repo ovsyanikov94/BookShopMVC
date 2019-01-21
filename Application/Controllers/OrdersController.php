@@ -13,10 +13,7 @@ use Application\Services\UserService;
 
 class OrdersController extends BaseController{
 
-    public function UserDealInfoByIdAction( $limit, $offset){
-
-        $limit = intval($limit);
-        $offset = intval($offset);
+    public function UserDealInfoByIdAction(){
 
         $OrdersService = new OrderService();
         $userService = new UserService();
@@ -73,12 +70,13 @@ class OrdersController extends BaseController{
     public function userOrderDetailAction($orderId){
 
 
-
         $template = $this->twig->load('public/OrderAndCart/orders.twig');
+
         $BookService = new BookService();
         $OrdersService = new OrderService();
-        $orderDetail = $OrdersService->getDealDetail($orderId,$limit=10,$offset=0);
 
+        $orderDetail = $OrdersService->getDealDetail($orderId,$limit=10,$offset=0);
+        $order = $OrdersService->GetOrderByID($orderId);
 
         for($i=0; $i<count($orderDetail);$i++){
 
@@ -89,13 +87,21 @@ class OrdersController extends BaseController{
 
         $total = $OrdersService->getTotalSumByDealId($orderId);
         echo $template->render( array(
+
             'orderDetail' => $orderDetail,
-            'total'=> $total
+            'orderID' => $orderId,
+            'total' => $total->total,
+            'order' => $order
+
         ) );
+
     }//userOrderDetail
+
     public function userOrderDetail($orderId, $limit, $offset){//my
+
         $limit = intval($limit);
         $offset = intval($offset);
+
         $BookService = new BookService();
         $OrdersService = new OrderService();
         $orderDetail = $OrdersService->getDealDetail($orderId,$limit,$offset);

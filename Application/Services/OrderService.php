@@ -60,12 +60,13 @@ class OrderService{
     }//getDealDetail
 
     public function getTotalSumByDealId($orderID){
-        $stm = MySQL::$db->prepare("SELECT SUM(bookPrice) FROM orderdetails WHERE orderID = :orderID");
+
+        $stm = MySQL::$db->prepare("SELECT SUM(bookPrice * bookAmount) as `total` FROM orderdetails WHERE orderID = :orderID");
         $stm->bindParam(':orderID' , $orderID , \PDO::PARAM_INT);
 
         $stm->execute();
 
-        return $stm->fetch();
+        return $stm->fetch(\PDO::FETCH_OBJ);
     }//getTotalSumByDealId
 
     public function GetOrders( $limit = 10 , $offset = 0 ){
