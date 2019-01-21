@@ -15,7 +15,9 @@ return array(
 //            'action' => 'HomeController@indexAction',
 //            'protected' => true
 //        ],
-
+        '/comments-new/(\d+)' => 'CommentsController@publicAddCommentPageAction',
+//        '/comments-new/(\d+)' => 'HomeController@indexAction',
+        '/comments/(\d+)' => 'CommentsController@commentListPublicByBookAction',
         '/' => 'HomeController@indexAction',
         '/home' => 'HomeController@indexAction',
         '/cart' => 'CartController@cartAction',
@@ -29,8 +31,6 @@ return array(
         '/ordersUserDetailsOffset/(\d+)/(\d+)/(\d+)' => 'OrdersController@userOrderDetail',
         '/edit-person-data' => 'PersonController@EditPersonDataAction',
         '/change-person-password' => 'PersonController@ChangePasswordAction',
-        '/comments-new/(\d+)' => 'CommentsController@publicAddCommentPageAction',
-        '/comments/(\d+)' => 'CommentsController@commentListPublicByBookAction',
         '/placeOrder' => 'OrderController@PlaceOrderAction',
     ],
     'post' => [

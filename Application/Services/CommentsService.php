@@ -151,15 +151,18 @@ class CommentsService
 
     }//DeleteAuthorByID
 
-    public function UpdateCommentByID($commentID, $commentText, $time){
+    public function UpdateCommentByID($commentID, $commentText, $time , $statusID){
 
 
         $stm = MySQL::$db->prepare("UPDATE comments 
-                                    SET commentText= :commentText, updated= :time
+                                    SET commentText= :commentText, updated= :time , statusID = :statusID
                                     WHERE commentID=:id");
+
         $stm->bindParam(':commentText' , $commentText , \PDO::PARAM_STR);
         $stm->bindParam(':id' , $commentID , \PDO::PARAM_INT);
+        $stm->bindParam(':statusID' , $statusID , \PDO::PARAM_INT);
         $stm->bindParam(':time' , $time , \PDO::PARAM_INT);
+
         $result = $stm->execute();
 
         return $result;
