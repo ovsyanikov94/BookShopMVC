@@ -9,6 +9,7 @@ $(document).ready( function (  ){
 
         const extentions = [
             '.JPG',
+            '.jpg',
             '.jpeg',
             '.png',
             '.bmp',
@@ -78,12 +79,12 @@ $(document).ready( function (  ){
 
             let ext = file.name.substring(file.name.lastIndexOf('.'));
 
-            if( extentions.indexOf( ext ) === -1 ){
-
-                $('#errorInput').text('Тип файла некорректен').fadeIn(500).delay( 5000 ).fadeOut( 500 )
-                return;
-
-            }//if
+            // if( extentions.indexOf( ext ) === -1 ){
+            //
+            //     $('#errorInput').text('Тип файла некорректен').fadeIn(500).delay( 5000 ).fadeOut( 500 )
+            //     return;
+            //
+            // }//if
 
             bookData.append('bookImage' , file);
 

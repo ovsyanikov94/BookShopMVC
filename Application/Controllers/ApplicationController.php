@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * Created by PhpStorm.
  * User: Alexey
@@ -57,12 +56,17 @@
 
 
 namespace Application\Controllers;
+
 use Bramus\Router\Router;
 use Application\Utils\MySQL;
+use Exception;
+use Predis\Client;
 
-class ApplicationController extends BaseController {
+class ApplicationController extends BaseController
+{
 
-    public function Start(  ){
+    public function Start()
+    {
 
         date_default_timezone_set('Europe/Moscow');
 
@@ -83,12 +87,12 @@ class ApplicationController extends BaseController {
 
         $router->setNamespace('Application\\Controllers');
 
-        $router->set404(function (  ){
+        $router->set404(function () {
 
             try {
 
                 $template = $this->twig->load('ErrorPages/404-not-found.twig');
-                echo $template->render( );
+                echo $template->render();
 
             }//try
             catch (\Exception $ex) {
@@ -105,19 +109,19 @@ class ApplicationController extends BaseController {
 //
 //        });
 
-        foreach ($routes as $key => $path ){
+        foreach ($routes as $key => $path) {
 
-            foreach ($path as $subKey => $value){
+            foreach ($path as $subKey => $value) {
 
-                $router->before('GET|POST|DELETE|PUT' , $subKey , function() {
+                $router->before('GET|POST|DELETE|PUT', $subKey, function () {
 
-                    if ( !isset($_SESSION['admin']) && !isset($_COOKIE['admin']) ){
+                    if (!isset($_SESSION['admin']) && !isset($_COOKIE['admin'])) {
                         header('location: /BookShopMVC/public/home');
                     }//if
 
                 });
 
-                $router->$key( $subKey , $value );
+                $router->$key($subKey, $value);
 
             }//foreach
 
@@ -126,11 +130,11 @@ class ApplicationController extends BaseController {
 
         $routes = include_once '../Application/Models/PublicRoutes.php';
 
-        foreach ($routes as $key => $path ){
+        foreach ($routes as $key => $path) {
 
-            foreach ($path as $subKey => $value){
+            foreach ($path as $subKey => $value) {
 
-                $router->$key( $subKey , $value );
+                $router->$key($subKey, $value);
 
             }//foreach
 
@@ -138,33 +142,36 @@ class ApplicationController extends BaseController {
 
         $router->run();
 
+       
+
     }//Start
 
     //Выход из учётной записи пользователя
-    public function LogoutAction(){
+    public function LogoutAction()
+    {
 
         //чистим сессию
-        if(isset($_SESSION['session_user'])){
+        if (isset($_SESSION['session_user'])) {
 
             $_SESSION = array();
 
         }//if
 
-        if(isset($_SESSION['admin'])){
+        if (isset($_SESSION['admin'])) {
 
             $_SESSION = array();
 
         }//if
 
         //чистим cookie
-        if( isset( $_COOKIE['cookie_user']) ){
+        if (isset($_COOKIE['cookie_user'])) {
 
             unset($_COOKIE['cookie_user']);
             setcookie("cookie_user", "", 1);
 
         }//if
 
-        if( isset( $_COOKIE['admin']) ) {
+        if (isset($_COOKIE['admin'])) {
 
             unset($_COOKIE['admin']);
             setcookie("admin", "", 1);
